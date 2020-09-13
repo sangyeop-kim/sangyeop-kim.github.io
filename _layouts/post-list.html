@@ -22,13 +22,13 @@ layout: compress
                     </a>
                 </div>
                 <div class="post-list">
-                    {% for blog in site.blogs %} 
-                        {% if blog.paper-review == null %}
+                    {% for blog_ in site.blog %} 
+                        {% if blog_.paper-review == null %}
                     <ul>
                         <li class="wow fadeInLeft" data-wow-duration="1.5s">
-                            <a class="zoombtn" href="{{ site.url }}{{ blog.url }}">{{ blog.title }}</a>
-                            <p>{{ blog.excerpt }}</p>
-                            <a href="{{ site.url }}{{ blog.url }}" class="btn zoombtn">Read More</a>
+                            <a class="zoombtn" href="{{ site.url }}{{ blog_.url }}">{{ blog_.title }}</a>
+                            <p>{{ blog_.excerpt }}</p>
+                            <a href="{{ site.url }}{{ blog_.url }}" class="btn zoombtn">Read More</a>
                         </li>
                     </ul>
                         {% endif %}
