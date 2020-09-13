@@ -1,5 +1,5 @@
 ---
-layout: post-list
+layout: post
 title: blog
 comments: false
 ---
