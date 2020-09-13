@@ -5,7 +5,7 @@ description:        "데이터 광부"
 reading_time:       true
 words_per_minute:   200
 logo:               'assets/img/profile_image.jpg'
-background:         'assets/img/placeholder-big.jpg'
+background:         'assets/img/light.jpg'
 tiled_bg:           false   # Set this true if you want to tile your background image, otherwise it will be covered
 locale:             en_US
 url:                https://sangyeop-kim.github.io/
@@ -30,13 +30,15 @@ disqus_shortname:   sangyeop-kim
 
 # Social
 # if you don't have any of social below, comment the line.
-#google:
+google:
   #plus:            #username
-  #analytics:
+  analytics: 'UA-177899845-1'
   #verify:
   #ad-client:
   #ad-slot:
 #bing-verify:
+
+
 email:	pdg01117@gmail.com
 #twitter:            username
 #facebook:           username
@@ -57,7 +59,7 @@ github-url:         sangyeop-kim
 #soundcloud:        username
 #weibo:             username
 #flickr:            username
-#codepen:           username
+#codepen:           username`
 #keybase:           username
 #xmpp:              username@server.com
 #hackernews:        username
