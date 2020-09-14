@@ -1,8 +1,4 @@
 # Site navigation links
-
-- title: 'Paper-review'
-  url: /paper-review/
-- title: 'Blog'
-  url: /blog/
-
-  
+# 왼쪽 상단
+- title: Projects
+  url: /projects/
