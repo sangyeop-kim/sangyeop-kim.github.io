@@ -8,7 +8,7 @@ logo:               'assets/img/profile_image.jpg'
 background:         'assets/img/light.jpg'
 tiled_bg:           false   # Set this true if you want to tile your background image, otherwise it will be covered
 locale:             en_US
-url:                https://sangyeop-kim.github.io
+url:                https://sangyeop-kim.github.io/
 
 # Jekyll
 permalink:          /:title/
@@ -30,15 +30,13 @@ disqus_shortname:   sangyeop-kim
 
 # Social
 # if you don't have any of social below, comment the line.
-google:
+#google:
   #plus:            #username
-  analytics: 'UA-177899845-1'
+  #analytics:
   #verify:
   #ad-client:
   #ad-slot:
 #bing-verify:
-
-
 email:	pdg01117@gmail.com
 #twitter:            username
 #facebook:           username
@@ -59,7 +57,7 @@ github-url:         sangyeop-kim
 #soundcloud:        username
 #weibo:             username
 #flickr:            username
-#codepen:           username`
+#codepen:           username
 #keybase:           username
 #xmpp:              username@server.com
 #hackernews:        username
@@ -75,4 +73,4 @@ jekyll-mentions:
     base_url: https://github.com
 
 # Exclude list
-exclude: [README.md, Gemfile, Gemfile.lock, node_modules, gulpfile.js, package.json, _site, src, vendor, CNAME, LICENSE, Rakefile, blog, paper-review]
+exclude: [README.md, Gemfile, Gemfile.lock, node_modules, gulpfile.js, package.json, _site, src, vendor, CNAME, LICENSE, Rakefile]
