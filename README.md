@@ -28,3 +28,26 @@ See a [live version of Moon](https://taylantatli.github.io/Moon) hosted on GitHu
 ## Getting Started
 
 To learn how to install and use this theme check out the [Setup Guide](https://taylantatli.github.io/Moon/moon-theme/) for more information.
+
+
+
+
+
+
+---
+layout: post # 고정
+title: "Post with Image Feature" # 타이틀
+date: 2012-05-23 # 날짜
+excerpt: "A ton of text to test readability with image feature." # list에서 설명
+tags: [sample post, readability, test, image, feature] # tag
+'''
+- jekyll 
+- moon
+- blog
+- about
+- theme # 이렇게도 가능
+'''
+feature: # 사진 등록, ex) http://i.imgur.com/Ds6S7lJ.png
+blog: false # blog는 true
+comments: true # 댓글 on/off
+---
