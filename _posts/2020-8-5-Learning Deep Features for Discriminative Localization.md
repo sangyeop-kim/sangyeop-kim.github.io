@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Learning Deep Features for Discriminative Localiza
+title: Learning Deep Features for Discriminative Localization
 date: 2020-8-5
-excerpt: 
+excerpt: ""
 tags: [Object detection, image]
 blog: false
 feature: assets/img/Learning%20Deep%20Features%20for%20Discriminative%20Localiza%20ffd1c68765ed4459900888d809ecdf7e/cam.png 
