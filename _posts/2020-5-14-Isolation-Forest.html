@@ -1,0 +1,635 @@
+---
+    layout: post
+    title: "Isolation Forest"
+    date:   2020-5-14
+    excerpt: ""
+    tags: [Fault detection]
+    feature: ../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Forest.png 
+    comments: true
+    ---
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><p id="d8911ef5-8ad7-4ff9-9edd-1f123b0d98d9" class="">Liu, Fei Tony, Kai Ming Ting, and Zhi-Hua Zhou. &quot;Isolation forest.&quot; 2008 Eighth IEEE International Conference on Data Mining. IEEE, 2008.</p><hr id="698ca949-6c5c-4832-9fe6-5b8bc723b582"/><p id="a8c4266b-1ea8-476c-860a-e6b6dae924d9" class="">
+</p><h1 id="df7aafb0-b241-4841-a434-004cbf1023b0" class="">기존 이상 탐지 방식</h1><p id="ce0b76bc-895e-49b8-ada8-dbbde568ef63" class="">normal에 대한 profile을 생성한 이후 profile에 부합하지 않는 데이터에 대해서 비정상으로 분류</p><p id="b9d1ed3e-0a35-449b-90b3-f396822f2081" class="">
+</p><p id="79f5e18a-09a9-4ba6-b9a9-8659116df3b9" class="">기존 방법의 결점 두 가지 </p><ol id="4d064824-353e-44d7-b652-6a2d3c8ed04b" class="numbered-list" start="1"><li>모델을 만들 때 정상의 profile을 생성하기 위해 모델을 적합하기 때문에 false alarm이 너무 많음.</li></ol><ol id="89cd7854-0ffd-4992-9bc4-38551aceaad9" class="numbered-list" start="2"><li>작은 사이즈, 저차원의 데이터에 국한됨.</li></ol><hr id="526a86ac-f8f5-48f2-8315-7ec5728ac0bb"/><h1 id="97edf618-cba3-4787-a1e7-ac0f4601cb36" class="">Isolation Forest</h1><p id="524d8746-8b05-4926-b905-ab58089913c3" class="">본 논문에서는 새로운 model-based 이상 탐지 방법을 제안한다.</p><p id="a80369de-128f-4ae5-9b09-7d57e0ba0569" class="">모델에서 집중하는  anomaly의 특성은 다음과 같다.</p><ul id="a8615a33-da33-49bd-b0fc-3661f0216a97" class="bulleted-list"><li>수가 적다.</li></ul><ul id="76f0e401-bd6d-48d7-86e2-12d2955c05c0" class="bulleted-list"><li>정상과는 다른 특성을 갖는다.</li></ul><p id="831604b3-b54c-4eb0-af3b-b8a04b13a2ee" class="">
+</p><h3 id="436707e9-6796-4457-b9b6-ea7e644f2ce6" class=""><em>isolation </em>의미</h3><p id="7d502f3a-5185-4878-ba1d-aa55aa8c2469" class=""><strong>separating an instance from the rest of the instances</strong></p><p id="f2a982b2-b536-4ee1-be29-c9042634fde7" class="">anomaly의 특성은 Isolation tree 학습 중 root node 근처에서 anomaly가 isolation되게끔 한다.</p><p id="f85fff68-df7f-46ed-b09e-a52be2d86bfd" class="">
+</p><h3 id="a1bd4a9a-f4dc-43b6-a726-5c19c7578338" class="">Isolation Forest의 특성</h3><ul id="24efbc6b-3821-459a-93e6-5499982a1005" class="bulleted-list"><li><strong>sub-sampling을 통해서 partial model을 만든다. </strong><p id="2ff7eec6-5d6c-46f7-8463-ea852710145c" class="">Isolation Forest를 이용한 이상 탐지 문제에서 주요한 어려움은 다음과 같다.
+
+<strong>Swamping </strong>:  normal이 anomaly의 너무 근처에 위치할 경우, False alarm의 비율이 증가하게 됨.
+
+<strong>Masking </strong>:  anomaly의 클러스터가 너무 크고 조밀할 경우, anomaly 자체를 isolate하기 위해 너무 많은 partioning이 필요함.<div class="indented"><p id="e6bf16db-c1cd-4515-87dd-cb74c49555c4" class="">
+</p></div></p><p id="7814fda5-eef9-4e31-a415-5d36b7e80557" class="">subsampling을 통해서 위의 두 가지 문제를 해결할 수 있다. </p></li></ul><div id="235b8717-aec7-4184-a536-5e7644f410bd" class="column-list"><div id="5577f03a-1080-427a-863f-ffd337d0b6f1" style="width:50%" class="column"><figure id="1da52d0e-086f-4da7-b98e-3dd00639eeb5" class="image"><a href="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled.png"><img style="width:288px" src="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled.png"/></a></figure><p id="cae900ab-2d10-4620-a276-55218acb15ee" class="">
+</p></div><div id="44b12b74-2253-448e-b69a-bdf0dc58c44e" style="width:50%" class="column"><figure id="5ac8509c-e709-4d80-8261-cee82165bf36" class="image"><a href="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%201.png"><img style="width:288px" src="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%201.png"/></a></figure></div></div><ul id="8bd00663-638b-480f-adc4-0628814a6639" class="bulleted-list"><li><strong>거리나 밀도에 대한 가정을 하지 않기 때문에 계산 복잡성이 낮다.</strong><p id="62182eb6-5eed-43e9-9de9-1c1479b6db55" class="">Isolation Forest는 Linear time complexity를 가지며 낮은 메모리를 필요로 한다. 따라서 큰 데이터와 고차원 데이터 역시 다룰 수 있다.</p><p id="983eb57a-bf6e-40d6-b201-a269f39ac7fc" class="">
+</p></li></ul><ul id="e4fabfe3-8862-4b0b-92eb-e2e85a3fbeed" class="bulleted-list"><li><strong>Anomaly score</strong><p id="d6dfd885-7f05-4cc4-b5aa-95f31ad064cd" class="">iTree 별로 가능한 maximum height의 값이 다르기 때문에 Path length의 단순 평균을 Anomaly score로 하는 것은 좋지 않다.  Normalized Score를 만들기 위해 Binary Search Tree의 unsuccessful search 평균 path 길이를 추정하기 위해 사용되는 다음 식을 이용한다. </p></li></ul><p id="f371b450-c072-4eaf-9d3a-3e6062c92211" class=""><div class="indented"><p id="90144dba-ea08-477d-a92d-5e3547ddb2ef" class="">n개의 sample이 주어졌을 때, </p><figure id="81b45265-57f8-4085-8959-b0f68afc51c3" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$Equation \ 1\ : c(n)=2 H(n-1)-(2(n-1) / n)$$</div></figure><p id="537c6a6d-16eb-4d7c-8fa0-adda9e5f6537" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">H(i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> : the harmonic number</p><p id="09d0360c-a0e6-4441-8dc8-46c7101aca20" class="">
+</p><p id="b9ae2cf7-71c9-4ffc-a675-12699706b20e" class="">최종적으로 Anomaly score는 다음과 같다.</p><figure id="d07b77ad-8767-476f-b2c9-afdfa1575edb" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$s(x, n)=2^{-\frac{E(h(x))}{c(n)}}$$</div></figure></div></p><p id="d1e1e3ab-adb4-4250-a6a3-d6711e8a5beb" class="">
+</p><h3 id="004587bc-eed4-4bb5-8731-8559dd3edd20" class="">Isolation Forest의 작동 원리</h3><p id="e3ea30b3-e55d-45f1-a905-bc75f6160b9d" class="">모든 instance가 isolation 될 때까지 반복적으로 partitioning 진행할 경우, anomaly에 대해서 짧은 path (root node부터 최종 external node까지 거친 edge의 수)를 생성할 것이다.</p><p id="5d262525-988e-41d7-bb91-0cab711e84a0" class="">
+</p><p id="0854ebb1-c0dd-4acd-8ac5-060972631f7f" class=""><strong>why?</strong></p><ul id="f60941b5-9cfe-42a2-a2c8-8cf07c3dbc4e" class="bulleted-list"><li>the fewer instances of anomalies result in a smaller number of partitions</li></ul><ul id="43bae849-5f33-4032-9b35-2f3698e156f6" class="bulleted-list"><li>instances with distinguishable attribute-values are more likely to be separated in early partitioning.</li></ul><p id="819ef2f9-d243-4835-9df2-f70681d52be2" class="">
+</p><figure id="ff39588a-07f4-4378-a315-813b404a2837" class="image"><a href="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%202.png"><img style="width:480px" src="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%202.png"/></a><figcaption>x_i에 비해 x_o가 isolation 시키기 위한 partition의 수가 적음.</figcaption></figure><p id="14416b55-7a19-4dbf-b244-fb6955636f3c" class="">
+</p><p id="1badd963-f365-438f-99fd-b0deefe2c16c" class=""><strong>Isolation Tree partitioning 종료 조건</strong></p><ol id="e1dfce89-e82e-42c3-89af-c09199df4c5d" class="numbered-list" start="1"><li>미리 지정한 Tree의 height 한도에 도달할 경우.</li></ol><ol id="e4b6fab5-8723-4b7a-b053-c00cf9af54a5" class="numbered-list" start="2"><li>Node에 속한 데이터가 하나일 경우.</li></ol><ol id="a690ca1c-2bfc-4191-bb02-3937cc780489" class="numbered-list" start="3"><li>Node에 속한 데이터가 모두 같을 경우.</li></ol><p id="32e9c370-5ebf-4b98-89f8-2d6dd5e133b1" class="">
+</p><p id="24db8408-be20-4048-b805-c2de8c9330fa" class="">Anomaly detection을 위해서 Isolation Forest는 Training Stage, Evaluating Stage 두 단계를 거친다.</p><p id="b9a03429-3ab6-4308-9691-5c21b4fe6c2b" class="">
+</p><ol id="82a9179b-3029-4f21-a9e8-a367b488d552" class="numbered-list" start="1"><li><strong>Training Stage : 종료조건을 만족할 때까지 partitioning을 진행하여 iTree를 생성한다.</strong><p id="4f0594f7-f3b0-4588-9c45-85e7482310e3" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi></mrow><annotation encoding="application/x-tex">\psi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">ψ</span></span></span></span></span><span>﻿</span></span> : sub-sampling size (default : 256)</p><p id="3d4ffcbb-fc9b-4565-b181-ae8ba1426c0e" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span></span><span>﻿</span></span> : tree의 수 (ensemble size, default : 100)</p><figure id="3b1e5f7a-99cc-452b-9eeb-5f5e84a75762" class="image"><a href="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%203.png"><img style="width:463px" src="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%203.png"/></a></figure><p id="46449af8-26e2-4cd2-a67e-2dc98d1c0281" class="">
+</p><figure id="c29ba174-537b-4df3-a6af-ed2de9df7951" class="image"><a href="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%204.png"><img style="width:468px" src="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%204.png"/></a></figure><p id="1003a862-dbab-4139-817a-cefdade8332b" class="">
+</p></li></ol><ol id="23a376e3-13be-44d2-bbaa-07d779f6aa2f" class="numbered-list" start="2"><li><strong>Evaluating Stage : path length로 부터 anomaly score를 계산한다.</strong><p id="c5f35c00-0735-44d7-a5d6-18d5a637f5b5" class="">아래의 PathLength function을 이용해 h(x)를 계산한 이후 anomaly score 식을 이용해 최종 score를 구한다. </p><figure id="a09427ed-3b0c-471a-8dc8-820627c4a7f4" class="image"><a href="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%205.png"><img style="width:465px" src="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%205.png"/></a></figure></li></ol><p id="1168cbd1-a080-4569-83c5-d8066acff21a" class="">
+</p><h3 id="ce5f9081-d8a5-4993-a371-8b2ab8a74147" class="">실험 결과</h3><p id="611b3dff-1035-4fcd-99b2-6f6538344a47" class=""><strong>데이터셋</strong></p><p id="e8043f8f-f596-44b5-af77-f8fa09157ce3" class="">
+</p><figure id="108a5a7e-0575-44cf-a592-8fcf207e127d" class="image"><a href="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%206.png"><img style="width:480px" src="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%206.png"/></a></figure><p id="43d779e2-10e8-47db-afba-d354ec6aaed2" class=""><strong>ORCA, LOF, RF와 비교</strong></p><p id="19db8db2-036c-462f-9470-59c7239374d2" class="">ORCA : k-Nearest Neighbour (k-nn) based method</p><p id="af27f9cd-85df-4775-83f1-08b9652bc260" class="">LOF : density based method</p><p id="2f0bff58-01a8-4726-ac19-fe96fb01659b" class="">RF : Random Forest</p><figure id="f2e6bb2e-bced-4b83-87cf-1c168842e143" class="image"><a href="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%207.png"><img style="width:910px" src="../assets/img/Isolation%20Forest%201da52d0e086f4da7b98e3dd00639eeb5/Untitled%207.png"/></a></figure><p id="cfa225ec-32d9-4dae-80fe-456b20a0f50d" class="">
+</p></div>

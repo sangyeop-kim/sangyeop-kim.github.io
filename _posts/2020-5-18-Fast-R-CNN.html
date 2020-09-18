@@ -1,0 +1,646 @@
+---
+    layout: post
+    title: "Fast R-CNN"
+    date:   2020-5-18
+    excerpt: ""
+    tags: [Object detection, image]
+    feature: ../assets/img/Fast%20R-CNN%2042c494fcd84144cf8f6666446bea7959/Fast_RCNN1.jpg" style="object-position:center 50%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">⏩</span></div><h1 class="page-title">Fast R-CNN</h1><table class="properties"><tbody><tr class="property-row property-row-created_time"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesCreatedAt"><path d="M6.98643729,14.0000972 C5.19579566,14.0000972 3.40419152,13.3106896 2.04245843,11.9323606 C-0.681017475,9.21200555 -0.680780251,4.76029539 2.04293482,2.04012507 C4.76664406,-0.68004331 9.22427509,-0.68004331 11.9480135,2.04013479 C13.272481,3.36277455 14,5.1330091 14,6.99552762 C14,8.87640182 13.2721894,10.6285043 11.9480135,11.9509302 C10.5679344,13.3105924 8.77756503,14.0000972 6.98643729,14.0000972 Z M10.2705296,7.00913883 L10.2705296,8.46099754 L10.2705296,8.65543362 L10.076181,8.65543362 L8.6543739,8.65543362 L5.72059514,8.65543362 L5.52619796,8.65543362 L5.52619796,8.46099754 L5.52619796,5.52541044 L5.52619796,3.37946773 L5.52619796,3.18502193 L5.72059514,3.18502193 L7.17253164,3.18502193 L7.36692883,3.18502193 L7.36692883,3.37946773 L7.36692883,6.81467358 L10.076181,6.81467358 L10.2705296,6.81467358 L10.2705296,7.00913883 Z M12.1601539,6.99552762 C12.1601539,5.61697497 11.6190112,4.32597154 10.6393933,3.34769528 C8.63253764,1.34336744 5.35197452,1.34061603 3.34153136,3.33944106 C3.33868273,3.34219247 3.33607716,3.34494388 3.33322852,3.34769528 C1.32397148,5.35459953 1.32372842,8.63641682 3.33322852,10.6433794 C5.34295224,12.6504489 8.62968901,12.6504489 10.6393933,10.6433794 C11.6190112,9.66506426 12.1601539,8.37408027 12.1601539,6.99552762 Z"></path></svg></span>Created</th><td><time>@May 18, 2020 3:44 PM</time></td></tr><tr class="property-row property-row-last_edited_time"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesCreatedAt"><path d="M6.98643729,14.0000972 C5.19579566,14.0000972 3.40419152,13.3106896 2.04245843,11.9323606 C-0.681017475,9.21200555 -0.680780251,4.76029539 2.04293482,2.04012507 C4.76664406,-0.68004331 9.22427509,-0.68004331 11.9480135,2.04013479 C13.272481,3.36277455 14,5.1330091 14,6.99552762 C14,8.87640182 13.2721894,10.6285043 11.9480135,11.9509302 C10.5679344,13.3105924 8.77756503,14.0000972 6.98643729,14.0000972 Z M10.2705296,7.00913883 L10.2705296,8.46099754 L10.2705296,8.65543362 L10.076181,8.65543362 L8.6543739,8.65543362 L5.72059514,8.65543362 L5.52619796,8.65543362 L5.52619796,8.46099754 L5.52619796,5.52541044 L5.52619796,3.37946773 L5.52619796,3.18502193 L5.72059514,3.18502193 L7.17253164,3.18502193 L7.36692883,3.18502193 L7.36692883,3.37946773 L7.36692883,6.81467358 L10.076181,6.81467358 L10.2705296,6.81467358 L10.2705296,7.00913883 Z M12.1601539,6.99552762 C12.1601539,5.61697497 11.6190112,4.32597154 10.6393933,3.34769528 C8.63253764,1.34336744 5.35197452,1.34061603 3.34153136,3.33944106 C3.33868273,3.34219247 3.33607716,3.34494388 3.33322852,3.34769528 C1.32397148,5.35459953 1.32372842,8.63641682 3.33322852,10.6433794 C5.34295224,12.6504489 8.62968901,12.6504489 10.6393933,10.6433794 C11.6190112,9.66506426 12.1601539,8.37408027 12.1601539,6.99552762 Z"></path></svg></span>Property</th><td><time>@Aug 6, 2020 11:30 AM</time></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Tags</th><td><span class="selected-value select-value-color-orange">Object detection</span><span class="selected-value select-value-color-purple">image</span></td></tr></tbody></table></header><div class="page-body"><h2 id="6bebfbb3-c717-47cf-9b7a-9e98f15f8907" class=""><strong>1. Introduction</strong></h2><p id="572533c5-d077-425e-bcf1-8b5cc629798f" class="">object detection의 복잡성은 물체의 정확한 위치를 찾는 것에서 발생한다.</p><p id="c7610b77-a422-495c-a9ab-4bb92efee45d" class="">why ?<div class="indented"><p id="8e225809-9504-44ad-a541-0c4b8c74ddd8" class="">1) 너무나 많은 물체의 위치 후보가 처리 되어야 한다.</p><p id="90e33fac-7c7a-4b5b-98e8-c46d37b693e0" class="">2) 주어진 위치 후보가 대략적인 위치만을 제공한다. (즉, 정확한 위치를 알기 위해서는 추가적인 작업이 필요하다.)</p></div></p><p id="f91ec5a6-5e12-4a3d-a015-e24b409d516b" class="">논문에서는 single-stage training algorithm(object classification &amp; spatial location)을 제안한다.결론적으로, 제안하는 모델은 R-CNN보다 9배 SPPnet보다 3배 빠르며 object proposal 시간을 제외할 경우 이미지당 0.3초의 시간이 소요된다.</p><p id="abc9a942-0cd6-4c05-8171-86991549b696" class="">
+</p><h3 id="a3d2f264-241d-4829-be7c-91fa094ef429" class=""><strong>1.1 R-CNN and SPPnet</strong></h3><p id="3c907c03-b2f1-4313-b733-dca8b126b127" class="">R-CNN은 다음과 같은 단점을 갖고 있다.<div class="indented"><p id="d09be1a7-c468-4578-a0db-ac5a9a3c3c9a" class="">1) 학습이 multi-stage pipeline이다.</p><p id="e245f999-a90d-43d5-bda9-752a0a4887a2" class="">2) 학습이 시간과 메모리 모두 많이 소모된다.</p><p id="510c5865-0ffb-4829-b5f3-80fb297294da" class="">3) Object detection이 느리다.</p></div></p><p id="feeab049-012f-43e7-8096-3ce85c60b670" class="">R-CNN이 느린 이유는 ConvNet이 각각의 object proposal에 대해서 적용되기 때문이다.SPPnet은 computation sharing을 통해 R-CNN의 단점을 극복하려 했다.</p><h3 id="05905f86-4e96-426e-aa8c-430df9de6e31" class=""><strong>SPPnet</strong></h3><p id="a082f937-b8a5-47cc-b0f8-42736be70a1b" class="">     1) 이미지 전체에 대해서 ConvNet을 한 번 거쳐 Feature map을 생성 (computation sharing)<div class="indented"><p id="97df5e19-c981-4f29-88ac-e241dd18f448" class="">2) object proposal의 위치에 해당하는 1)의 Feature map 영역에서 pooling을 통해 고정된 크기의 output을 추출</p><p id="630bef01-0d7b-4d31-ab2e-67cbd7d40992" class="">3) 2)의 과정을 통해 다른 크기의 output을 여럿 만들고 concat해 분류에 사용</p></div></p><p id="2016b963-f181-4996-90e5-6cb4d1d45d60" class="">
+</p><p id="9ad9ae4f-4fe1-47a3-8bdd-06bb195c1322" class="">하지만, SPPnet 역시 다음과 같은 단점을 가지고 있다.<div class="indented"><p id="6e7780b7-56c9-41b1-a84f-84067af2a1f3" class="">1) 학습이 multi-stage pipeline이다.</p><p id="2b533932-458d-421c-94a4-4263ec18e33f" class="">2) feature를 caching하기 위한 메모리가 필요하다.</p><p id="fbe6e5b3-9fe7-4186-ac26-30b149bf503b" class="">3) pooling 이전 단계의 ConvNet을 fine-tuning할 수 없다.</p></div></p><p id="28c52110-ca1c-47c0-8421-4653853590c2" class="">
+</p><h3 id="a0cafdd9-e8e1-4182-bfca-7fba5b326484" class=""><strong>1.2 Contribution</strong></h3><p id="ae5d0e5e-7a4e-4509-9d3b-3c5282300794" class="">Fast R-CNN의 이점<div class="indented"><p id="6d805e96-0ca4-427b-9302-839f588f4483" class="">1) 높은 detection 성능(mAP)</p><p id="bf2a967e-260b-497c-898c-bb89666a0a8f" class="">2) Training이 multi-task loss를 사용한 single-stage이다.</p><p id="3b758931-750a-4d52-9fc3-6b01e65f98cf" class="">3) 학습을 통해 모든 네트워크를 업데이트할 수 있다.</p><p id="d4d83a76-6783-4a32-9c83-90062994f64c" class="">4) caching이 필요없다.</p><p id="17f4bfa0-1c9f-41b0-ad5d-964ac9a2617c" class="">
+</p><p id="73091dd7-84a5-4b7e-ba18-3127d112fe18" class="">
+</p></div></p><h2 id="405a5b48-101f-4ee2-8a6a-8fe06af578c7" class=""><strong>2. Fast R-CNN architecture and training</strong></h2><figure id="5b88d69f-e13f-4e89-b52c-dbd0b0b8ebd7" class="image"><a href="https://sangyeobi.github.io/assets/images/Fast_RCNN1.jpg"><img style="width:528px" src="https://sangyeobi.github.io/assets/images/Fast_RCNN1.jpg"/></a><figcaption>Fast R-CNN 기본 구조</figcaption></figure><p id="17dd4ccd-e302-4cc3-a9fc-4b72776517ab" class="">
+</p><p id="d01bc598-a502-4637-b35a-878b5f912674" class="">Fast R-CNN 구현 방법<div class="indented"><p id="f3ed317d-44f9-4885-b037-5f3203fe9bd2" class="">1) 전체 이미지에 대해서 ConvNet + max pooling</p><p id="7a59832b-e84d-4b57-aa12-0cbbe4eb09b7" class="">2) ROI에 해당하는 feature map에서 일정한 크기의 feature vector를 추출</p><p id="a990b830-f2b4-4791-989f-0e4e8863e939" class="">3) feature vector를 Fully Connected layer</p><p id="651311b5-fc57-4a1d-9ae1-c9bc6c457ba0" class="">4) 2개의 branch로 output을 보내기</p><p id="8eeb96ec-3077-4baa-bbac-8790e783b95f" class="">5) softmax : object 각각과 배경인지 여부 분류, bbox regressor : bbox position</p></div></p><p id="dd61bf19-d430-47b2-a3d7-6b7b44daacb0" class="">
+</p><h3 id="eb8b8bf3-334c-451c-899c-af5b508ec198" class=""><strong>2.1 The RoI pooling layer</strong></h3><p id="96d28f08-1e83-4f1c-9ff8-c167e7611c98" class="">max pooling을 이용, 주어진 크기의 feature를 생성, pooling은 각 채널에 대해서 개별적으로 적용</p><p id="7f4c75a2-5e1b-43b4-a450-7abbea74ad88" class="">
+</p><h3 id="d04d6cf2-a18a-4e5f-bcf1-62ec41102945" class=""><strong>2.2 Initializing from pre-trained networks</strong></h3><p id="ae2e1c59-b194-4c9e-892d-fc497d03fd87" class="">구현 방법 1)에서 사용된 ConvNet은 ImageNet에서 사용된 pre-trained model을 사용각각은 5개의 max-pooling과 다수의 conv layer를 가지고 있으며 Fast R-Cnn을 위해 다음과 같이 조절함.<div class="indented"><p id="fe8a36e1-6005-4447-b974-df91fcc8f22f" class="">1) 마지막 max pooling은 RoI pooling으로 교체</p><p id="c3eed863-7cb8-48e6-a0d5-9597d2d5c0ec" class="">2) 마지막 fully connected layer와 softmax는 2개의 branch로 나눠지게 함.</p><p id="4a860f1e-fd5f-479a-b423-d50fc4096cd4" class="">3) input을 이미지와 bbox 좌표를 받을 수 있게 조절</p></div></p><p id="25b7a010-4abd-4a88-9815-ff5cf44f294b" class="">
+</p><h3 id="6256181c-3c35-4c70-a589-543e3849dc61" class=""><strong>2.3 Fine-tuning for detection</strong></h3><h3 id="65f2f09a-9541-434c-a7b5-4b583f97fc2c" class=""><strong>- Hierarchical sampling</strong></h3><p id="9c8b2f2f-ca09-42e9-a1a2-951a3a21d0e2" class="">SPPnet에서 각각의 training sample과 sample에 해당하는 다른 크기의 RoI를 매번 이용해 학습하는 것은 매우 비효율적</p><p id="c8c0404c-f5c1-406e-b566-feab3cfcf660" class="">효율적인 학습 방법을 통해 SPPnet의 세 번째 문제점인 “pooling 이전 단계의 ConvNet을 fine-tuning할 수 없다.”를 해결</p><p id="d3650a76-710c-426c-be28-0ef994bedcb5" class="">효율적인 학습 방법 -&gt; SGD minbatches : N images에 대해서 R/N RoI를 추출하는 방법으로 학습여기서 N을 줄이고 R을 증가시키면 공통된 RoI에 대해서 computation sharing을 할 수 있고 다수의 N에서 소수의 RoI를 이용해서 학습하는 것보다 훨씬 빠른 속도로 학습이 가능하다.</p><h3 id="33345859-7d35-455f-a018-ee6fa6b422d1" class=""><strong>- Multi task loss</strong></h3><ul id="97347441-0cd7-4705-bcfe-4857451a69e4" class="bulleted-list"><li>Fast R-CNN의 첫 번째 output은<figure id="4bf063bd-bf97-4e61-99ff-70d820dd9e55" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mrow><mo fence="true">(</mo><msub><mi>p</mi><mn>0</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>p</mi><mi>K</mi></msub><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">p=\left(p_{0}, \ldots, p_{K}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">p</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.07153em;">K</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></div></figure><p id="9358a134-f6d6-4a85-8839-80305a4592e0" class="">K개의 카테고리에 background까지 더한 총 K + 1개의 label에 대한 확률 분포를 가짐.</p></li></ul><ul id="8c677cc6-3567-498f-8d1d-0b4c061a8249" class="bulleted-list"><li>두 번째 output은 <figure id="1f6df775-5548-43c9-9f33-67fe96f800c6" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>t</mi><mi>k</mi></msup><mo>=</mo><mrow><mo fence="true">(</mo><msubsup><mi>t</mi><mi>x</mi><mi>k</mi></msubsup><mo separator="true">,</mo><msubsup><mi>t</mi><mi>y</mi><mi>k</mi></msubsup><mo separator="true">,</mo><msubsup><mi>t</mi><mi>w</mi><mi>k</mi></msubsup><mo separator="true">,</mo><msubsup><mi>t</mi><mi>h</mi><mi>k</mi></msubsup><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">t^{k}=\left(t_{x}^{k}, t_{y}^{k}, t_{w}^{k}, t_{h}^{k}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8991079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.282216em;vertical-align:-0.383108em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">(</span></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999998em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.899108em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span></span><span style="top:-3.1130000000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999998em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999998em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">h</span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">)</span></span></span></span></span></span></span></div></figure><p id="cc0b841c-8524-4283-b5c7-7336e827d5c7" class="">K-th object에 대해서 bounding box의 정확한 좌표를 유추할 수 있는 4가지 정보를 갖고 있음.</p><p id="4f411c65-6723-45a5-8664-105d2323a46f" class="">
+</p></li></ul><h3 id="ca3fb413-61de-4c37-8a1c-1d8d5b3854bd" class=""><strong>Multi task loss</strong></h3><figure id="d0b1fd37-80a4-4531-b5b9-79beacd9f714" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo fence="true">(</mo><mi>p</mi><mo separator="true">,</mo><mi>u</mi><mo separator="true">,</mo><msup><mi>t</mi><mi>u</mi></msup><mo separator="true">,</mo><mi>v</mi><mo fence="true">)</mo></mrow><mo>=</mo><msub><mi>L</mi><mrow><mi>d</mi><mi>s</mi></mrow></msub><mo stretchy="false">(</mo><mi>p</mi><mo separator="true">,</mo><mi>u</mi><mo stretchy="false">)</mo><mo>+</mo><mi>λ</mi><mo stretchy="false">[</mo><mi>u</mi><mo>≥</mo><mn>1</mn><mo stretchy="false">]</mo><msub><mi>L</mi><mrow><mi>l</mi><mi>o</mi><mi>c</mi></mrow></msub><mrow><mo fence="true">(</mo><msup><mi>t</mi><mi>u</mi></msup><mo separator="true">,</mo><mi>v</mi><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">L\left(p, u, t^{u}, v\right)=L_{d s}(p, u)+\lambda[u \geq 1] L_{l o c}\left(t^{u}, v\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathdefault">p</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">p</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">u</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">λ</span><span class="mopen">[</span><span class="mord mathdefault">u</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></div></figure><p id="6c618066-c163-46b4-98f5-fa6a2118d85f" class="">
+</p><p id="a04a3d2f-1284-4413-82f0-6ddc2e014863" class="">u : 실제 label</p><p id="b1ce572c-7675-4779-bf31-39c4b06f6035" class="">v : 실제 bounding box regression target</p><p id="c3dee906-cab2-45e9-951b-ed418acfb6e8" class="">λ : 두 loss의 가중치를 조절하는 하이퍼 파라미터</p><p id="455e97b0-7fe8-4fff-b6b4-96e21131ef46" class="">
+</p><p id="f97b344e-e3d0-4e5c-8e9f-5947d693e659" class="">The Iverson bracket indicator function의 경우 [u ≥ 1]이면 1 그렇지 않으면 0논문에서는 배경의 경우 u = 0이 되게 하는 장치</p><figure id="fa6ab6da-225b-41e9-819d-a6dad66d804e" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable rowspacing="0.15999999999999992em" columnalign="left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>L</mi><mrow><mi>d</mi><mi>s</mi></mrow></msub><mo stretchy="false">(</mo><mi>p</mi><mo separator="true">,</mo><mi>u</mi><mo stretchy="false">)</mo><mo>=</mo><mo>−</mo><mi>log</mi><mo>⁡</mo><msub><mi>p</mi><mi>u</mi></msub></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>L</mi><mrow><mi>l</mi><mi>o</mi><mi>c</mi></mrow></msub><mrow><mo fence="true">(</mo><msup><mi>t</mi><mi>u</mi></msup><mo separator="true">,</mo><mi>v</mi><mo fence="true">)</mo></mrow><mo>=</mo><msub><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><mo stretchy="false">{</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo separator="true">,</mo><mi>w</mi><mo separator="true">,</mo><mi>h</mi><mo stretchy="false">}</mo></mrow></msub><mi>s</mi><mi>m</mi><mi>o</mi><mi>o</mi><mi>t</mi><msub><mi>h</mi><msub><mi>L</mi><mn>1</mn></msub></msub><mrow><mo fence="true">(</mo><msubsup><mi>t</mi><mi>i</mi><mi>u</mi></msubsup><mo>−</mo><msub><mi>v</mi><mi>i</mi></msub><mo fence="true">)</mo></mrow></mrow></mstyle></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{array}{l} L_{d s}(p, u)=-\log p_{u} \\ L_{l o c}\left(t^{u}, v\right)=\sum_{i \in\{x, y, w, h\}} s m o o t h_{L_{1}}\left(t_{i}^{u}-v_{i}\right) \end{array}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.51471em;vertical-align:-1.007355em;"></span><span class="mord"><span class="mtable"><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.507355em;"><span style="top:-3.6673549999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">p</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">u</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.467355em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.22528999999999993em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">∈</span><span class="mopen mtight">{</span><span class="mord mathdefault mtight">x</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight">h</span><span class="mclose mtight">}</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.47471em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">m</span><span class="mord mathdefault">o</span><span class="mord mathdefault">o</span><span class="mord mathdefault">t</span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.007355em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span></span></span></span></span></span></span></div></figure><p id="f38f30a2-b21e-4584-8654-fc0193967389" class="">in which</p><figure id="cd9db7ec-de94-4a7a-95df-d33f7479b06d" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo><mi mathvariant="normal">smooth</mi><mo>⁡</mo></mo><msub><mi>L</mi><mn>1</mn></msub></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.15999999999999992em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>0.5</mn><msup><mi>x</mi><mn>2</mn></msup></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext> if </mtext><mi mathvariant="normal">∣</mi><mi>x</mi><mi mathvariant="normal">∣</mi><mo>&lt;</mo><mn>1</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi mathvariant="normal">∣</mi><mi>x</mi><mi mathvariant="normal">∣</mi><mo>−</mo><mn>0.5</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext> otherwise </mtext></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\operatorname{smooth}_{L_{1}}(x)=\left\{\begin{array}{ll} 0.5 x^{2} &amp; \text { if }|x|&lt;1 \\ |x|-0.5 &amp; \text { otherwise } \end{array}\right.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0001em;vertical-align:-0.2501em;"></span><span class="mop"><span class="mop"><span class="mord mathrm">s</span><span class="mord mathrm">m</span><span class="mord mathrm">o</span><span class="mord mathrm">o</span><span class="mord mathrm">t</span><span class="mord mathrm">h</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.40003em;vertical-align:-0.95003em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">{</span></span><span class="mord"><span class="mtable"><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-2.4099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathdefault">x</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9500000000000004em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"> if </span></span><span class="mord">∣</span><span class="mord mathdefault">x</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">1</span></span></span><span style="top:-2.4099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"> otherwise </span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9500000000000004em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="77b7d856-3700-4d14-8684-fcd7046d3eca" class="">
+</p><p id="1881c357-47fc-45d1-b4f9-6b6b035b88a9" class="">bounding-box regression을 위한 LlocLloc식을 보면smmothL1smmothL1을 이용해 robust한 결과를 도출 (L1 loss는 아웃라이어에 민감하지 않게 반응함.)</p><p id="5bf05a10-6d40-463c-ba30-00fa15e9cce6" class="">일반적인 L2 loss의 경우 gradient exploding을 막기 위해서 learning rate 조절이 매우 중요하지만 robust L1은 zero-mean에서 많이 떨어진 아웃라이어가 들어와도 L2만큼 loss가 크지 않기 때문에 훨씬 robust하다.</p><p id="2f06aa84-25d2-4e2d-907f-bb86073f7fcd" class="">
+</p><h3 id="e894bf7b-fdd8-4674-91d4-6f1a4b0231ac" class=""><strong>- Mini-batch sampling</strong></h3><p id="b74f86fd-71b1-4c09-b10f-00590004cf15" class="">N = 2, R = 128은 동일,</p><p id="7c76a6ac-f4d3-47e3-89df-0702e6ae594d" class="">RoI를 가져오는 기준25% : ground truth 와 IoU값이 0.5이상인 object proposal</p><p id="0c2ee4fa-a0d8-484f-b3a0-5286649257c4" class="">75% : ground truth 와 IoU값이 0.1이상 0.5 미만인 object proposal</p><p id="bb0f20c0-6903-44e1-81dc-286390719d89" class="">IoU : 두 영역의 교차영역의 넓이를 합영역으로 나눈 값</p><p id="c5defb95-5bfc-4f48-af50-c3d192bffb1b" class="">IoU가 0.1 미만이면 background로 취급</p><p id="46d4c547-8dbb-466c-b3ff-d48109c121a4" class="">50% 확률로 horizontal flip 외의 Data augmentation은 사용하지 않음.</p><p id="bdf0e985-a6b4-4ecc-a827-5223013e5515" class="">
+</p><h3 id="862f1761-b545-400c-aed6-87bf6a334293" class=""><strong>- Back-propagation through RoI pooling layers</strong></h3><p id="50273df3-e7e9-4216-bdf8-58d2dfd8abd4" class="">x_i는 RoI pooling layer의 input에 해당하는 픽셀들의 index를 의미.r번째 RoU의 j번째 index는 다음과 같이 나타날 수 있음.</p><figure id="04acaeaf-b29a-4ee3-a4f8-adbdaa0e31ed" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>r</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>x</mi><msup><mi>i</mi><mo lspace="0em" rspace="0em">∗</mo></msup></msub><mo stretchy="false">(</mo><mi>r</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y_{r j}=x_{i^{*}}(r, j)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6183428571428571em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span></span></span></span></span></div></figure><p id="1a917871-ffac-4014-a2c7-37d9f6234786" class="">in  which</p><figure id="b1107277-be57-465b-a617-43da7accf6a0" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>i</mi><mo lspace="0em" rspace="0em">∗</mo></msup><mo stretchy="false">(</mo><mi>r</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mo><mi mathvariant="normal">argmax</mi><mo>⁡</mo></mo><mrow><msup><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>∈</mo><mi mathvariant="script">R</mi><mo stretchy="false">(</mo><mi>r</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msub><msub><mi>x</mi><msup><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msub></mrow><annotation encoding="application/x-tex">i^{*}(r, j)=\operatorname{argmax}_{i^{\prime} \in \mathcal{R}(r, j)} x_{i^{\prime}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.738696em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∗</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8496999999999999em;vertical-align:-0.41913999999999996em;"></span><span class="mop"><span class="mop"><span class="mord mathrm">a</span><span class="mord mathrm">r</span><span class="mord mathrm" style="margin-right:0.01389em;">g</span><span class="mord mathrm">m</span><span class="mord mathrm">a</span><span class="mord mathrm">x</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.28086em;"><span style="top:-2.45586em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828285714285715em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathcal mtight">R</span></span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.41913999999999996em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32797999999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828285714285715em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></div></figure><p id="8b62e631-4f64-4375-9cf2-87168909116a" class="">여기서 R(r,j)는 max pooling의 output이 y_rj에 해당하는 index를 의미</p><p id="5ef90b11-2619-4c00-92e2-b1c70b783b3f" class="">RoI pooling layer은 max pooling의 일종이란 걸 생각하면 쉽게 이해할 수 있을 것이라 생각이 듦</p><p id="b331ec80-c4d7-40dd-a912-2a8a8ab1d1cb" class="">max pooling에서의 back-propagation과 같이 RoI pooling의 back-propagation 식은 다음과 같이 나타낼 수 있다.</p><figure id="7152a8fe-5eb3-425b-9035-92797e85a161" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi mathvariant="normal">∂</mi><mi>L</mi></mrow><mrow><mi mathvariant="normal">∂</mi><msub><mi>x</mi><mi>i</mi></msub></mrow></mfrac><mo>=</mo><munder><mo>∑</mo><mi>r</mi></munder><munder><mo>∑</mo><mi>j</mi></munder><mrow><mo fence="true">[</mo><mi>i</mi><mo>=</mo><msup><mi>i</mi><mo lspace="0em" rspace="0em">∗</mo></msup><mo stretchy="false">(</mo><mi>r</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo fence="true">]</mo></mrow><mfrac><mrow><mi mathvariant="normal">∂</mi><mi>L</mi></mrow><mrow><mi mathvariant="normal">∂</mi><msub><mi>y</mi><mrow><mi>r</mi><mi>j</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial L}{\partial x_{i}}=\sum_{r} \sum_{j}\left[i=i^{*}(r, j)\right] \frac{\partial L}{\partial y_{r j}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.20744em;vertical-align:-0.8360000000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.37144em;"><span style="top:-2.3139999999999996em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord mathdefault">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8360000000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.7852170000000003em;vertical-align:-1.413777em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8999949999999999em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.250005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8723309999999997em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.413777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">[</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mord mathdefault">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.738696em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∗</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;">]</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.37144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord mathdefault">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.972108em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="e6d807b2-e659-4557-b038-93515b31944f" class="">
+</p><h3 id="bc30f6b4-ec4b-44b3-b6aa-5923b0b91d80" class=""><strong>- SGD hyper-parameters</strong></h3><p id="4f4dad64-fa9b-405c-969c-b0c48a29555e" class="">weight initialization, training hyperparameter에 대한 설명</p><h2 id="29035361-a0d7-4af3-a401-441977786b49" class=""><strong>2.4 Scale invariance</strong></h2><p id="54e5dcf7-3b45-40d0-812c-821bebe8233e" class="">1) brutal-force approach학습과 테스트 모두 정해진 크기의 픽셀로 이미지 전처리</p><p id="f8e229f1-d28d-44b1-8cac-6d93b4620c7b" class="">2) multi scale approach</p><figure id="60c98c5d-8b9a-4efc-9016-309623d704bb" class="image"><a href="https://sangyeobi.github.io/assets/images/Fast_RCNN2.jpg"><img style="width:480px" src="https://sangyeobi.github.io/assets/images/Fast_RCNN2.jpg"/></a></figure><p id="33051a34-66b9-4cf8-87ec-2f13a394d902" class="">image pyramid 예시</p><p id="6abe1c98-e5d6-4ce6-b25b-5216f5ba2447" class="">image pyramid를 이용training 동안에 image pyramid에서 이미지를 랜덤하게 추출 -&gt; 일종의 data augmentation일 수 있다고 함.test 시에 image pyramid를 통해 scale-normalize 진행approximate scale invariance를 제공</p><h2 id="b2f8c632-1973-4d72-8f2d-2fb0398af705" class=""><strong>3. Fast R-CNN detection</strong></h2><h3 id="2b349af9-4190-4813-ac07-e910e18f6ca8" class=""><strong>3.1 Truncated SVD for faster detection</strong></h3><p id="4e3c7ada-a2ca-4c73-9225-bf4de986ba47" class="">image classification의 경우 fully connected layer가 forward pass 소비 시간에서 차지하는 비중이 적음.detection의 경우 fully connected layer가 차지하는 시간 비중이 약 45%에 육박함.truncated SVD를 통해서 이를 어느정도 해결할 수 있음.</p><figure id="4098998c-4826-4508-ae6b-502b2ec9c052" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>≈</mo><mi>U</mi><msub><mi mathvariant="normal">Σ</mi><mi>t</mi></msub><msup><mi>V</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">W \approx U \Sigma_{t} V^{T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0413309999999998em;vertical-align:-0.15em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span></span></span></span></span></span></div></figure><p id="1568deb5-eb6c-4fd7-8f0f-ad9afaca4aec" class="">
+</p><h1 id="f30326cd-73af-4dc2-ba1a-b3327676fc41" class="">Comment</h1><figure id="584a6f9a-567e-41b1-8572-5cefa576d463"><div class="source"><a href="https://app.sli.do/event/zlpgxdqk">https://app.sli.do/event/zlpgxdqk</a></div></figure></div></article></body></html.png 
+    comments: true
+    ---
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><h2 id="6bebfbb3-c717-47cf-9b7a-9e98f15f8907" class=""><strong>1. Introduction</strong></h2><p id="572533c5-d077-425e-bcf1-8b5cc629798f" class="">object detection의 복잡성은 물체의 정확한 위치를 찾는 것에서 발생한다.</p><p id="c7610b77-a422-495c-a9ab-4bb92efee45d" class="">why ?<div class="indented"><p id="8e225809-9504-44ad-a541-0c4b8c74ddd8" class="">1) 너무나 많은 물체의 위치 후보가 처리 되어야 한다.</p><p id="90e33fac-7c7a-4b5b-98e8-c46d37b693e0" class="">2) 주어진 위치 후보가 대략적인 위치만을 제공한다. (즉, 정확한 위치를 알기 위해서는 추가적인 작업이 필요하다.)</p></div></p><p id="f91ec5a6-5e12-4a3d-a015-e24b409d516b" class="">논문에서는 single-stage training algorithm(object classification &amp; spatial location)을 제안한다.결론적으로, 제안하는 모델은 R-CNN보다 9배 SPPnet보다 3배 빠르며 object proposal 시간을 제외할 경우 이미지당 0.3초의 시간이 소요된다.</p><p id="abc9a942-0cd6-4c05-8171-86991549b696" class="">
+</p><h3 id="a3d2f264-241d-4829-be7c-91fa094ef429" class=""><strong>1.1 R-CNN and SPPnet</strong></h3><p id="3c907c03-b2f1-4313-b733-dca8b126b127" class="">R-CNN은 다음과 같은 단점을 갖고 있다.<div class="indented"><p id="d09be1a7-c468-4578-a0db-ac5a9a3c3c9a" class="">1) 학습이 multi-stage pipeline이다.</p><p id="e245f999-a90d-43d5-bda9-752a0a4887a2" class="">2) 학습이 시간과 메모리 모두 많이 소모된다.</p><p id="510c5865-0ffb-4829-b5f3-80fb297294da" class="">3) Object detection이 느리다.</p></div></p><p id="feeab049-012f-43e7-8096-3ce85c60b670" class="">R-CNN이 느린 이유는 ConvNet이 각각의 object proposal에 대해서 적용되기 때문이다.SPPnet은 computation sharing을 통해 R-CNN의 단점을 극복하려 했다.</p><h3 id="05905f86-4e96-426e-aa8c-430df9de6e31" class=""><strong>SPPnet</strong></h3><p id="a082f937-b8a5-47cc-b0f8-42736be70a1b" class="">     1) 이미지 전체에 대해서 ConvNet을 한 번 거쳐 Feature map을 생성 (computation sharing)<div class="indented"><p id="97df5e19-c981-4f29-88ac-e241dd18f448" class="">2) object proposal의 위치에 해당하는 1)의 Feature map 영역에서 pooling을 통해 고정된 크기의 output을 추출</p><p id="630bef01-0d7b-4d31-ab2e-67cbd7d40992" class="">3) 2)의 과정을 통해 다른 크기의 output을 여럿 만들고 concat해 분류에 사용</p></div></p><p id="2016b963-f181-4996-90e5-6cb4d1d45d60" class="">
+</p><p id="9ad9ae4f-4fe1-47a3-8bdd-06bb195c1322" class="">하지만, SPPnet 역시 다음과 같은 단점을 가지고 있다.<div class="indented"><p id="6e7780b7-56c9-41b1-a84f-84067af2a1f3" class="">1) 학습이 multi-stage pipeline이다.</p><p id="2b533932-458d-421c-94a4-4263ec18e33f" class="">2) feature를 caching하기 위한 메모리가 필요하다.</p><p id="fbe6e5b3-9fe7-4186-ac26-30b149bf503b" class="">3) pooling 이전 단계의 ConvNet을 fine-tuning할 수 없다.</p></div></p><p id="28c52110-ca1c-47c0-8421-4653853590c2" class="">
+</p><h3 id="a0cafdd9-e8e1-4182-bfca-7fba5b326484" class=""><strong>1.2 Contribution</strong></h3><p id="ae5d0e5e-7a4e-4509-9d3b-3c5282300794" class="">Fast R-CNN의 이점<div class="indented"><p id="6d805e96-0ca4-427b-9302-839f588f4483" class="">1) 높은 detection 성능(mAP)</p><p id="bf2a967e-260b-497c-898c-bb89666a0a8f" class="">2) Training이 multi-task loss를 사용한 single-stage이다.</p><p id="3b758931-750a-4d52-9fc3-6b01e65f98cf" class="">3) 학습을 통해 모든 네트워크를 업데이트할 수 있다.</p><p id="d4d83a76-6783-4a32-9c83-90062994f64c" class="">4) caching이 필요없다.</p><p id="17f4bfa0-1c9f-41b0-ad5d-964ac9a2617c" class="">
+</p><p id="73091dd7-84a5-4b7e-ba18-3127d112fe18" class="">
+</p></div></p><h2 id="405a5b48-101f-4ee2-8a6a-8fe06af578c7" class=""><strong>2. Fast R-CNN architecture and training</strong></h2><figure id="5b88d69f-e13f-4e89-b52c-dbd0b0b8ebd7" class="image"><a href="https://sangyeobi.github.io/assets/images/Fast_RCNN1.jpg"><img style="width:528px" src="https://sangyeobi.github.io/assets/images/Fast_RCNN1.jpg"/></a><figcaption>Fast R-CNN 기본 구조</figcaption></figure><p id="17dd4ccd-e302-4cc3-a9fc-4b72776517ab" class="">
+</p><p id="d01bc598-a502-4637-b35a-878b5f912674" class="">Fast R-CNN 구현 방법<div class="indented"><p id="f3ed317d-44f9-4885-b037-5f3203fe9bd2" class="">1) 전체 이미지에 대해서 ConvNet + max pooling</p><p id="7a59832b-e84d-4b57-aa12-0cbbe4eb09b7" class="">2) ROI에 해당하는 feature map에서 일정한 크기의 feature vector를 추출</p><p id="a990b830-f2b4-4791-989f-0e4e8863e939" class="">3) feature vector를 Fully Connected layer</p><p id="651311b5-fc57-4a1d-9ae1-c9bc6c457ba0" class="">4) 2개의 branch로 output을 보내기</p><p id="8eeb96ec-3077-4baa-bbac-8790e783b95f" class="">5) softmax : object 각각과 배경인지 여부 분류, bbox regressor : bbox position</p></div></p><p id="dd61bf19-d430-47b2-a3d7-6b7b44daacb0" class="">
+</p><h3 id="eb8b8bf3-334c-451c-899c-af5b508ec198" class=""><strong>2.1 The RoI pooling layer</strong></h3><p id="96d28f08-1e83-4f1c-9ff8-c167e7611c98" class="">max pooling을 이용, 주어진 크기의 feature를 생성, pooling은 각 채널에 대해서 개별적으로 적용</p><p id="7f4c75a2-5e1b-43b4-a450-7abbea74ad88" class="">
+</p><h3 id="d04d6cf2-a18a-4e5f-bcf1-62ec41102945" class=""><strong>2.2 Initializing from pre-trained networks</strong></h3><p id="ae2e1c59-b194-4c9e-892d-fc497d03fd87" class="">구현 방법 1)에서 사용된 ConvNet은 ImageNet에서 사용된 pre-trained model을 사용각각은 5개의 max-pooling과 다수의 conv layer를 가지고 있으며 Fast R-Cnn을 위해 다음과 같이 조절함.<div class="indented"><p id="fe8a36e1-6005-4447-b974-df91fcc8f22f" class="">1) 마지막 max pooling은 RoI pooling으로 교체</p><p id="c3eed863-7cb8-48e6-a0d5-9597d2d5c0ec" class="">2) 마지막 fully connected layer와 softmax는 2개의 branch로 나눠지게 함.</p><p id="4a860f1e-fd5f-479a-b423-d50fc4096cd4" class="">3) input을 이미지와 bbox 좌표를 받을 수 있게 조절</p></div></p><p id="25b7a010-4abd-4a88-9815-ff5cf44f294b" class="">
+</p><h3 id="6256181c-3c35-4c70-a589-543e3849dc61" class=""><strong>2.3 Fine-tuning for detection</strong></h3><h3 id="65f2f09a-9541-434c-a7b5-4b583f97fc2c" class=""><strong>- Hierarchical sampling</strong></h3><p id="9c8b2f2f-ca09-42e9-a1a2-951a3a21d0e2" class="">SPPnet에서 각각의 training sample과 sample에 해당하는 다른 크기의 RoI를 매번 이용해 학습하는 것은 매우 비효율적</p><p id="c8c0404c-f5c1-406e-b566-feab3cfcf660" class="">효율적인 학습 방법을 통해 SPPnet의 세 번째 문제점인 “pooling 이전 단계의 ConvNet을 fine-tuning할 수 없다.”를 해결</p><p id="d3650a76-710c-426c-be28-0ef994bedcb5" class="">효율적인 학습 방법 -&gt; SGD minbatches : N images에 대해서 R/N RoI를 추출하는 방법으로 학습여기서 N을 줄이고 R을 증가시키면 공통된 RoI에 대해서 computation sharing을 할 수 있고 다수의 N에서 소수의 RoI를 이용해서 학습하는 것보다 훨씬 빠른 속도로 학습이 가능하다.</p><h3 id="33345859-7d35-455f-a018-ee6fa6b422d1" class=""><strong>- Multi task loss</strong></h3><ul id="97347441-0cd7-4705-bcfe-4857451a69e4" class="bulleted-list"><li>Fast R-CNN의 첫 번째 output은<figure id="4bf063bd-bf97-4e61-99ff-70d820dd9e55" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$p=\left(p_{0}, \ldots, p_{K}\right)$$</div></figure><p id="9358a134-f6d6-4a85-8839-80305a4592e0" class="">K개의 카테고리에 background까지 더한 총 K + 1개의 label에 대한 확률 분포를 가짐.</p></li></ul><ul id="8c677cc6-3567-498f-8d1d-0b4c061a8249" class="bulleted-list"><li>두 번째 output은 <figure id="1f6df775-5548-43c9-9f33-67fe96f800c6" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$t^{k}=\left(t_{x}^{k}, t_{y}^{k}, t_{w}^{k}, t_{h}^{k}\right)$$</div></figure><p id="cc0b841c-8524-4283-b5c7-7336e827d5c7" class="">K-th object에 대해서 bounding box의 정확한 좌표를 유추할 수 있는 4가지 정보를 갖고 있음.</p><p id="4f411c65-6723-45a5-8664-105d2323a46f" class="">
+</p></li></ul><h3 id="ca3fb413-61de-4c37-8a1c-1d8d5b3854bd" class=""><strong>Multi task loss</strong></h3><figure id="d0b1fd37-80a4-4531-b5b9-79beacd9f714" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$L\left(p, u, t^{u}, v\right)=L_{d s}(p, u)+\lambda[u \geq 1] L_{l o c}\left(t^{u}, v\right)$$</div></figure><p id="6c618066-c163-46b4-98f5-fa6a2118d85f" class="">
+</p><p id="a04a3d2f-1284-4413-82f0-6ddc2e014863" class="">u : 실제 label</p><p id="b1ce572c-7675-4779-bf31-39c4b06f6035" class="">v : 실제 bounding box regression target</p><p id="c3dee906-cab2-45e9-951b-ed418acfb6e8" class="">λ : 두 loss의 가중치를 조절하는 하이퍼 파라미터</p><p id="455e97b0-7fe8-4fff-b6b4-96e21131ef46" class="">
+</p><p id="f97b344e-e3d0-4e5c-8e9f-5947d693e659" class="">The Iverson bracket indicator function의 경우 [u ≥ 1]이면 1 그렇지 않으면 0논문에서는 배경의 경우 u = 0이 되게 하는 장치</p><figure id="fa6ab6da-225b-41e9-819d-a6dad66d804e" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\begin{array}{l} L_{d s}(p, u)=-\log p_{u} \\ L_{l o c}\left(t^{u}, v\right)=\sum_{i \in\{x, y, w, h\}} s m o o t h_{L_{1}}\left(t_{i}^{u}-v_{i}\right) \end{array}$$</div></figure><p id="f38f30a2-b21e-4584-8654-fc0193967389" class="">in which</p><figure id="cd9db7ec-de94-4a7a-95df-d33f7479b06d" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\operatorname{smooth}_{L_{1}}(x)=\left\{\begin{array}{ll} 0.5 x^{2} & \text { if }|x|<1 \\ |x|-0.5 & \text { otherwise } \end{array}\right.$$</div></figure><p id="77b7d856-3700-4d14-8684-fcd7046d3eca" class="">
+</p><p id="1881c357-47fc-45d1-b4f9-6b6b035b88a9" class="">bounding-box regression을 위한 LlocLloc식을 보면smmothL1smmothL1을 이용해 robust한 결과를 도출 (L1 loss는 아웃라이어에 민감하지 않게 반응함.)</p><p id="5bf05a10-6d40-463c-ba30-00fa15e9cce6" class="">일반적인 L2 loss의 경우 gradient exploding을 막기 위해서 learning rate 조절이 매우 중요하지만 robust L1은 zero-mean에서 많이 떨어진 아웃라이어가 들어와도 L2만큼 loss가 크지 않기 때문에 훨씬 robust하다.</p><p id="2f06aa84-25d2-4e2d-907f-bb86073f7fcd" class="">
+</p><h3 id="e894bf7b-fdd8-4674-91d4-6f1a4b0231ac" class=""><strong>- Mini-batch sampling</strong></h3><p id="b74f86fd-71b1-4c09-b10f-00590004cf15" class="">N = 2, R = 128은 동일,</p><p id="7c76a6ac-f4d3-47e3-89df-0702e6ae594d" class="">RoI를 가져오는 기준25% : ground truth 와 IoU값이 0.5이상인 object proposal</p><p id="0c2ee4fa-a0d8-484f-b3a0-5286649257c4" class="">75% : ground truth 와 IoU값이 0.1이상 0.5 미만인 object proposal</p><p id="bb0f20c0-6903-44e1-81dc-286390719d89" class="">IoU : 두 영역의 교차영역의 넓이를 합영역으로 나눈 값</p><p id="c5defb95-5bfc-4f48-af50-c3d192bffb1b" class="">IoU가 0.1 미만이면 background로 취급</p><p id="46d4c547-8dbb-466c-b3ff-d48109c121a4" class="">50% 확률로 horizontal flip 외의 Data augmentation은 사용하지 않음.</p><p id="bdf0e985-a6b4-4ecc-a827-5223013e5515" class="">
+</p><h3 id="862f1761-b545-400c-aed6-87bf6a334293" class=""><strong>- Back-propagation through RoI pooling layers</strong></h3><p id="50273df3-e7e9-4216-bdf8-58d2dfd8abd4" class="">x_i는 RoI pooling layer의 input에 해당하는 픽셀들의 index를 의미.r번째 RoU의 j번째 index는 다음과 같이 나타날 수 있음.</p><figure id="04acaeaf-b29a-4ee3-a4f8-adbdaa0e31ed" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$y_{r j}=x_{i^{*}}(r, j)$$</div></figure><p id="1a917871-ffac-4014-a2c7-37d9f6234786" class="">in  which</p><figure id="b1107277-be57-465b-a617-43da7accf6a0" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$i^{*}(r, j)=\operatorname{argmax}_{i^{\prime} \in \mathcal{R}(r, j)} x_{i^{\prime}}$$</div></figure><p id="8b62e631-4f64-4375-9cf2-87168909116a" class="">여기서 R(r,j)는 max pooling의 output이 y_rj에 해당하는 index를 의미</p><p id="5ef90b11-2619-4c00-92e2-b1c70b783b3f" class="">RoI pooling layer은 max pooling의 일종이란 걸 생각하면 쉽게 이해할 수 있을 것이라 생각이 듦</p><p id="b331ec80-c4d7-40dd-a912-2a8a8ab1d1cb" class="">max pooling에서의 back-propagation과 같이 RoI pooling의 back-propagation 식은 다음과 같이 나타낼 수 있다.</p><figure id="7152a8fe-5eb3-425b-9035-92797e85a161" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\frac{\partial L}{\partial x_{i}}=\sum_{r} \sum_{j}\left[i=i^{*}(r, j)\right] \frac{\partial L}{\partial y_{r j}}$$</div></figure><p id="e6d807b2-e659-4557-b038-93515b31944f" class="">
+</p><h3 id="bc30f6b4-ec4b-44b3-b6aa-5923b0b91d80" class=""><strong>- SGD hyper-parameters</strong></h3><p id="4f4dad64-fa9b-405c-969c-b0c48a29555e" class="">weight initialization, training hyperparameter에 대한 설명</p><h2 id="29035361-a0d7-4af3-a401-441977786b49" class=""><strong>2.4 Scale invariance</strong></h2><p id="54e5dcf7-3b45-40d0-812c-821bebe8233e" class="">1) brutal-force approach학습과 테스트 모두 정해진 크기의 픽셀로 이미지 전처리</p><p id="f8e229f1-d28d-44b1-8cac-6d93b4620c7b" class="">2) multi scale approach</p><figure id="60c98c5d-8b9a-4efc-9016-309623d704bb" class="image"><a href="https://sangyeobi.github.io/assets/images/Fast_RCNN2.jpg"><img style="width:480px" src="https://sangyeobi.github.io/assets/images/Fast_RCNN2.jpg"/></a></figure><p id="33051a34-66b9-4cf8-87ec-2f13a394d902" class="">image pyramid 예시</p><p id="6abe1c98-e5d6-4ce6-b25b-5216f5ba2447" class="">image pyramid를 이용training 동안에 image pyramid에서 이미지를 랜덤하게 추출 -&gt; 일종의 data augmentation일 수 있다고 함.test 시에 image pyramid를 통해 scale-normalize 진행approximate scale invariance를 제공</p><h2 id="b2f8c632-1973-4d72-8f2d-2fb0398af705" class=""><strong>3. Fast R-CNN detection</strong></h2><h3 id="2b349af9-4190-4813-ac07-e910e18f6ca8" class=""><strong>3.1 Truncated SVD for faster detection</strong></h3><p id="4e3c7ada-a2ca-4c73-9225-bf4de986ba47" class="">image classification의 경우 fully connected layer가 forward pass 소비 시간에서 차지하는 비중이 적음.detection의 경우 fully connected layer가 차지하는 시간 비중이 약 45%에 육박함.truncated SVD를 통해서 이를 어느정도 해결할 수 있음.</p><figure id="4098998c-4826-4508-ae6b-502b2ec9c052" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$W \approx U \Sigma_{t} V^{T}$$</div></figure><p id="1568deb5-eb6c-4fd7-8f0f-ad9afaca4aec" class="">
+</p><h1 id="f30326cd-73af-4dc2-ba1a-b3327676fc41" class="">Comment</h1><figure id="584a6f9a-567e-41b1-8572-5cefa576d463"><div class="source"><a href="https://app.sli.do/event/zlpgxdqk">https://app.sli.do/event/zlpgxdqk</a></div></figure></div>

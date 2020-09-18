@@ -1,0 +1,677 @@
+---
+    layout: post
+    title: "Fault Detection and Diagnosis Using Self-Attentive Convolutional Neural Networks for Variable-Length Sensor Data in Semiconductor Manufacturing"
+    date:   2020-7-6
+    excerpt: ""
+    tags: [Fault detection, time-series]
+    feature: ../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Fault.png 
+    comments: true
+    ---
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><p id="b795dd45-983c-4ce4-aaf1-fb062892c874" class="">연구실 선배가 작성한 논문이라 코드와 함께 볼 수 있어 이해하기 편했던 것 같다.</p><p id="57b7b494-0f45-4d09-93f4-a0281e4098b4" class="">
+</p><h1 id="4903a4f2-dd33-4070-96eb-f1b2d201b19f" class="">Intro</h1><ul id="c51341cd-0ce3-451c-9486-0cb0822d92c8" class="bulleted-list"><li>반도체 공정같이 wafer가 순차적으로 들어와서 작업하는 연속 공정에서는 초기에 이상을 탐지하는 것으로 이후에 연속적인 defective wafer의 발생을 막을 수 있다.</li></ul><ul id="b8fa1595-26ef-4074-b6ac-f3b134a6e6f4" class="bulleted-list"><li>최근에는 기기의 다양한 센서를 통해서 multivariate time-series data(SVID : Status variables identification)가 쏟아져 나오고 있다.</li></ul><p id="4b49e024-f1f2-4387-812c-8d0c8d2a217c" class="">
+</p><p id="be3f5601-cd9e-49fe-8c1c-e841b91288b0" class="">이상 탐지에 대한 니즈와 이런 대량 센서 데이터가  맞물려 data-driven fault detection이 떠오르고 있다.</p><p id="3090a305-b81f-45e3-9ca7-e23da163a66a" class="">
+</p><p id="7e37bf4a-6571-4573-9674-81952c40b238" class="">이상을 탐지하는 방법의 단계는 다음과 같다.</p><ol id="7a1dd53c-5cce-48f8-9493-76991196695e" class="numbered-list" start="1"><li>eyeball investigation
+전문 작업자들이 raw data에서 비정상적인 패턴을 감지한다. <p id="72996a82-d949-40a8-884e-acbf2d1fa035" class="">
+</p></li></ol><ol id="5c408d53-8192-4c00-ad30-960e15a2fe1c" class="numbered-list" start="2"><li>FDC
+FDC 데이터를 이용해 작업자들이 하는 비정상 패턴 감지 작업을 자동화한다.<figure class="block-color-yellow callout" style="white-space:pre-wrap;display:flex" id="852a1bbf-65ed-492e-a868-308a6b5958df"><div style="font-size:1.5em"><span class="icon">👉</span></div><div style="width:100%">FDC data
+feature extraction에 의해 만들어진 condensed data</div></figure><p id="e5900011-2a82-434a-bc13-c38fcbbaa468" class=""> 
+condensed 데이터인 FDC 데이터는 다음과 같은 문제가 있다.</p><ol id="832621bc-65a4-4dea-a2bc-4fa323526ce7" class="numbered-list" start="1"><li>feature extracion 과정을 거치며 데이터의 중요 정보가 사라질 수 있다.</li></ol><ol id="fe1066ef-b615-469b-bba1-55692230bd79" class="numbered-list" start="2"><li>센서 데이터의 시간축이 사라지기 때문에 diagnosis 시에 문제가 발생한 시점을 찾을 수 없다.</li></ol><p id="9a8a4b4d-073f-43d5-bd54-ca6e0eb3e816" class="">
+</p></li></ol><ol id="ef2f2f96-9e5c-4d8a-9ab7-211b504303f0" class="numbered-list" start="3"><li>fault detection directly from SVID (Status variables identification)
+SVID 데이터를 바로 사용하는 것은 FDC 방법에서 발생하는 2가지 문제점을 해결할 수 있다.
+하지만!, SVID 데이터는 작업 시간이 wafer마다 다르기 때문에 일반적인 분석 방법을 적용하는 것에 어려움이 있다.</li></ol><p id="1945fde2-7158-410a-b400-21df2c35d545" class="">
+</p><p id="9217df30-23ce-4e1b-afca-bc97f815d5b3" class="">논문에서는 이런 어려움을 self-attention 알고리즘을 이용해 해결한다.</p><p id="1cddb649-7bd0-4070-ab30-1a3a57afb221" class="">
+</p><p id="7e1985cb-76e2-452d-b20c-ccae9e73978d" class="">self-attention을 이용한 모델은 총 세 가지의 이점이 있다.</p><ol id="4345f47c-d992-459d-b3e4-56d176f731b2" class="numbered-list" start="1"><li>attention score를 제공함으로써 모델의 fault detection 성능 향상을 돕는다.</li></ol><ol id="f8827df6-9af8-4102-b06b-87f3a9001681" class="numbered-list" start="2"><li>다양한 input sequence 길이를 큰 시간 변화없이 처리할 수 있는 모델이다.</li></ol><ol id="521f4537-e7f8-41bd-adeb-686f35cb0914" class="numbered-list" start="3"><li>attention score는 fault diagnosis를 위한 힌트를 제공한다.</li></ol><p id="f326211a-5dc5-4275-ae97-0b469e7fa3e9" class="">
+</p><p id="164f6021-80d6-448d-9cdc-23c5bc118c2b" class="">
+</p><h1 id="0cb4b9a9-0f6e-4d16-913a-7e7bd9bd8163" class="">Related Work</h1><p id="6272cb8d-03a1-4457-82f2-792346084a1c" class="">
+</p><p id="6b2ba88d-dfcc-4178-aeeb-fc4539627b74" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>n</mi><mi>p</mi><mi>u</mi><mi>t</mi><mtext> </mtext><mi>x</mi><mo>=</mo><mrow><mo fence="true">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo separator="true">,</mo><mo>⋯</mo><mtext> </mtext><mo separator="true">,</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow></msup><mo fence="true">)</mo></mrow><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><mi>D</mi><mo>×</mo><mi>T</mi></mrow></msup></mrow><annotation encoding="application/x-tex">input\ x = \left(x^{(1)}, \cdots, x^{(T)}\right) \in \mathbb{R}^{D \times T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault">p</span><span class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mspace"> </span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.2380099999999998em;vertical-align:-0.35001em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">(</span></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8879999999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8879999999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">)</span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">D</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>
+<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span></span><span>﻿</span></span> : 시간
+<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span></span></span></span></span><span>﻿</span></span> : 센세 데이터 변수</p><h2 id="ccf3714a-86e7-4a68-8e45-56180365532e" class="">Fault Detection and Diagnosis</h2><p id="1eb0f675-5131-4daa-9b8d-9b55f8949575" class="">FDC 데이터를 이용해 분석한 모델</p><p id="ad440984-72ea-45a3-bee7-338f5b9b6aee" class="">
+</p><p id="7a8880a3-c06b-49bd-9905-e54cb94e5b66" class=""><strong>Unsupervised model</strong></p><p id="f7264ddc-a913-43b7-9f8d-9909a281b75f" class="">차원 감소 알고리즘을 통해 outlier detection 성능을 높이는 경우가 많다.</p><ul id="14db0960-9b86-4541-a78b-6985d5c7e24c" class="bulleted-list"><li>PCA (principal component analysis)</li></ul><ul id="86e98ce8-0984-464b-8b53-3feb33a42b1a" class="bulleted-list"><li>GMM (gaussian mixture model)</li></ul><ul id="26688390-aa8d-4497-a991-70a1b7bb47f3" class="bulleted-list"><li>one-class SVM (support vector machine)</li></ul><p id="4d80cfd8-c0e0-4de0-a818-ba594bbfc588" class="">
+</p><p id="eaba7db0-f6c2-448b-a490-c4242c508001" class=""><strong>Supervised model </strong></p><ul id="e2948c87-3deb-478c-90c1-91f4c8163272" class="bulleted-list"><li>SVM (support vector machine)<p id="675ba5a0-9349-4ee3-b069-a60b7d3403aa" class="">recursive feature elimination과 함께 진행.</p></li></ul><ul id="aeabc6a4-9439-480e-a449-f55709004176" class="bulleted-list"><li>KNN (k-nearest neighbors)</li></ul><ul id="1b29dcda-0c1b-4980-8671-68f651b9d565" class="bulleted-list"><li>DT (decision tree)</li></ul><ul id="e4bb8e6c-f9b4-4176-b09c-9bd792d09668" class="bulleted-list"><li>CNN
+kernel의 weight을 이용해 contribution level of the variable (CLV)를 계산해 feature의 중요도 rank를 제공함.</li></ul><p id="610758c7-4501-42bf-bc97-242c5a8b03ce" class="">
+</p><h2 id="7c319545-e71d-4aca-a85b-c48d10ba239c" class="">Deep learning-Based Sequence Classification Models</h2><p id="625696e3-0398-42ed-b385-01fcd60ab6f7" class="">크게 RNN과 CNN 두 가지로 나뉜다.</p><h3 id="4a6294c1-b23c-43ce-9dbd-80e284537714" class="">RNN</h3><ul id="cf645717-9384-4964-8e29-4c6a9c01c711" class="bulleted-list"><li>sequence 데이터에 특화된 network</li></ul><ul id="ba767ce9-de14-48e3-996b-70a2138b13d6" class="bulleted-list"><li>LSTM 대표적인 RNN 계열의 모델</li></ul><p id="e5378f18-375d-4f81-b221-591a7448a862" class="">
+</p><figure id="b6a3f9e8-c5c0-4265-9761-b013a5ca8798" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled.png"><img style="width:820px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled.png"/></a><figcaption>LSTM cell</figcaption></figure><h3 id="35dd1808-b4b4-4921-997f-d1f9b9fc9cc2" class="">CNN</h3><ul id="d2f3502b-513d-4acf-8438-e0fa21975680" class="bulleted-list"><li>그리드 형태의 데이터 분석에 특화된 network</li></ul><ul id="e4a0c95d-6078-4a0e-9d9e-cb1c445eebe6" class="bulleted-list"><li>센서 변수들 간의 correlation을 반영하기 위해서 시간 축으로만 이동하는 sliding window 방식을 적용.</li></ul><figure id="1ec1d642-0860-4bba-b3e9-73bf77a6cab5" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$(x * w)(t)=\sum_{i=1}^{D} \sum_{j=1}^{F} x(i, t \times S+j) w(i, j)$$</div></figure><p id="4adc938d-521a-4a45-bb76-795e8d8258e8" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span></span></span></span></span><span>﻿</span></span> : 시간축의 kernel size</p><p id="a2740fc2-bc8d-4ce2-a171-4d2ffb84b600" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span></span><span>﻿</span></span> : Stride</p><p id="ffbef4c8-a388-4ff4-be96-18642204e744" class="">
+</p><h2 id="9b05033b-983a-4a26-b290-37e38d37d113" class="">Variable-Length Sequence Encoding Methods</h2><h3 id="e5558cf6-3e64-4f8a-86e7-76fc89c2a21b" class="">RNN</h3><figure id="6df8310b-9e39-4787-9693-5e85685857a3" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%201.png"><img style="width:224px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%201.png"/></a></figure><p id="b3f2a304-13ad-40f4-b233-6142c74b4fd6" class="">RNN의 마지막 hidden state만 사용.</p><p id="bdbcf8d3-233b-47d0-907c-433210f91a54" class="">마지막 hidden state가 sequential정보를 모두 가져야 한다는 어려운 점이 있다.</p><p id="51a2469d-a7b3-41ab-9c11-2c62b844d6a2" class="">
+</p><h3 id="2d02e005-553a-40c7-ba35-7da494cd7cc3" class="">RNN + pooling</h3><figure id="86eaf48a-9aca-4755-aa99-ee157ceb89a4" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%202.png"><img style="width:229px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%202.png"/></a></figure><p id="4e59f2d3-8117-40b7-bf3d-b441502200b7" class="">RNN의 모든 hidden state를 합해서 사용.</p><p id="66fc8f04-290e-4c29-a399-e14b5b30b771" class="">가장 간단한 방법은 단순 summation이다.</p><figure id="b965e43d-6969-4233-b677-4362f3d65499" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\boldsymbol{h}_{o}=\sum_{t=1}^{T} \boldsymbol{h}^{(t)}$$</div></figure><p id="621de2c6-e105-4e33-bc1a-b94465493cc4" class="">단순 합산을 하기 때문에 noise나 무관한 정보를 포함할 가능성이 높다.</p><p id="14e078ea-80fa-4f6d-8a73-9128e25bd230" class="">
+</p><h3 id="2adfe563-2320-44e7-8b53-0860ba27f7b1" class="">RNN + self-attention</h3><figure id="99dba2ad-3718-4eb4-a2a8-e092fbbd089e" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%203.png"><img style="width:237px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%203.png"/></a></figure><p id="ec4a2aa8-4d07-41ad-a057-930c6956ff11" class="">RNN + pooling의 문제점을 해결하기 위한 방안으로 self-attention mechanism을 이용.</p><figure id="b58f6987-5f31-4677-b9a3-7dab23af584c" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$a=\left(a^{(1)}, \cdots, a^{(T)}\right)=\operatorname{softmax}\left(v^{\top} H\right)$$</div></figure><p id="b3e3cc97-b5d2-4119-816c-d91cd79311e4" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">v</mi><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mi>H</mi></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{v} \in \mathbb{R}^{H}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03704em;">v</span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.08125em;">H</span></span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> :  hidden state의 개수와 같은 차원을 갖는 벡터를 이용.</p><p id="3e24d2e8-00f1-4198-9e42-afa409825676" class="">
+</p><p id="8c2b2a35-431d-407a-b4a9-ed2d361dbf54" class="">최종 output은 다음과 같다.</p><figure id="3508cb5c-b771-474e-9755-d225783aebb8" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\boldsymbol{h}_{o}=a \boldsymbol{H}=\sum_{t=1}^{T} a^{(t)} \boldsymbol{h}^{(t)}$$</div></figure><p id="f4cf3699-f81d-4d94-a6a7-cd45ad6c4b9c" class="">
+</p><h3 id="9e011aa0-f014-4186-947c-c96240e211bf" class="">CNN + pooling</h3><figure id="dd425807-bb61-4763-b458-663dec6d5157" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%204.png"><img style="width:234px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%204.png"/></a></figure><p id="c841e037-3093-4225-8b36-147b88636b38" class="">다양한 길이를 갖는 데이터를 sliding window 방식으로 feature 맵을 생성한 이후 hidden state를 합해서 사용.</p><p id="4ef953e1-c6bd-471b-b1da-6685c98dbd3f" class="">
+</p><p id="dbebe843-cd9d-4220-9533-f9de9d08744f" class="">
+</p><h1 id="7ffaa981-908f-4cf6-8731-0a4550bea0ae" class="">The proposed Model</h1><p id="e26192c7-d74e-4936-abdc-2ae806da8e8f" class="">
+</p><figure id="c7bb2918-ff91-470c-9501-f2ce16a2ee6b" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%205.png"><img style="width:1879px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%205.png"/></a><figcaption>propsed model architecture}</figcaption></figure><p id="addbe862-f9ce-4968-9e53-277668bde358" class="">
+</p><p id="7f5a7c46-aed1-4d60-8bff-a9ddfa1d36bb" class="">제안하는 모델은 위와 같으며 크게 3가지의 구조로 나눌 수 있다.</p><p id="665eb1ba-598c-4759-a6dd-0b532f74cde7" class="">
+</p><ol id="5e925f09-9bd6-48df-a834-237836b638b7" class="numbered-list" start="1"><li><strong>Feature extraction network
+</strong>CNN을 이용해 시계열 데이터의 Feature extraction을 실행한다.
+
+시간이 T인 센서 데이터에 필터의 크기가 F인 K개의 필터를 사용한다면 최종 feature map은 다음과 같이 나타낼 수 있다.<figure id="1e7b9936-7b0e-45de-b389-37bbab4f266f" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\boldsymbol{H}=\left(\boldsymbol{h}^{(1)}, \cdots, \boldsymbol{h}^{(T-F+1)}\right)=\left(f_{1}, \cdots, f_{K}\right)^{\top}$$</div></figure><p id="d24c53b2-374e-4951-bda9-c360ea06fd6d" class="">
+</p><p id="6f928911-7a58-4eaa-8dec-8e5d10a3e064" class="">
+</p></li></ol><ol id="41b384a5-3410-468e-8a2c-d5e9a48c9563" class="numbered-list" start="2"><li><strong>Self-attention mechanism
+</strong>self-attention mechanism을 이용해 위에서 구한 벡터를 fixed-size의 vector로 변환하는 작업을 거친다.
+<strong>
+</strong>attention score는 시간 축에 대해서 합이 1인 분포를 의미한다. 따라서 다음과 같은 수식으로 나타낼 수 있다.<figure id="8b61c266-c0bc-4a6c-8179-f3b7bbcea90d" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\begin{aligned}a &=\left(a^{(1)}, \cdots, a^{(T-F+1)}\right) \\&=\operatorname{softmax}\left(v_{2}^{\top} \tanh \left(V_{1} H\right)\right)\end{aligned}$$</div></figure><figure id="9853b7da-aea7-4b01-8e26-8aab6e5b196f" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$V_{1} \in \mathbb{R}^{S \times K} \text { and } v_{2} \in \mathbb{R}^{S}$$</div></figure><p id="cecaf204-c3c7-49d5-b04e-6176c8747269" class="">
+</p></li></ol><ol id="e1f2a634-466f-4db3-9844-90669eb53ff7" class="numbered-list" start="3"><li><strong>Feed-forward network
+</strong>2번 과정의 output은 T-F+1 크기의 vector이므로 바로 FFNN (Feed-forward neural network)의 input으로 사용이 가능하다.
+<strong>
+</strong>FFNN의 역할은 최종적으로 정상과 비정상을 감지하는 것이다. 따라서 최종 layer의 node 개수는 2개이다.
+</li></ol><h1 id="776b98e5-9503-4378-9ece-9246981eddc3" class="">Experiments</h1><p id="1e2b5a7c-24db-4b1d-9f15-d81c54681333" class="">FDC 데이터와 SVID 데이터 각각에 대해서 여러 가지 모델을 비교했다.</p><ul id="171e6937-21b6-4e2d-8bf7-9bd42860679f" class="bulleted-list"><li>SVID : raw data를 그대로 사용</li></ul><ul id="4abe344a-698c-4190-876c-23b1d1b518d4" class="bulleted-list"><li>FDC 1 : 65개의 센서에 대해서 평균과 표준편차만을 이용. (130개 feature)</li></ul><ul id="e4ff2168-37dc-4543-bb42-4aa83ad97631" class="bulleted-list"><li>FDC 2 : 65개의 센서에 대해서 평균, 표준편차, 최소값, 최대값, 공분산을 이용 (2340개 feature)</li></ul><p id="d80b69fc-4dc4-4233-9b4f-e40ca2dc322b" class="">
+</p><p id="c101f432-06c3-482d-ab5d-a0faaf4b0b26" class="">FDC data에 대해서는 SVM, RF (random forest), k-NN을 사용했다.</p><p id="bd3315ca-1f99-42e1-bfad-4f13cd20ecae" class="">
+</p><p id="50a157d6-a3a4-4db7-b31c-6fc535a23825" class=""> SVM에 대해서만 커널을 linear, raidal basis function 두 개를 사용해 각각 SVM.L, SVM.R 두 가지를 사용했다.</p><p id="fe901ba6-9000-4fc0-b8fd-17a487968b02" class="">
+</p><p id="b4270c44-1f69-4074-a6c8-c57cfefc9683" class="">SVID data를 이용한 모델은 Variable-Length Sequence Encoding Methods에서 설명한 4가지 모델과 proposed 모델로 총 5가지이다.</p><p id="ad6a152e-7c9f-428d-8cf5-ed3feac1a625" class="">
+</p><p id="4be756ae-5da9-42b9-905f-d6cb3aba5274" class="">
+</p><figure id="4fc8d0e2-3f8b-4d71-8808-f6c930124791" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%206.png"><img style="width:682px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%206.png"/></a></figure><p id="8ba89a74-95ff-4b79-a1b9-a20606adfeb2" class="">
+</p><figure id="4687d5be-5a69-43bc-97c5-15db22ecbc7c" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%207.png"><img style="width:726px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%207.png"/></a></figure><p id="d3f3e558-07c0-4c92-acb6-b3de28f48f1d" class="">
+</p><p id="8f1875aa-aff1-472a-b930-315cb3a8eecc" class="">FDC data가 상대적으로 낮은 F1 score를 보였으며 SVID data를 이용한 모델 중에서는 proposed 모델이 가장 좋은 성능을 보였다.</p><p id="883ee571-7dbb-483c-809c-f04782c9e651" class="">
+</p><p id="ce1ecc7e-142b-4848-b49a-67fc4c50a2ff" class="">
+</p><p id="353597ee-f69d-4ce3-b090-c9429c1b38d3" class="">
+</p><figure id="35cacc97-2084-4fb0-9df5-5a68d10bc97e" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%208.png"><img style="width:999px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%208.png"/></a></figure><p id="9fdd0362-7e70-405b-82d4-84ce492e7115" class="">다양한 sequence length에 대해서도 robust하게 높은 성능을 보인다.</p><p id="1c5226a9-b2ff-498f-8a04-d75205681dec" class="">다양한 sequence length에 대해서 다른 모델에 비해 일반적으로 적은 시간이 걸리며 비교적 일관된 elapsed time을 보인다.</p><p id="05dd9f80-c518-4a28-8aa8-bc01229e1ea9" class="">
+</p><p id="78cb2616-13ff-4225-b4a2-56ecbeb49a39" class="">
+</p><p id="f91bd506-d3e4-44c0-a677-bfda9dfae506" class="">
+</p><p id="a426e3eb-2bc4-4432-942d-3e915d1d56ca" class="">
+</p><figure id="ae608b29-c5e1-4ec9-a06f-402de3e1f261" class="image"><a href="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%209.png"><img style="width:988px" src="../assets/img/Fault%20Detection%20and%20Diagnosis%20Using%20Self-Attentive%20b6a3f9e8c5c042659761b013a5ca8798/Untitled%209.png"/></a></figure><p id="24348f82-b241-4592-b77f-b61b7aefb632" class="">왼쪽의 그림은 attention distribution을 시각화한 것이다. 고장 label인 wafer에 대해서 특정 구간에 다른 분포가 나타남을 확인할 수 있다.</p><p id="ab06ab6b-5cb2-463e-b441-67a944f813e0" class="">
+</p><p id="480d5281-edfc-46f1-931d-fc17d6cb8696" class="">해당 구간은 도메인 전문가들에 의해서 분석한 이상이 발생한 시간과 일치하는 결과를 보였다.</p><p id="1af7b923-465b-4a81-ba13-3510ecac420d" class="">
+</p><p id="86c4bd70-07db-4ada-b733-11fa9709663c" class="">오른쪽 그림은 실제로 이상이 있는 wafer의 시계열 데이터의 일부분이다.</p><p id="48e03cd9-f6ea-4777-989d-3c03d20ff74d" class="">
+</p><p id="2271bf96-5c9b-4144-a29b-6a8d54029e5f" class="">시각적으로 이런 차이가 나타나지만 시계열 데이터의 길이가 너무나 길기 때문에 다음과 같은 이상을 일반적인 방법으로는 찾을 수 없다.</p><p id="ceea2bdb-da23-45fa-bc4b-235d8c0ade9d" class="">하지만, attention distribution을 이용해 해당 부분을 쉽게 찾을 수 있었다.</p><p id="1cebb406-c0e1-4ee3-89bd-0de3450c847a" class="">
+</p><p id="a094a7fe-03ef-48cd-91fe-a05086c9362f" class="">
+</p></div>

@@ -1,0 +1,649 @@
+---
+    layout: post
+    title: "Attention based dropout layer for weakly supervised object localization"
+    date:   2020-9-6
+    excerpt: ""
+    tags: []
+    feature: ../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/ADL.png 
+    comments: true
+    ---
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><p id="ae6ce3c9-8564-490e-984f-9ce451f5a44f" class="">
+</p><p id="acfd94c2-3da8-4227-8789-142f6805953b" class="">이번 리뷰를 보기 전에 CAM과 Grad-CAM을 먼저 본다면 더 이해가 원활할 것이다.</p><p id="9a013791-60b7-4619-b81d-26d2fb98ddda" class=""><strong>CAM</strong></p><figure id="4e7c07c1-e473-401b-a187-c35c7c1f974b" class="link-to-page"><a href="https://www.notion.so/Copy-of-Learning-Deep-Features-for-Discriminative-Localization-4e7c07c1e473401ba187c35c7c1f974b"><span class="icon">👨‍💼</span>Copy of Learning Deep Features for Discriminative Localization</a></figure><p id="dfc8269c-56d7-4730-8ec5-139bdfbf5053" class=""><strong>Grad-CAM</strong></p><figure id="803844f3-090a-4dd5-bbaf-dfa68e51a1b1" class="link-to-page"><a href="https://www.notion.so/Copy-of-Grad-CAM-Why-did-you-say-that-Visual-Explanations-from-Deep-Networks-via-Gradient-based-Lo-803844f3090a4dd5bbafdfa68e51a1b1"><span class="icon">🧐</span>Copy of Grad-CAM: Why did you say that? Visual Explanations from Deep Networks via Gradient-based Localization</a></figure><p id="57e4bb7e-4c79-4963-b31d-bb2cbb65a677" class="">
+</p><h1 id="284f7058-8ed0-4e35-bce4-4da817589ad7" class="">Introduction</h1><p id="e03add1e-0e08-4d1e-af33-5666e7d86739" class="">Weakly supervised object localization은 물체의 위치에 대한 label은 없지만 물체의 종류에 대한 label만 있는 상황에서 분류와 localization을 동시에 할 수 있는 모델을 개발하는 것을 목표로 한다.</p><p id="6bd0e34e-b3bf-46f2-8e75-7421b3327bf9" class="">
+</p><p id="0bb5fb78-d1ce-4409-aab3-9cb8cdcf4279" class="">Weakly supervised object localization의 대표적인 방법인 CAM과 Grad-CAM은 물체를 구별하는데 가장 큰 영향을 끼친 most discriminatibe 지역을 찾음으로써 localization을 행한다. 하지만 이번 논문에서는 이런 방법론이 갖는 한계를 설명하는데 most discriminative part에만 집중하게 되면 물체의 전체적인 모양을 포함한 localization을 할 수가 없다는 것이다. </p><p id="8043b4c8-557a-435d-bda3-49ca94b5d6bd" class="">
+</p><p id="05b53b7f-7bbb-4286-8fee-df60ef40019c" class="">논문에서 말하는 재밌는 예는 사람이 label로 있을 때  사람이 입고 있는 옷이 계속 바뀐다면 discriminative 방법으로는 사람의 신체를 discriminative part로 찾을 수가 없을 거라는 것이다.  이미지에서 가장 discriminative한 부분인 얼굴부분만을 highlight하게 될 것이고 이는 우리가 일반적으로 사람이라고 생각하는 머리, 팔, 다리를 포함한 localization과는 거리가 있게 된다.</p><p id="55a6ae3e-6c09-459c-b982-3d12fb3cc607" class="">
+</p><p id="41af8fcd-18a0-4a77-970e-b570e8d5bf3c" class="">discriminative part에만 집중하는 방법론의 위와 같은 한계로 인해 최근에는 모델 학습 시에 most discriminative part를 0으로 바꿈으로써 해당 부분에 모든 집중이 가는 것을 막는 방법이 도입되고 있다. 이런 기법은 어떻게 보면 Neural network에서 dropout이 작동하는 방식과 유사하다고 생각될 수 있다.  </p><p id="e2dc1db1-0919-4d02-8d33-b816776b827e" class="">
+</p><p id="e185d06f-5f71-44c2-a4fc-f29e7e68bb99" class="">방금 말한 zero masking 방법을 통해서 discriminative 방법론의 한계를 극복하는 것에는 성공했으나 이런 방법에는 새로운 단점을 하나 갖고 있다. most discriminative한 부분을 찾기 위해 re-train 과정을 여러 번 반복해야 했으며 모델에 추가적인 network를 구축해야 했다. 결과적으로 모델의 계산량이 너무 많아지는 부작용이 생겼다.</p><p id="5f4c56ba-8bea-44f9-b1ca-012ec5554765" class="">
+</p><p id="dc0010fa-bba7-4c5f-99b3-7a8bb70af4f7" class="">
+</p><h1 id="3edfb7e7-aee7-432d-8af1-026653d69204" class="">Main concept</h1><p id="5e4e947d-c8cb-43ce-a64c-77228f98684e" class="">Introduction에서 본 문제점들을 해결할 수 있는 ADL 모델을 제안한다. 이번 모델에서 가장 중요한 두 개념인 Attention과 Dropout에 대해서 먼저 짚고 넘어가자.</p><p id="aeff6542-a129-4cf5-a517-3a81a34354ca" class="">
+</p><h3 id="396f3bc3-0b2f-4619-a6f8-be18ccf4e7c3" class="">Dropout</h3><p id="97db645c-0023-43f8-8405-b3a2473f710b" class="">일반적으로 dropout은 neural network에서 overfit을 막기 위한 regularization 기법 중 하나로 사용된다. training 동안에 확률적으로 hidden node의 weight을 0으로 바꾸기만 하면 되기 때문에 적용이 매우 쉬운 기법이다.</p><p id="bead204b-e10e-483b-b864-2beadd6dc0f8" class="">
+</p><p id="1cbb1fa8-f3d6-453d-bb74-402ccf81387e" class="">하지만, 이런 간단한 Dropout을 CNN에 적용할 경우 약간의 문제가 발생한다.  CNN은 grid 형태의 공간적 특성을 갖고 있는데 임의로 dropout을 적용하게 되면 grid 내부의 특정 pixel에서 공백이 생기게  되며 애써 만든 공간적 정보를 잃는 일이 발생한다.</p><p id="738a9168-ffad-4e3e-9dc2-d340cd755676" class="">
+</p><p id="5bf5cd2f-8bbe-4677-834c-383818777860" class="">이런 문제를 해결하기 위해서 나온 방법이 SpatialDropout이다. 이 방법은 pixel 단위로 dropout을 실행하는 게 아닌 채널 단위로 dropout 을 실행한다.</p><p id="a31673a0-dbc9-4814-b6dc-aa5816ad8d8e" class="">
+</p><p id="ecf8070c-88c2-4006-9fbb-019a18800b4f" class="">CNN에서 dropout의 성능을 개선하는 또 다른 dropout 방법은 MaxDrop이다. 가장 큰 value를 갖는 값을 0으로 바꾸는 것인데 원저자의 논문의 그림을 통해서 쉽게 이해할 수 있다.</p><p id="a0639968-4d2f-4f89-938a-5a5e1325991c" class="">
+</p><figure id="55638a3e-b13b-4210-91e2-24dd052f3259" class="image"><a href="../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/Untitled.png"><img style="width:480px" src="../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/Untitled.png"/></a></figure><p id="d66243e3-46b9-4133-b69f-7d436a87bdde" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="023a4a9f-a7af-4752-9106-7bc83274321b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>How to use it in ADL?
+</strong>MaxDrop의 방법과 같이 가장 큰 값을 0으로 바꾸는 dropout 방법을 도입한다. 하지만!!!, 큰 값의 기준을 self-attention을 통해서 따로 구하며 위의 그림 (a)에서 처럼 pixel 단위로 dropout을 진행하는 것이 아닌 attention score가 높은 region 전부를 0으로 바꾸는 region drop을 한다.</div></figure><p id="38186980-0f84-433d-aa52-3c4ed6c6c723" class="">
+</p><p id="7167bc53-01f4-4540-b5ea-cb151168cd9e" class="">
+</p><h3 id="2eaddb4a-7620-44f4-9cb2-c4023661717f" class="">Attention mechanism</h3><p id="e9da3f8f-8b7f-4f82-8215-134d061c83a2" class="">예전에 읽었던 Attention is all you need 논문을 다시 한 번 읽고 노션에 정리를 해야할 것 같다. 우선은 Self-attention에 대해서 안다고 생각하고 글을 진행할 생각이다.</p><p id="9397174a-b3e4-4590-a07a-8e57549b995f" class="">
+</p><p id="5611c262-94ee-48e0-a043-2dde79798281" class="">최근에 가장 많은 분야에서 널리 쓰이는 개념이라고 하면 Self-attention일 것이다.  CNN을 이용한 이미지 분류 문제에서 역시 Attention 개념을 도입하려는 시도가 많았다. CNN에서 Attention mechanism의 도입은 Attention score를 측정하는 축의 방향에 따라 나눌 수 있을 것이다.</p><p id="3f3881cb-d18f-417b-9ab9-2f1b3a5199e0" class="">
+</p><p id="f789f410-8d1d-4b35-97d4-770a8ea4aa30" class=""><strong>Residual Attention Networks (RAN)</strong>의 경우, 분류 성능을 높이기 위해 3D self-attention map을 사용한다. 하지만 , 어떤 압축도 없이 3D의 attention score를 구하기 위해서는 많은 parameter들이 새로 추가되어야 하기 때문에 많은 계산량을 요구한다. </p><p id="73bf59ae-fd65-4b2e-9d9d-1c87d2c71f98" class=""><strong>Squeeze-and-Excitation Networks (SENet)</strong>의 경우 1D channel self-attention map을 이용한다. Global average pooling을 통해서 먼저 데이터를 압축을 시킨 후 2-layer MLP를 통해 self-attention map을 추출한다. RAN에 비해 추가되는 parameter의 수가 10% 정도로 획기적으로 줄이기는 했지만 여전히 많은 계산량을 요구한다.</p><p id="b9a481a8-76f0-4ce7-bce6-c2c5c3da7c09" class="">
+</p><p id="8f8f76b2-02c4-48b4-919f-bd1c224f7ee5" class="">위의 두 개와는 다른 색다른 Attention-map 계산 방법은 예전에 리뷰했었던 <strong>CBAM</strong> 논문에 나온다. CBAM은 채널 방향 1D attention과 spatial 2D attention을 순차적으로 적용한 방법이다. 더 자세한 내용은 아래의 링크를 참조하자.</p><figure id="4190f6ea-9e36-46c5-94aa-81bc60a0072b" class="link-to-page"><a href="https://www.notion.so/CBAM-Convolutional-Block-Attention-Module-4190f6ea9e3646c594aa81bc60a0072b"><span class="icon">🅱️</span>CBAM: Convolutional Block Attention Module</a></figure><p id="d8651cba-53f4-4ef0-8da7-c5ad27a22845" class="">(예전에 리뷰했던 논문들을 링크할 일이 생기니 뿌듯하다:)</p><p id="5e0c2acc-f1c2-43f5-8b5d-97eae92ec9eb" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="0d8e59c0-8641-46e5-b0d1-183ee8df7c3b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>How to use it in ADL?
+</strong>채널 방향으로 Global average pooling을 해서 나온 2D 이미지를 이용해 self-attention map을 만든다. ADL에서는 self-attention 계산을 위해 추가적인 parameter를 필요로 하지 않기 때문에 앞서 말한 모델이 복잡해지는 문제가 없다. </div></figure><p id="b33e89da-fc9d-4225-aaba-e47cf5e47afe" class="">
+</p><p id="c02f719c-6cf2-4cef-b46f-cc217201b383" class="">
+</p><h1 id="f0e19bdb-7373-4cb3-8406-f9553539a7a1" class="">ADL: Attention-based Dropout Layer</h1><p id="22325a15-55b8-49dd-a849-f5d0dab5cd19" class="">
+</p><figure id="a1f97df4-ea3e-4647-91a6-e4041c5311da" class="image"><a href="../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/Untitled%201.png"><img style="width:864px" src="../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/Untitled%201.png"/></a><figcaption>ADL model structure</figcaption></figure><ol id="562ec355-7a25-4a37-bd8f-9fd9e25894db" class="numbered-list" start="1"><li><strong>input이 들어오면 Global average pooling을 이용해 self-attention map을 계산한다. </strong></li></ol><ol id="38058838-f3bb-4f0c-82cd-e45ef6470cb0" class="numbered-list" start="2"><li><strong>Self-attention map을 이용해 Drop mask와 Importance map을  계산한다.</strong><p id="817755ca-ba8f-434d-99a7-8aca20dcc5f8" class=""><strong>Drop mask</strong></p><p id="95362691-efba-4726-a83f-81466c55e9a2" class="">training 시에 most discriminative part 부분에 0을 곱함으로써 해당 영역에 페널티를 주는 역할을 한다. most discriminative가 아닌 부분에도 모델이 집중할 수 있게 함으로써 물체의 전체적인 구조를 loacalization할 수 있게 도와준다. Drop mask를 통해 제거할 부분은 self-attention map에서 threshold 값을 통해 구한다. </p><p id="e2aeac56-60c5-45aa-98d0-a85afe2d8f8c" class="">
+</p><p id="2e73f2ba-aa9a-483c-8f7a-a2b92bf2ed8f" class=""><strong>Importance map</strong></p><p id="ca4d0883-fb02-418b-80ae-3379d8d1f5fc" class="">모든 iteration에서 Drop mask를 적용한다면 모델은 most discriminative part를 전혀 이용하지 않고 이미지 분류를 하게 된다. 이는 분류 성능 자체에 악영향을 주게 된다. Importance map을 이용해 informative region을 강조함으로써 모델의 분류 성능을 향상시킬 수 있다.Importance map은 self-attention map에 시그모이드를 취함으로써 구할 수 있다. </p><p id="33275ccc-e115-406e-8513-42f32b492e7e" class="">
+</p></li></ol><ol id="3b1f9128-376b-4392-8705-1ef0e9e39bb4" class="numbered-list" start="3"><li><strong>Drop mask와 Importance map을 확률적으로 선택한 후, input과 spatialwise multiplication을 통해 output을 계산한다.</strong></li></ol><p id="1944d4cd-8d45-49b1-8928-8b924fd4413e" class="">
+</p><p id="e1cf6c73-6a6f-4963-8fe7-764d9a1a7574" class="">
+</p><p id="30a76e97-7520-44ef-bb41-baa2b9e50172" class="">모델의 구조를 보면 ADL의 구조는 생각이상으로 많이 단순하다. 이런 단순성이 이번 모델의 최고 장점이기는 하지만 이렇게 단순한데 어떻게 좋은 성능을 보이는지 의문이 아닐 수가 없다. 저자들 역시 이런 궁금증이 생길 것을 알고 있었고 몇 가지 질문에 대해서 답을 논문에서 하고 있다.</p><p id="0813d67e-5f0c-4ad2-a1b1-8883078b5f15" class=""><div class="indented"><p id="8bf7a7b9-6fb4-4634-8861-fe47517cfcd1" class=""><strong>Q : Global average pooling 만으로 Self-attention map을 계산하는 것이 가능한 이유는 뭘까?</strong></p><p id="ba40c703-183e-45b6-9ca6-7a15f130df89" class="">A :  만약 Global average pooling을 한 map이 충분한 attention 정보를 포함하지 못한다 하더라도 학습 과정에서 CNN의 feature map이 이런 정보를 갖는 방향으로 학습이 될 것이다. 사용하는 CNN 모델의 complexity가 충분히 크기 때문에 CNN의 output feature map이 충분한 attention 정보를 포함할 수 있다고 본다.</p><p id="622a8ee2-71c4-481a-9ddf-fd4526002efb" class="">
+</p><p id="e9f47a11-4e0e-497d-8dde-7c1f45eb561f" class=""><strong>Q : Drop mask와 Importance map이 mutually exclusive한 관계이지 않은가?</strong></p><p id="a1ff1a78-5c68-4ca3-b419-2dbd21c4ce12" class="">A : Importance map이 더 정확한 informative region을 학습할수록 Drop mask가 잡는 masking 영역이 most discriminative part일 확률도 높아진다. 따라서 Importance map의 성능 향상이 Drop mask의 역할을 억제하지는 않는다.</p><p id="dc6739b0-7a61-4057-a5dd-7604d2a86aef" class="">
+</p><p id="59be9f9d-45c6-4514-909b-565de5d0769c" class="">
+</p><p id="af98b2c8-3cc2-4161-b7f0-6a57b45203da" class="">
+</p></div></p><h1 id="09d5b852-6361-497a-89a2-451deb8c9671" class="">Experiments</h1><p id="5188ba81-076e-4e65-ae93-cc2e91152a0e" class="">
+</p><p id="f02e6288-4da5-4b79-a0a1-42fa1d3dd485" class="">
+</p><figure id="b6548fcc-5fc6-44b6-8fe2-6c7232f42a07" class="image"><a href="../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/Untitled%202.png"><img style="width:864px" src="../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/Untitled%202.png"/></a></figure><p id="04936d62-3588-4ee9-a0cf-731351d990e0" class="">CAM과 비교했을 때 확실히 물체의 전체 구조를 highlight함을 알 수있다.</p><p id="6389b4e9-ee9d-417a-8c41-805b218adb12" class="">
+</p><p id="f1253db8-d5d0-4d43-b874-8c24df1dfe5f" class="">
+</p><figure id="469d724c-2b90-4f1e-865f-25e880880545" class="image"><a href="../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/Untitled%203.png"><img style="width:912px" src="../assets/img/Attention%20based%20dropout%20layer%20for%20weakly%20supervise%2055638a3eb13b421091e224dd052f3259/Untitled%203.png"/></a></figure><p id="07a7fba2-baa7-446c-8c71-998817029133" class="">파라미터의 수가 증가하지 않으면서 Localization  성능을 확보할 수 있다는 것은 ADL 모델의 가장 큰 장점으로 보인다. </p></div>
