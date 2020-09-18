@@ -609,7 +609,6 @@ blockquote {
 }
 	
 </style>
-<script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <div class="page-body"><p id="910c47c3-1356-4124-b4ef-f794c162ca5a" class="">2015년에 나온 논문이라 Baseline과 trend가 지금과는 다소 다른 부분이 있다.</p><p id="0dabd868-15d3-45cd-b605-5cc16e63671d" class="">그럼에도 이번 논문을 리뷰하는 것은 Grad-CAM을 리뷰하기 위한 초석이며 해석가능한 딥러닝 모델을 공부함에 있어서 좋은 정보가 될 것이라 믿기 때문이다.</p><h1 id="71f85ac0-a87f-4cce-92b8-9b571a0cd646" class="">Introduction</h1><p id="aaa68316-b127-4ad1-ad73-5a2eab0d780f" class="">
 </p><p id="0624db65-cbf9-4b4d-8a3c-4b1640cdf093" class="">Computer vision 에서 CNN이 다른 모델에 비해 압도적인 성능을 보이고 있다.  </p><p id="b5b3933d-526b-401b-9ef7-e0949f7c7160" class="">이는 Convolution layer이 그 구조상 localization에 뛰어난 능력을 갖기 때문이라고 설명된다.  </p><p id="e1bdc96f-81f1-4c75-afb2-3b49a75b621e" class="">
 </p><p id="53527e42-4e74-4188-8b72-9f8a5301b6fe" class="">Conolution layer만을 이용해서는 모델의 output size를 조절하는 작업이 쉽지 않기 때문에 이미지 분류같은 구체적인 task를 하기 위해 Convolution layer를 거친 이후 Fully connected network (FCN)를 연결하여 사용하고 있다. </p><p id="a6c746c7-2411-47d5-8047-3ab859e021fc" class="">
