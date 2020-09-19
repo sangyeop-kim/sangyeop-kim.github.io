@@ -1,0 +1,641 @@
+---
+layout: post
+title: "Big Data Analytics for Smart Manufacturing: Case Studies in Semiconductor Manufacturing"
+date:   2020-7-15
+excerpt: ""
+tags: [case study, manufacturing]
+feature: ../assets/img/Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a.png 
+comments: true
+---
+
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><h1 id="935f127b-737a-4791-927f-b25405287dcf" class="">1. Introduction</h1><p id="1b1618ef-8f84-450c-9118-c8d4217edd12" class=""><div class="indented"><p id="5087db95-4db5-4bfa-8a8a-1949491ea335" class="">Smart manufacturing (SM)는 제조환경에서 다음과 같은 내용을 통합해 이용하는 것을 의미한다.</p><ul id="aeb3d44b-26e3-4baf-8e16-e517c7dd166c" class="bulleted-list"><li>integration of systems</li></ul><ul id="2e577f94-f0fc-4c53-a3df-9e7ffc9a562e" class="bulleted-list"><li>linking of physical and cyber capabilities</li></ul><ul id="90dea972-0655-4ee0-9ce6-002b561667f7" class="bulleted-list"><li>information including leveraging the big data evolution</li></ul><p id="2fd981e5-d366-482b-94cc-d10d02999b68" class="">
+</p><p id="32e64bb8-aa57-4f32-9d0d-7b33b7fa0bfb" class="">특히, 반도체 제조 공정에서 SM의 활용 및 연구는 다음 두 가지 영역에서 활발하게 이뤄진다. </p><ol id="c0ad9e9e-e7c4-487c-a393-764d4ed8521a" class="numbered-list" start="1"><li>fault detection</li></ol><ol id="4b69a438-0f8e-4862-8dd7-2d63686e4e92" class="numbered-list" start="2"><li>predictive maintenance</li></ol><p id="6f14a441-49b9-4f2c-bd6d-506b26cc1a76" class="">
+</p><p id="991ec8a5-e8a8-4bab-8ff5-a1636c0b1f0b" class="">Smart manufacturing (SM)의 성공을 위해서 가장 중요한 요소는 다음과 같다.</p><ol id="d1584b7d-670e-4735-8f78-567ae081a97d" class="numbered-list" start="1"><li>data quality</li></ol><ol id="0d21b7b2-b00c-41f3-a273-f38f48c43fb2" class="numbered-list" start="2"><li>incoporating subject matter expertise in analytics</li></ol></div></p><p id="e7ddfee8-35b5-415e-ac6b-ae0339bd7a53" class="">
+</p><h1 id="26a85dc1-1e1d-40b8-af0f-cd0187c64382" class="">2. Background</h1><p id="1658a4c9-d7ff-49d4-968a-0c6b1ed628b6" class=""><div class="indented"><h3 id="a7741061-189a-469c-9532-43aac9589faf" class="">2.1. Semiconductor Manufacturing and the Emergence of On-Line Analytics</h3><p id="22a8bcd9-31f2-4a66-aa32-cea70cf84770" class="">
+</p><p id="c8e1340c-bc50-43da-bee8-ecc4b9f64b6c" class=""><strong>반도체 제조 공정의 구성</strong><div class="indented"><p id="9fb05efd-6b28-47f4-ba3d-f3870b2d31ca" class=""><strong>front-end process</strong></p><p id="e1a92aa5-cc58-4fad-b856-27f61c0898d0" class="">증착, 포토, 식각 공정 등을 포함</p><p id="d1020239-de39-4285-9267-ca5ea479e3a7" class="">수차례 layer를 쌓는 반복 작업을 통해서 wafer에 패턴을 형성하는 작업.</p><p id="13e2b501-e11d-4fee-ab9f-679e4d1455ab" class="">
+</p><p id="10827cef-5ff5-4761-93c7-5eb0aa26c033" class=""><strong>back-end process</strong></p><p id="5a6ee88f-21ca-4e15-a2e5-0bb7e918f1e0" class="">조립, 테스트, 패키징 등을 포함.</p><p id="f55ac229-7ae2-4ef0-9925-e30454e404e9" class="">wafer를 하나의 칩으로 만드는 일련의 과정.</p></div></p><p id="6c0a89bb-1378-4dc8-9cbe-88d556cd4486" class="">
+</p><p id="9f539b4f-3384-4952-a7b4-c06a08fbfe4d" class="">반도체 공정에서는 공정의 효율과 비용 절감이 경쟁우위를 가질 수 있는 가장 강력한 수단이다. 이에 따라 전체 라인에 대해서는 수율이 90% 이상, 개별 공정으로 본다면 수율이 99% 이상을 요구할 정도로 수율 경쟁이 치열한 분야이다.</p><p id="c01a29f3-4fc8-47ac-aa0c-7bca389137de" class="">
+</p><p id="ece740f8-ba85-44ac-a175-d163154f61ae" class="">이런 환경은 공정 최적화에 대한 많은 관심을 불러 일으켰으며 1990년대부터 Advanced process control (APC)라고 불리는 공정 분석 기법들이 발전을 해왔다.</p><p id="c876c269-0ba3-4dc3-a614-42790ef74f08" class="">2000년대에 이르러서는 FD, FDC, R2R이라고 불리는 기법들이 front end process 전반에 널리 사용되었다.</p><p id="0877cfa9-d9bb-4a47-b255-3cdd280d43b0" class="">
+</p><figure id="bf93b7dd-4a20-47a7-b321-e3c1f54f065a" class="image"><a href="Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a/Untitled.png"><img style="width:654px" src="Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a/Untitled.png"/></a><figcaption>History of process analytics in semicondictor manufacturing</figcaption></figure><p id="8c1c1d58-219b-47cd-99de-d6af58bdd1a4" class="">
+</p><h3 id="b3976925-672f-4b29-92e7-9c2b12cfd772" class="">2.2. The Big Data Revolution and Associated Challenges </h3><p id="daee1692-954c-4acb-a81c-e20797794df3" class="">2010년에 와서는 APC 방법론에 매우 큰 변화가 찾아왔다. 그런 변화를 이끈 요인을 논문에서는 크게 두 가지로 요약한다.</p><p id="1655805b-e7e8-4b37-b950-fd90df444ea6" class="">
+</p><ol id="86e01d80-f42d-4fc2-876b-42d442d25447" class="numbered-list" start="1"><li>device complexity began to require revolutions in manufacturing processes<ul id="fed039d3-d3f4-4c66-a791-b4ced188edf8" class="bulleted-list"><li>device의 설계가 2D에서 3D로 전환.</li></ul><ul id="8229ff55-b47b-45b4-9feb-2039fcd8eb02" class="bulleted-list"><li>FinFET (fin field-effect transisor) 공정의 적용.</li></ul><figure class="block-color-yellow callout" style="white-space:pre-wrap;display:flex" id="4571305e-ddd5-49e1-a066-1bc45eb34932"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">https://www.samsungsemiconstory.com/1353</div></figure><p id="7e1f79da-75a2-49ab-880a-be9bd4541372" class="">
+</p></li></ol><ol id="c016d1ef-f555-46d8-b8b5-32a9272b0740" class="numbered-list" start="2"><li>new market drivers accelerated the need for faster, smaller, more complex and lower power devices.<ul id="cf78a98d-842c-41be-906e-506a39ee5c26" class="bulleted-list"><li>IoT, mobile device, smart vehicle</li></ul><ul id="d1d08822-f0de-4574-8cab-e386a179d66d" class="bulleted-list"><li>Big data, AI</li></ul><p id="a5b06d8e-8945-4806-a52d-4d324869856c" class="">
+</p></li></ol><p id="c40e1617-be53-4ce0-98ee-ccf3032f7f9f" class="">이 중에서도  Big data와 AI를 통한 공정 제어의 혁신은 그 중요도가 매우 높다. </p><p id="b2f0d931-a2b0-4e6f-8cc6-2f5248186ff6" class="">빅데이터를 정의하기 위해서는 &quot;5 Vs&quot;(Volume, Velocity, Variety, Veracity, Value)의 조건을 만족해야한다. 반도체 공정의 5V는 다음과 같다.</p><p id="e5b1b634-9bd2-4a5b-82a3-389246da3c5e" class=""><div class="indented"><p id="8df980a3-6de8-4a49-aff7-af721521ae2f" class=""><strong>Volume</strong></p><p id="eb299ce3-c2eb-4fb1-a8d2-83f033b6d1cf" class="">반도체 공정에서의 데이터는 지수적으로 증가하고 있다.</p><figure id="3e10b8d6-6673-46ae-bc1a-c2704822100e" class="image"><a href="Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a/Untitled%201.png"><img style="width:627px" src="Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a/Untitled%201.png"/></a></figure><p id="d5baf757-a6a9-4be5-b7e3-3533bf415407" class="">
+</p><p id="6537bcc8-af3c-457a-a70e-ccca1c98a63a" class=""><strong>Velocity</strong></p><p id="22ceec6f-de7c-425d-b9ac-4a5ced333e75" class="">센서의 수집 단위가 1Hz → 10Hz → 100Hz → 10KHz로 급격하게 증가하고 있다.</p><p id="7248cea2-0596-471a-9394-8eb27f6edd08" class=""> </p><p id="06f096d8-f7cf-439b-9764-4f9e44eeea6f" class=""><strong>Variety</strong></p><p id="b6260de4-538d-4760-af08-6cb029f25a7f" class="">metrology, maintenance, yield, inventory management, manufacturing execution system (MES) and enterprise resource planning (ERP) 등을 통해 다양한 형태의 데이터가 수집된다.</p><p id="011cef9e-39bf-469f-9933-8db1ed305121" class="">
+</p><p id="490e6c04-bdb7-42a3-b3c7-c360ced92a1b" class=""><strong>Veracity (Data quality)</strong></p><p id="e0b18d94-79d3-4e8c-a0c6-a0e3dc9c0e9e" class="">5 Vs 중에서 analytics의 가장 큰 장벽이 되는 요소이다. 데이터가 Veracity를 만족하기 위해서 필요한 요소에는 다음과 같은 것들이 있다.<div class="indented"><ul id="aef41b3e-9d7a-4dd0-bf2c-74620c39c744" class="bulleted-list"><li>accuracy</li></ul><ul id="b70fddd2-8bf0-444b-87e8-ccbdebb90561" class="bulleted-list"><li>completeness</li></ul><ul id="8ea12082-5c73-43a3-b255-484107d83638" class="bulleted-list"><li>context richness</li></ul><ul id="c5d66589-90fc-43e4-9fc9-4a84a43477ee" class="bulleted-list"><li>availability</li></ul><ul id="73d9cc92-0109-48ff-90e1-97a913e33a03" class="bulleted-list"><li>archival length</li></ul></div></p><p id="b4754576-0241-4526-b3eb-13027f91a2bf" class="">
+</p><p id="a68b8381-e498-45a6-a45f-b0da7eac1626" class=""><strong>Value</strong></p><p id="bb4b4d4c-2ef3-4662-bcc3-91ec0f4fc620" class="">빅데이터는 공정 최적화를 위해 현재 존재하는 기술들을 발전시킬 뿐 아니라 이전에는 할 수 없었던 예측 처방과 같은 방법론도 제공해주기에 가치가 있다.</p><p id="fa5df1ec-58b6-4643-b762-29fd88b0596a" class=""> </p></div></p><p id="1459304f-6690-413f-ba24-692b68fe1f4c" class="">
+</p><h3 id="9eb97394-7bf8-432b-92e9-7172268548bd" class="">2.3. Big Data Enabled APC Capabilities</h3><p id="063b0026-0503-4934-93dd-6682535839b7" class="">2.2 Value에서 언급했듯 빅데이터를 이용한 혁신은 APC의 Capability를 키우기 위한 좋은 방안이 된다. 구체적인 내용은 아래 그림의 APC Extended Technologies를 보자.</p><p id="d5559b63-06f5-4b14-9fc6-d9c582255d7d" class="">
+</p><figure id="c67c906c-8d62-4aae-bc91-6e3923ce5bc0" class="image"><a href="Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a/Untitled%202.png"><img style="width:717px" src="Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a/Untitled%202.png"/></a></figure><ul id="69c24414-fdc3-48a9-9f20-96aaf7ed469d" class="bulleted-list"><li>FD, SPC, R2R 등의 기법은 존재하는 대부분의 fab에서 실행되는 기술이며 EHM은 상당히 많은 곳에서 적용이 되고 있는 제어 기술이다. </li></ul><ul id="319797d4-6823-4dc4-8dab-acb2c34ab248" class="bulleted-list"><li>FD와 EHM은 빅데이터에 의해서 직접적으로 향상이 가능한 기술로 평가된다. </li></ul><ul id="7a163b67-8044-4f3b-8a54-fff3538eddbe" class="bulleted-list"><li>PdM, Predictive Scheduling, VM의 경우 현재 많은 연구가 이뤄지고 있으며 몇몇의 성공 사례가 있지만 아직은 해결해야할 이슈들이 많다. </li></ul><ul id="f4fc2559-830b-4d6e-9031-f0a89805f1d0" class="bulleted-list"><li>Yield Prediction은 데이터 quality 문제로 여전히 연구 중에 있는 기술이다. </li></ul><p id="fb0dcdf6-12d4-42c8-9e0a-30075d52edb0" class="">
+</p><p id="336ef53b-06ca-4d55-b37c-f86f9be9600a" class="">
+</p><h3 id="362f3666-ef75-40ec-a684-609bcaf92e91" class="">2.4. Leveraging Lessons-Learned to Other Industries</h3><p id="6aa3a666-a08f-4d10-b9b9-5117989f33fd" class="">이번 논문에서 다루는 내용은 제조 공정을 중심으로 서술되지만 다음과 같은 조건을 만족한다면 다른 산업에서도 충분히 적용이 가능하다.<div class="indented"><ol id="dc531106-0d8b-482a-a34e-73a3b60f33de" class="numbered-list" start="1"><li> the need for precision manufacturing.</li></ol><ol id="74429bdd-51ac-452c-b27b-1a9bfb384cc6" class="numbered-list" start="2"><li>cost pressures requiring rapid ramp-up of new technologies and continuous improvement</li></ol><ol id="f3192825-54a0-4826-9687-5a1aaef5d311" class="numbered-list" start="3"><li>complexity in processes and oftentimes lack of process visibility.</li></ol><ol id="31bb88a1-a35d-4b7e-b4a9-6dee0c32de0b" class="numbered-list" start="4"><li>dynamics in processes.</li></ol></div></p></div></p><p id="90b905ad-5c93-45df-a302-769b14c9d952" class="">
+</p><p id="406adff8-53e7-4fba-9611-faaa40ad5290" class="">
+</p><h1 id="6f320099-dc49-4cb3-ac03-c4507567fe88" class="">3. Analytics Approaches in Semiconductor Manufacturing</h1><p id="3ede20d7-2201-44af-b485-7dec85d3259f" class="">Level of Correlation Among Parameters Analyzed:<div class="indented"><h3 id="78347302-bf44-4e58-8728-87aaea3c8ed4" class="">3.1. Semiconductor Industry Specific Challenges Impacting Analytics</h3><p id="9f45694e-04ef-4ea4-97f6-f6f4b56aba57" class="">반도체 제조에는 3가지 Key Challenge가 존재한다.</p><p id="6e4fe74a-4e43-4c16-963e-cab264607f50" class="">
+</p><ol id="1a8a7210-475e-4c5c-a9ab-6240ad8bf5eb" class="numbered-list" start="1"><li><strong>Equipment and process complexity</strong><p id="a24c67a2-520f-4417-86f1-30aba47427d6" class="">front-end process에서 사용되는 장비는 수백 개의 components와 최소 수천 가지의  failure point가 존재하는 복잡한 장비이다. </p></li></ol><ol id="358f5a5f-b5aa-4fc2-980d-e7d6a194f30a" class="numbered-list" start="2"><li><strong>Process dynamics</strong><p id="151cfd9b-680e-4bcf-b6f6-48ab17732deb" class="">장비는 여러 가지 요인에 의해서 process operation의 drift와 shift가 발생한다.</p></li></ol><ol id="b7e14d16-8385-4197-900a-0a6381a1a42a" class="numbered-list" start="3"><li><strong>Data quality</strong><p id="f79bbc03-4253-4bcc-b3e4-c3f3264e7bbd" class="">반도체 공정의 데이터 품질은 날이 갈수록 좋아지고 있지만 여전히 quality 이슈가 존재한다. </p></li></ol><p id="d2c1dac0-c289-4956-bd73-1e75eba3a590" class="">
+</p><p id="02fdcf98-e0b6-488a-bcba-cf961087e843" class="">이런 Challenge는 Smart manufacturing (SM) 이전부터 존재해 온 반도체 공정의 주요한 문제였으며 SM이 도입되고 있는 현재에도 data driven approach의 적용을 막는 가장 큰 장벽이다. </p><p id="ade159fe-9b99-42f1-b539-f85018bbe115" class="">이런 이슈로 인해 현재 대부분의 Fab에 적용되는 기법은  subject matter expertise (SME)와 같이 도메인 지식을 이용한 기법들이 주를 이루고 있다.</p><p id="8f8f8af1-4fb3-449c-8621-9727226a1755" class="">
+</p><h3 id="f81be29d-9270-4c9e-8e8b-0a4d5781c959" class="">3.2. Dimensions of Analytics Capabilities</h3><p id="75825d38-2c40-496e-b2ff-89313cc7cb52" class="">앞서 말한 다양한 분석기법들을 분류하는 가장 좋은 방법은 dimensions of capability에 따라서 기법들을 분류하는 것이다. 이런 차원에 대해서는 다음 그림에 매우 잘 설명이 되어 있다.</p><p id="b6f00f84-495d-415e-9b99-352eaa458d15" class="">
+</p><figure id="51a2c35f-0598-4752-9ca4-9d30422f4da7" class="image"><a href="Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a/Untitled%203.png"><img style="width:947px" src="Big%20Data%20Analytics%20for%20Smart%20Manufacturing%20Case%20St%20bf93b7dd4a2047a7b321e3c1f54f065a/Untitled%203.png"/></a></figure><p id="39b45ce8-f9b3-4bd7-82e4-ca88c974e5b1" class="">
+</p><ul id="a3f00f8f-1793-4d20-9ecc-bd2aaf40434d" class="bulleted-list"><li><strong>Level of Supervision</strong></li></ul><ul id="8a6d94cc-8cc6-4b23-871c-66cf01cf3a1c" class="bulleted-list"><li><strong>Level of Prediction</strong></li></ul><ul id="73e092fe-53d0-4191-b618-b8debd7498eb" class="bulleted-list"><li><strong>Level of Correlation Among Parameters Analyzed</strong></li></ul><ul id="870ee15a-e819-42c0-af2b-f67252c14c81" class="bulleted-list"><li><strong>Level of Incorporation of Dynamics</strong></li></ul><ul id="59404361-d5fc-4f4a-8b71-3423057bb0d0" class="bulleted-list"><li><strong>Level of Incorporation of State</strong></li></ul><ul id="5347b46f-e6c1-4de7-a10a-c04bddaa097c" class="bulleted-list"><li><strong>Level of Incorporation of SME</strong></li></ul><p id="1e4cb742-5350-4efd-a560-eb7fefd08452" class="">
+</p></div></p><p id="b6b4b911-a1c2-4f65-a39e-9bf6d79d889d" class="">
+</p></div>

@@ -1,0 +1,649 @@
+---
+layout: post
+title: "CBAM: Convolutional Block Attention Module"
+date:   2020-6-29
+excerpt: ""
+tags: [Object detection, image]
+feature: ../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/CBAM.png 
+comments: true
+---
+
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><h1 id="53172a5c-674e-4a68-8c0a-d5a6a214ef4e" class="">Intro</h1><p id="2c63042a-d6e3-4af7-896c-8e19ae2a001f" class="">필자들은 Convolution Block Attention Module (CBAM)을 제안한다.</p><p id="4e90687b-fa4c-4fac-98ca-55a4a381843c" class="">
+</p><p id="466e49e9-14a3-40e1-a146-031e42aeec42" class="">최근의 CNN 성능 향상을 위한 architecture 연구는 크게 3 가지 측면에서 이뤄지고 있다.</p><ol id="f0acbbc2-13e8-4d9e-b11d-722a7af4a61a" class="numbered-list" start="1"><li>depth</li></ol><ol id="c9f920da-f7c5-4a3e-8114-58dd04f61e0e" class="numbered-list" start="2"><li>width</li></ol><ol id="4715dc5c-7689-44b4-bac6-2ae3f95e10b3" class="numbered-list" start="3"><li>cardinality</li></ol><p id="9bb384ed-198a-462d-a418-136f4f8f99c8" class="">
+</p><p id="7308c6a7-5b55-4a20-87d3-02c243cdc9a2" class="">depth와 width의 경우 ResNet, GoogLeNet 등의 논문을 통해 이미 익숙해진 개념이다.</p><ul id="0adb945c-0ee2-405f-8797-9aeeec30bb31" class="bulleted-list"><li>ResNet에서는 모델의 깊이가 깊어질수록 모델의 성능이 향상됨을 보였다.</li></ul><ul id="c4d508e1-3f46-4353-973c-268d5c6e7eff" class="bulleted-list"><li>GoogLeNet은 인셉션 모듈에서 모델의 width의 확장을 통해 모델 성능이 향상됐음을 확인했다.</li></ul><p id="d6e4f9e6-51d2-48f6-8513-d71095c4d410" class="">
+</p><p id="e2302b25-fef9-4432-81af-5ab8292863ae" class="">하지만 Cardinality에 대한 내용은 다소 생소할 수 있다.</p><p id="a78537d4-f688-4095-813f-2959360f4f11" class="">Cardinality의 개념은 ResNext 논문(Aggregated Residual Transformations for Deep Neural Networks)에서 제안한 개념이다.</p><p id="f182ac09-c5b2-4332-b4fa-82de110a8c7e" class="">
+</p><h3 id="1e94cef2-9270-4f25-a611-31c6fa029474" class="">Cardinality</h3><figure id="adbd2b94-a862-4443-a19e-c417a6636eca" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled.png"><img style="width:509px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled.png"/></a><figcaption>Aggregated Residual Transformations for Deep Neural Networks</figcaption></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="d965e77e-59dd-418e-8af9-e38b0bb3b4ce"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>ResNeXt</strong> is a simple, highly modularized network architecture for image classification. Our network is constructed by repeating a building block that aggregates a set of transformations with the same topology. Our simple design results in a homogeneous, multi-branch architecture that has only a few hyper-parameters to set. This strategy exposes a new dimension, which we call “cardinality” (the size of the set of transformations), as an essential factor in addition to the dimensions of depth and width. [1]</div></figure><p id="3df59e77-a331-4fca-ac0c-f360b96b006d" class="">
+</p><p id="831ad447-5b1d-4e3e-9816-57a92223f29b" class="">위의 세 가지 트렌드가 언급되었지만 이번 논문에서 집중하는 architecture는 attention이다.</p><p id="c5ad074f-7f8f-4a43-a9dc-f1af453cb54e" class="">
+</p><p id="b0b0f59a-e1a0-44ef-9a14-7f09c9aed13f" class="">저자가 말하는 Attention의 장점은 다음과 같다.</p><ul id="ad74eb7e-a83d-488d-99d2-f1d69e01bc33" class="bulleted-list"><li>어디에 Focus를 하는지 정보를 제공해준다.</li></ul><ul id="1210d4c3-d80b-44ca-9e83-ab6a58de67a0" class="bulleted-list"><li>Representation power를 증가시켜 준다.</li></ul><p id="5ff88901-7586-45a7-9874-fe4184c5d76a" class="">
+</p><p id="56ca4b70-625c-424a-bebb-27493c5b1b4b" class="">저자는 단순히 Attention 알고리즘을 적용하는  것에서 그치는 것이 아니라 2차원으로 데이터를 나눠서 Attention mechanism을 적용하는 것을 제안한다.</p><ol id="31450cef-4e21-426a-8b47-42363bc8ab95" class="numbered-list" start="1"><li>Channel</li></ol><ol id="4b83b1ce-dea7-47ba-9cc5-239a5d9b6ac3" class="numbered-list" start="2"><li>Spatial</li></ol><p id="efe5cc12-887b-42a9-82ee-79a0554dc6b4" class="">이것에 대한 더 자세한 설명은 이후 부분에서 보자.</p><p id="ee0fe1f7-3d17-4a08-bac0-464f055395d9" class="">
+</p><h1 id="13c0ee09-ac45-4bb6-a4d6-9a07ed871513" class="">Related Work</h1><h3 id="41e02746-509f-4b9e-8111-cfd872108fef" class="">Network engineering</h3><p id="ad7581a7-498c-408a-a5f0-eb2062d17b8e" class="block-color-red">모델의 디자인은 성능을 결정하는 매우 중요한 요소 중 하나이다. Intro에서도 설명했듯 최근의 연구는 depth, width, cardinality를 중점적으로 봤다면 이번 논문에서는 Attention mechanism에 중심을 두겠다고 한다. 
+(해당 논문이 작성된 시가와 현재 차이가 있기 때문에 감안하고 이해해야할듯 하다.)</p><h3 id="593b79dc-173c-492d-b99b-34677c03bc77" class="">Attention mechanism </h3><p id="1138a0f5-93ba-40a9-9d89-30ad5da9b726" class="block-color-red">CNN에 attention mechanism을 적용하려는 시도는 많았다. 기존의 방법들과 다른 점은 저자는 3D feature map에 그대로 attention을 적용하는 것이 아니라 3D feature map을 두 가지 축으로 분해를 해서 2번의 attention 계산 과정을 거친다는 점이다.  
+
+이번 논문의 핵심이 되는 부분으로 좀 더 자세히 살펴보면 
+<strong>channel에 대해서 attention score를 구한 후 feature map에 곱한 후 spatial (height x width)에 대해서  attention score를 구하는 두 작업으로 나눠서 진행한다.</strong></p><p id="591fb54a-8659-4eed-89f5-91173734ef64" class="">
+</p><h1 id="d9a45e32-afa2-484d-a810-b848e7f230d7" class="">CBAM</h1><p id="1cac11d0-48b2-4451-aad1-caf364a37ca6" class="">모델 중간의 featurem map이 다음과 같이 주어질 때 </p><figure id="0352d6e8-7e3f-4aee-995f-b035e8c292c0" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\mathbf{F} \in \mathbb{R}^{C \times H \times W}$$</div></figure><p id="54602e3d-dc1e-4377-9c38-ef0d46817a85" class="">CBAM은 순차적으로 <div class="indented"><p id="b8626378-5303-406a-b47b-f8125b9765cf" class="">1D channel attention map :  <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">M</mi><mi mathvariant="normal">c</mi></msub><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><mi>C</mi><mo>×</mo><mn>1</mn><mo>×</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbf{M}_{\mathrm{c}} \in \mathbb{R}^{C \times 1 \times 1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83611em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">M</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">c</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.07153em;">C</span><span class="mbin mtight">×</span><span class="mord mtight">1</span><span class="mbin mtight">×</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span></p><p id="f37ff343-5343-4fa9-bfad-bf324d686a18" class="">2D spatial attention map :   <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">M</mi><mi mathvariant="normal">s</mi></msub><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><mn>1</mn><mo>×</mo><mi>H</mi><mo>×</mo><mi>W</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbf{M}_{\mathrm{s}} \in \mathbb{R}^{1 \times H \times W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83611em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">M</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">s</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight" style="margin-right:0.08125em;">H</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">W</span></span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span></p><p id="3a4b1d6b-8a65-4907-bd41-abad3f3f8b8d" class="">를 추론한다.  (아래의 그림 참고.)</p><p id="a5663bd6-aee4-49c6-be31-92a92d4fdf8b" class="">
+</p><p id="c13662c1-71bf-4295-9989-89b3da20897a" class="">위의 과정을 요약하면  다음과 같다. (<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊗</mo></mrow><annotation encoding="application/x-tex">\otimes</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">⊗</span></span></span></span></span><span>﻿</span></span> : element-wise multiplication)</p><figure id="e800f5fd-1789-4b2a-817a-7e56229847d8" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\begin{array}{l}\mathbf{F}^{\prime}=\mathbf{M}_{\mathbf{c}}(\mathbf{F}) \otimes \mathbf{F} \\\mathbf{F}^{\prime \prime}=\mathbf{M}_{\mathbf{s}}\left(\mathbf{F}^{\prime}\right) \otimes \mathbf{F}^{\prime}\end{array}$$</div></figure><p id="80f80095-7cea-412d-8621-166c597fb35b" class="">
+</p><p id="3b6ad7db-7f3d-495c-8579-e696d75d4133" class="">논문에서는 순차적으로 attention을 배치하는 것이 병렬적으로 배치하는 것보다 효과적임을 보였다.</p></div></p><figure id="5e71bdac-e484-4235-8568-f59e4eea5abf" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%201.png"><img style="width:818px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%201.png"/></a><figcaption>2단계 attention map 추론 과정</figcaption></figure><h2 id="9800d1ef-03d3-4840-b0d3-0c062082ba5b" class="">Channel attention module</h2><p id="65c8c337-37db-45b5-a01d-0a3137a1b606" class=""><strong>Channel attention focuses on &#x27;what&#x27; is meaningful given an input image </strong></p><p id="a0b8db6c-97de-401a-8c52-7ea98d224937" class="">
+</p><p id="a282ab8d-8fb4-4e66-9fd4-dd0a191cd2eb" class="">Channel attention을 계산하는 과정은 다음과 같다.</p><p id="a79c78f6-7cac-4488-abe6-d1ba8ad90987" class="">
+</p><figure id="ee296d1a-6659-4507-84ea-68c450ef6e53" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%202.png"><img style="width:778px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%202.png"/></a><figcaption>Channel attention module 구하는 방법 도식화</figcaption></figure><p id="fc83b00f-9bda-4b35-995d-f4a191b98dab" class="">
+</p><ol id="61e8ed94-0634-47a7-b31e-e467e98464f4" class="numbered-list" start="1"><li><strong>spatial 정보를 Avg pooling과 Max pooling을 사용해 descriptors  </strong><strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold">F</mi><mrow><mi mathvariant="bold">a</mi><mi mathvariant="bold">v</mi><mi mathvariant="bold">g</mi></mrow><mi mathvariant="bold">c</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathbf{F}_{\mathbf{a v g}}^{\mathbf{c}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.069218em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">F</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6741079999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">a</span><span class="mord mathbf mtight" style="margin-right:0.01597em;">v</span><span class="mord mathbf mtight" style="margin-right:0.01597em;">g</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">c</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span></strong><strong>와  </strong><strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold">F</mi><mrow><mi mathvariant="bold">m</mi><mi mathvariant="bold">a</mi><mi mathvariant="bold">x</mi></mrow><mi mathvariant="bold">c</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathbf{F}_{\mathbf{m a x}}^{\mathbf{c}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93311em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">F</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6741079999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">m</span><span class="mord mathbf mtight">a</span><span class="mord mathbf mtight">x</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">c</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span></strong><strong>를 추출한다.</strong><p id="2f60d4b0-6695-48f8-a269-61debdd75e6f" class="">channel attention score를 구하기 위해서 spatial 정보를 압축(통합)할 방법이 필요하다.</p><p id="81a0e9b9-c8bd-4e26-8f9c-816ba00a6e8b" class="">기존의 연구들에서는 이 방법으로 Average pooling을 주로 사용했다.</p><p id="a1563a37-3bd7-40a1-a7d3-dc23c940c02d" class="">
+</p><p id="9d499264-b9b1-4fa5-a18f-fa622d59b74c" class="">저자들은 여기서 Max pooling 방법도 함께 사용할 것을 제안한다.  Max pooling을 통해서 다른 것들과 명확히 구별이 되는 object feature를 잡아낼 수 있다는 게 저자들의 설명이다.</p><p id="ef3fd757-73f5-4fac-bc3d-6d71c714058c" class="">실험적으로도 각각의 pooling 방법을 적용하는 것보다 두 가지를 같이 썼을 때 성능이 더 좋았다고 한다.</p><p id="f28693bb-ee00-4505-96b3-3c8ff52512aa" class="">
+</p></li></ol><ol id="3f9a407b-a471-480a-9b8b-3d14aa8dc5b1" class="numbered-list" start="2"><li><strong>descriptor 각각을 shared MLP에 넣은 후 결과를 합한다.. </strong><p id="61538bb4-2709-4e64-866b-62685ea8d10c" class="">parameter를 공유하는 MLP에 각각의 descriptor를 넣는다. MLP는 <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">R</mi><mrow><mi>C</mi><mi mathvariant="normal">/</mi><mi>r</mi><mo>×</mo><mn>1</mn><mo>×</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^{C / r \times 1 \times 1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8879999999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8879999999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.07153em;">C</span><span class="mord mtight">/</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mbin mtight">×</span><span class="mord mtight">1</span><span class="mbin mtight">×</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> 크기의 hidden layer를 갖는 구조이다. 여기서 r은 reduction ratio를 의미한다.</p><p id="e005b360-cbb8-462c-8126-290ac6a849a8" class="">
+</p><p id="d2029929-84bb-4166-9e43-d732ca888e09" class="">각각 descriptor에 대한 MLP의 output은 element-wise sum을 통해서 최종 output을 도출한다.</p><p id="5b5be00b-3af9-4b24-a88a-76f4d4ea7d28" class="">
+</p></li></ol><p id="f4203021-a6e8-4f11-aca3-901db73af24a" class="">위의 일련의 과정은 다음과 같이 수식화할 수 있다.</p><figure id="372edbec-733f-4e95-b281-6a10700686f1" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\begin{aligned}\mathbf{M}_{\mathbf{c}}(\mathbf{F}) &=\sigma(M L P(\text {AvgPool}(\mathbf{F}))+M L P(\operatorname{MaxPool}(\mathbf{F}))) \\&=\sigma\left(\mathbf{W}_{\mathbf{1}}\left(\mathbf{W}_{\mathbf{0}}\left(\mathbf{F}_{\text {avg }}^{\mathbf{c}}\right)\right)+\mathbf{W}_{\mathbf{1}}\left(\mathbf{W}_{\mathbf{0}}\left(\mathbf{F}_{\text {max }}^{\mathbf{c}}\right)\right)\right)\end{aligned}$$</div></figure><p id="42394980-5690-4701-9bce-c050315e3fd2" class="">
+</p><h2 id="d5cf1e9b-371a-40e5-bcc5-1285094998ee" class="">Spatial attention module</h2><p id="5805d09c-f63e-4ec2-bb26-5684b011068e" class=""><strong>spatial attention focuses on ‘where’ is an informative part</strong></p><p id="e879dc9b-3e94-4904-b2e0-3ee62388ebe7" class="">
+</p><p id="ac801701-060b-412f-acef-c0043d63f509" class="">Spatial attention을 계산하는 과정은 다음과 같다. </p><p id="010172a1-86db-4187-a79a-b161db300ca0" class="">
+</p><figure id="d1a28370-d946-41c7-84ee-5b11fd9fa65f" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%203.png"><img style="width:614px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%203.png"/></a><figcaption>Spatial attention module 구하는 방법 도식화</figcaption></figure><p id="1c96fc76-3e9d-4283-bc8c-de6a07bd190a" class="">
+</p><ol id="545b72c7-8f9f-40f2-be4b-f1ef5571a060" class="numbered-list" start="1"><li><strong>channel 정보를 Avg pooling과 Max pooling을 사용해 descriptors  </strong><strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold">F</mi><mrow><mi mathvariant="bold">a</mi><mi mathvariant="bold">v</mi><mi mathvariant="bold">g</mi></mrow><mi mathvariant="bold">c</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathbf{F}_{\mathbf{a v g}}^{\mathbf{c}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.069218em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">F</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6741079999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">a</span><span class="mord mathbf mtight" style="margin-right:0.01597em;">v</span><span class="mord mathbf mtight" style="margin-right:0.01597em;">g</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">c</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span></strong><strong>와  </strong><strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold">F</mi><mrow><mi mathvariant="bold">m</mi><mi mathvariant="bold">a</mi><mi mathvariant="bold">x</mi></mrow><mi mathvariant="bold">s</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathbf{F}_{\mathbf{m a x}}^{\mathbf{s}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93311em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">F</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6741079999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">m</span><span class="mord mathbf mtight">a</span><span class="mord mathbf mtight">x</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">s</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span></strong><strong>를 추출한다.</strong><p id="de99255b-3c5d-4850-b712-b43288c79e9c" class="">방법은 channel attention module에서 방법과 동일하다.</p><p id="08dfe76e-63b4-4c89-be15-3f4274d3eb3f" class="">
+</p></li></ol><ol id="68558e2e-dc94-46bd-a6c2-3e2a956d9bdf" class="numbered-list" start="2"><li><strong>  </strong><strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold">F</mi><mrow><mi mathvariant="bold">a</mi><mi mathvariant="bold">v</mi><mi mathvariant="bold">g</mi></mrow><mi mathvariant="bold">c</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathbf{F}_{\mathbf{a v g}}^{\mathbf{c}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.069218em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">F</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6741079999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">a</span><span class="mord mathbf mtight" style="margin-right:0.01597em;">v</span><span class="mord mathbf mtight" style="margin-right:0.01597em;">g</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">c</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span></strong><strong>와  </strong><strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="bold">F</mi><mrow><mi mathvariant="bold">m</mi><mi mathvariant="bold">a</mi><mi mathvariant="bold">x</mi></mrow><mi mathvariant="bold">s</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathbf{F}_{\mathbf{m a x}}^{\mathbf{s}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93311em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">F</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6741079999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">m</span><span class="mord mathbf mtight">a</span><span class="mord mathbf mtight">x</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathbf mtight">s</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span></strong><strong>를 concat한 후, 7x7 크기를 가진  filter 1개로 attention weight을 계산한다.</strong><p id="91bdbecd-2044-4c61-ab62-491acdc6045b" class="">그림을 통해서 충분히 이해가 가능할 것이다.</p><p id="d9e6d752-3a7e-4df3-9cf8-9f63751a6862" class="">
+</p></li></ol><p id="eb603314-d0d5-4431-b7dc-d7950a51e3fb" class="">위의 일련의 과정은 다음과 같이 수식화할 수 있다.</p><figure id="c7a1c5e0-5d40-44b1-9aa6-26133c620bca" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\begin{aligned}\mathbf{M}_{\mathbf{s}}(\mathbf{F}) &=\sigma\left(f^{7 \times 7}([\text {AvgPool}(\mathbf{F}) ; \operatorname{Max} \operatorname{Pool}(\mathbf{F})])\right) \\&=\sigma\left(f^{7 \times 7}\left(\left[\mathbf{F}_{\text {avg }}^{\mathbf{s}} ; \mathbf{F}_{\text {max }}^{\mathbf{s}}\right]\right)\right)\end{aligned}$$</div></figure><p id="9826ba0c-2695-438d-868d-a76297378845" class="">
+</p><h1 id="9b36e41e-0f57-42e2-b943-15500a609bd7" class="">Experiments</h1><h2 id="8e31740d-a651-4d69-ad44-c8e5f8effc1b" class="">ablation experiments</h2><p id="7c3a3ec9-ddb8-40fb-bf01-84d7e1867566" class="">모델이나 알고리즘의 특징들을 제거하면서 그게 퍼포먼스에 어떤 영향을 줄지 연구하는 것  [2]</p><h3 id="090b7230-ac7e-4153-946d-69c1e678b9cb" class="">1. channel attention</h3><p id="0645100d-754d-4508-b177-f57206ca931c" class="">Max pooling과 Avg pooling의 영향 검증.</p><figure id="0a53ca5e-ac2e-4e8c-930a-65afdceb20ce" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%204.png"><img style="width:821px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%204.png"/></a></figure><p id="7be35149-95ae-4d70-85e3-018f1ae69eeb" class="">
+</p><h3 id="931c8d9a-f85d-41ce-9a7e-a676aa9d3a21" class="">2. Spatital attention</h3><p id="f04e5c5d-4f52-4ce6-9d1e-5491bc74f11f" class="">Max pooling, Avg pooling 그리고 kernel size의 영향 검증.</p><figure id="b431791b-f5b2-4aa3-8646-786d9a3b4c71" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%205.png"><img style="width:817px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%205.png"/></a></figure><p id="3889f838-4b51-48fb-b895-de1933906afe" class="">
+</p><h3 id="e2bbdd25-9914-4d02-8c9f-1279da37d6d9" class="">3. Arrangement of the channel and spatial attention</h3><p id="c6a35778-84e8-407f-b3c2-55cc6acf270d" class="">각 attention의 순차적, 병렬적 배치 및 순서에 따른 영향 검증.</p><figure id="45151a0e-48ca-469b-aa1e-7bbaadad005f" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%206.png"><img style="width:706px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%206.png"/></a></figure><p id="683929ff-d194-4e07-a28b-50e48aba52f4" class="">
+</p><h2 id="deaa7fe6-1d75-4dc2-8d4d-0ab2bd5e4ff8" class="">Image Classification on ImageNet - 1K</h2><figure id="89bc5cbd-e79a-43ce-8028-eb8d4a69fe84" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%207.png"><img style="width:815px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%207.png"/></a></figure><h2 id="6dcdce53-3f13-4cf0-9ca0-a2ad0a326ef8" class="">Network Visualization with Grad-CAM</h2><p id="273a0fed-812f-4d79-8c0f-bce52680bcfe" class="">
+</p><figure id="96cf6bd8-d52e-44a4-a53b-24d415c30ada" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%208.png"><img style="width:820px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%208.png"/></a></figure><p id="6194bd19-20b8-4e4f-8ec8-371d4aa11431" class="">
+</p><h2 id="2b9241aa-dbdc-4f72-9fdf-19ed22087cd4" class="">MS COCO &amp; VOC 2007 Object Detection</h2><p id="fde3f479-0337-444a-9a08-1be124694da9" class="">
+</p><figure id="41416f31-f4ae-47d9-8e1e-b068fdf299a2" class="image"><a href="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%209.png"><img style="width:833px" src="../assets/img/CBAM%20Convolutional%20Block%20Attention%20Module%20adbd2b94a8624443a19ec417a6636eca/Untitled%209.png"/></a></figure><p id="b9871bc0-34e1-4a90-ab02-b865f0d90308" class="">
+</p><h1 id="3f9159ca-61b3-4a87-a67c-d38c190af870" class="">Reference</h1><p id="b71fa3f6-dd3e-4981-9c24-2c52f8bd7da9" class="">[1] <a href="https://github.com/facebookresearch/ResNeXt">https://github.com/facebookresearch/ResNeXt</a></p><p id="0187c027-0f92-468d-aa65-e060e294662a" class="">[2] <a href="https://study-grow.tistory.com/37">https://study-grow.tistory.com/37</a></p></div>

@@ -1,0 +1,728 @@
+---
+layout: post
+title: "You Only Look Once: Unified, Real-Time Object Detection"
+date:   2020-7-1
+excerpt: ""
+tags: [Object detection, image]
+feature: ../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/YOLO.png 
+comments: true
+---
+
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><p id="d252f23a-b84c-48d5-9a11-1aab2082d7d9" class="">
+</p><blockquote id="8521dac3-fc32-419d-9b07-dd39e8a8ea6b" class="">Redmon, Joseph, et al. &quot;You only look once: Unified, real-time object detection.&quot; Proceedings of the IEEE conference on computer vision and pattern recognition. 2016.</blockquote><p id="23aab5a8-63a4-4537-a15a-d93cdb5b8551" class="">
+</p><p id="46b80d76-414c-4e2e-99b2-edf5f3aad2db" class="">정말정말 유명한 논문이고 다른 분들의 리뷰도 많기 때문에 지금 시점에 이 논문의 리뷰를 작성하는 의미는 잘 모르겠지만....</p><p id="479b73f3-22f0-4db2-ad12-585a18753b97" class="">Object detection을 이용해서 풀어야할 문제가 생겨 YOLO 논문 정리부터 차근차근 시작해보고자 한다.</p><p id="f9d9b6e1-6e6a-466b-b4e5-4931aa0ab61e" class="">
+</p><h1 id="8256a2e6-b48d-41c3-8c07-6e8b84ff48d3" class="">1. Intro</h1><p id="c2583129-003e-4f5e-abbd-9966940e4928" class="">논문에서 제안하는 모델은 <strong>YOLO</strong>이다.</p><p id="7d1309e8-8163-4152-90c6-3ab32bc55b80" class="">YOLO는 전체 이미지 픽셀로부터 Bounding box와 box 내의 각 클래스 확률을 예측하는 통합된 회귀 모델 구조를 이용해 object detection문제를 해결한다.</p><p id="8606180a-5aa9-48ad-b1ea-66288800618f" class="">
+</p><p id="5a4096b8-e108-4302-b689-003dcc92c88d" class="">앞서 설명했듯 YOLO는 두 과정(bounding box 예측, class 추론)이 통합된 단일 네트워크로 구성되기 때문에 end-to-end 모델이다. </p><p id="2374f0f2-1fed-4fb8-971f-66b566eeaac9" class="">이 점은 모델의 학습과 최적화에 매우 큰 이점을 준다.</p><figure class="block-color-red callout" style="white-space:pre-wrap;display:flex" id="5cad9767-031e-406e-9491-acaed83ecc60"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">R-CNN 같은 region proposal 방법의 경우 bounding box의 후보들을 생성하는 방법을 적용한 이후 classifier를 이용해 제안된 box를 분류하게 된다.
+
+이렇게 복잡한 pipeline을 가진 모델은 각각의 부분을 개별적으로 학습시켜야 하기 때문에 느리고 모델 최적화도 힘들다.</div></figure><p id="313d8a1f-925c-48a9-84b4-14f60c94ba30" class="">
+</p><p id="ed94b0d5-b628-4844-a25b-5594f74d038c" class="">unified model인 YOLO의 장점은 다음과 같다.</p><ol id="29d2668d-c0c6-46f8-9ec1-6c69e9e0f945" class="numbered-list" start="1"><li><strong>YOLO is extremely fast.
+</strong>YOLO는 앞서 말한 이유로 다른 모델에 비해 빠를 뿐만 아니라 다른 real-time 시스템과 비교해서 mAP가 두 배 이상 뛰어나다.</li></ol><ol id="daa223bc-7dbb-4ba0-b326-8ef8b6efa924" class="numbered-list" start="2"><li><strong>YOLO reasons globally about the image when making predictions.
+</strong>YOLO는 한 번에 전체 이미지를 보기 때문에 contextual information 파악이 용이하다.</li></ol><ol id="dd7e8032-9537-4be6-a59d-56ae693189ea" class="numbered-list" start="3"><li><strong>YOLO learns generalizable representations of objects.
+</strong>새로운 데이터에서 실험을 했을 때 좀 더 안정적인 성능을 보였다.</li></ol><p id="ef02c3f1-e7fb-4d1a-a219-b9820a24ed9a" class="">
+</p><h1 id="de578f7b-bff1-4b14-beab-4d6dc1f8d7c5" class="">2. Unified Detection</h1><p id="302ca3a8-5116-4a19-be31-bde9ed1bce77" class="">YOLO는 다음의 두 과정을 하나의 단일 네트워크로 통합한 구조이다.</p><ul id="6c4cd3f2-b0e6-43e6-82c0-67a03907a1eb" class="bulleted-list"><li>전체 이미지로 부터 각각의 bounding box를 예측하는 문제.</li></ul><ul id="07ccf9c6-5a7f-404a-b449-9e10570dc2ad" class="bulleted-list"><li>모든 bounding box에 대해 class를 예측하는 문제</li></ul><p id="1b68d376-b759-4d24-8d06-b2e94881962c" class="">
+</p><h2 id="5edd0f80-d283-4580-9b20-e352d845bed2" class="">YOLO의  작동방식</h2><figure id="52929ec3-7296-433f-80c4-97159eaf7a1b" class="image"><a href="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled.png"><img style="width:474px" src="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled.png"/></a></figure><p id="f9175a29-9874-4f64-b091-84c32e6ba45f" class="">
+</p><ol id="6adb1c5b-bbcb-4502-be5d-53bb7b7bda87" class="numbered-list" start="1"><li><strong>전체 이미지를 S x S 그리드로 나눈다. (예시는 7 x 7)</strong><p id="1c9ff77b-d740-400e-8c82-7e61d97e528e" class="">
+</p></li></ol><ol id="9a97009e-0f4d-4ef1-b6aa-da0ab581a30e" class="numbered-list" start="2"><li><strong>각각의 그리드에서 Bounding box를 예측하고 confidence score를 구한다.
+
+Bounding box 예측
+</strong>Box의 중심 (x, y), 박스의 크기(w, h)를 예측한다.<strong>
+
+confidence score
+</strong>모델이 예측하기에 bounding box 내에 object가 있음을 확신하는 정도 + 이런 확신의 정확성을 수치화한 점수.<figure class="block-color-red callout" style="white-space:pre-wrap;display:flex" id="3251110b-4e5a-4abc-9abe-9d5d36944f3f"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>confidence score : </strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Pr</mi><mo>⁡</mo><mo stretchy="false">(</mo><mtext> Object </mtext><mo stretchy="false">)</mo><mo>∗</mo><msubsup><mrow><mi mathvariant="normal">I</mi><mi mathvariant="normal">O</mi><mi mathvariant="normal">U</mi></mrow><mtext>pred </mtext><mtext>truth </mtext></msubsup></mrow><annotation encoding="application/x-tex">\operatorname{Pr}(\text { Object }) * \mathrm{IOU}_{\text {pred }}^{\text {truth }}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">P</span><span class="mord mathrm">r</span></span><span class="mopen">(</span><span class="mord text"><span class="mord"> Object </span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.3054459999999999em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">I</span><span class="mord mathrm">O</span><span class="mord mathrm">U</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9223379999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">pred </span></span></span></span></span><span style="top:-3.1362300000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">truth </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>
+
+- 그리드 안에 object가 없을 경우 : 0
+- 그리드 안에 object가 있을 경우 : IOU between predicted box and truth</div></figure><p id="ee6ba33d-2400-42eb-b3ea-80c8634749f4" class="">
+</p></li></ol><ol id="789d75c0-5ef6-4d40-a6a7-efcbd16bad1b" class="numbered-list" start="3"><li><strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Pr</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mtext> Class </mtext><mi>i</mi></msub><mo>∣</mo><mtext> Object </mtext><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\operatorname{Pr}\left(\text { Class }_{i} \mid \text { Object }\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">P</span><span class="mord mathrm">r</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord text"><span class="mord"> Class </span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord text"><span class="mord"> Object </span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span><span>﻿</span></span></strong><strong>를 예측한다.</strong><p id="c16f04ca-6386-496b-9a9e-65e2be53f928" class="">
+</p></li></ol><ol id="874d5d7e-e852-45ba-9dd9-72e08ddb777c" class="numbered-list" start="4"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Pr</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mtext> Class </mtext><mi>i</mi></msub><mo>∣</mo><mtext> Object </mtext><mo fence="true">)</mo></mrow><mo>∗</mo><mi mathvariant="normal">Pr</mi><mo>⁡</mo><mo stretchy="false">(</mo><mtext> Object </mtext><mo stretchy="false">)</mo><mo>∗</mo><mi>I</mi><mi>O</mi><msubsup><mi>U</mi><mtext>pred </mtext><mtext>truth </mtext></msubsup></mrow><annotation encoding="application/x-tex">\operatorname{Pr}\left(\text { Class }_{i} \mid \text { Object }\right) * \operatorname{Pr}(\text { Object }) * IOU_{\text {pred }}^{\text {truth }}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">P</span><span class="mord mathrm">r</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord text"><span class="mord"> Class </span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord text"><span class="mord"> Object </span></span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">P</span><span class="mord mathrm">r</span></span><span class="mopen">(</span><span class="mord text"><span class="mord"> Object </span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.2683239999999998em;vertical-align:-0.4192159999999999em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-2.4168920000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">pred </span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">truth </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4192159999999999em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span><p id="17bfd646-c0bc-4230-90cf-0febc7863331" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mi mathvariant="normal">Pr</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mtext> Class </mtext><mi>i</mi></msub><mo fence="true">)</mo></mrow><mo>∗</mo><mi>I</mi><mi>O</mi><msubsup><mi>U</mi><mtext>pred </mtext><mtext>truth </mtext></msubsup></mrow><annotation encoding="application/x-tex">=\operatorname{Pr}\left(\text { Class }_{i}\right) * IOU_{\text {pred }}^{\text {truth }}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">P</span><span class="mord mathrm">r</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord text"><span class="mord"> Class </span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.2683239999999998em;vertical-align:-0.4192159999999999em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-2.4168920000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">pred </span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">truth </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4192159999999999em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span><strong>를 계산한다.</strong></p><p id="49ea02fb-e104-4078-ac5c-5d86780e2212" class="">
+</p></li></ol><h2 id="3b04d423-58f9-40f1-af08-981134241912" class="">Network Design</h2><p id="7bdf417e-973c-476b-9ae7-e09286bfe5ff" class="">24개의 Convolution과 2개의 Fully connected layer로 구성되어 있다.</p><figure id="3faa2517-87d5-49ee-a390-08e7df78e80e" class="image"><a href="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%201.png"><img style="width:802px" src="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%201.png"/></a></figure><p id="a66c36f0-c3ab-49a1-a290-3970de7d4a42" class="">저자들의 말로는 모델의 구조는 GoogLeNet에 영향을 많이 받았지만 인셉션 모듈을 사용하지는 않고 1 x 1 reduction layer를 사용했다고 한다.</p><p id="a14495df-7660-43b3-9ae8-793e08769bbe" class="">(Fast YOLO의 경우 24개의 Conv가 아닌 9개를 사용했다고 한다.)</p><p id="4d4bac3c-5e10-4397-bec4-8c7557582197" class="">
+</p><h2 id="33e00f0d-e6e6-4217-9e00-aecb3d42e951" class="">Training</h2><h3 id="28d844ca-9fee-42a7-bf19-203cb3a0a383" class="">pretraining</h3><p id="d7660519-7c20-4c7f-b734-93d7f63c0d5e" class="">초기 20개의 convolution layer를 ImageNet 1000-class competition dataset을 이용해 pretrain 시켰다.</p><p id="a5ac533d-e39e-4d10-8348-d1da6c5d98b3" class="">이후에 랜덤하게 초기화된 convolution 4개와 fully connected layer를 추가해 최종 detection 모델을 학습 시켰다.</p><p id="f0d4729d-af42-4706-a67c-622bf7686b37" class="">
+</p><h3 id="fe25a1ed-faec-4852-a3c1-2b230848077e" class="">Resolution</h3><p id="c3316acf-e292-4f32-a61a-df386976233e" class="">Detection 이 때때로 fine-grained visual information를 요구하기 때문에 해상도를 224 × 224 에서 448 × 448로 증가시켰다.</p><p id="6c1e88e5-fdd6-4aed-b3b6-0541e7b1f3ca" class="">
+</p><h3 id="1e66468b-3f69-4614-99a2-0aa9d8dcf3f3" class="">Normalize</h3><p id="b69c9750-cbdb-4feb-acd9-bbb355a76df4" class="">최종 layer의 아웃풋은 S x S X (B * 5 + C)가 된다.</p><p id="06a7d0c7-3c03-46b8-a08a-fed96011b671" class="">C는 각 클래스의 확률을 의미하기 때문에 0 ~1 사이 값을 갖게된다. </p><p id="8d4c9f88-70e0-4383-a555-448abb093a84" class="">B는 Bounding box에 대한 정보를 의미하는데 box의 중심 좌표, 높이, 너비 등을 갑 그대로 사용할 경우 loss function에서 scale 문제가 발생할 것이다.</p><p id="5526499d-fd7b-41cb-98a6-48b422700df9" class="">따라서 normalize를 통해 값을 0 ~ 1사이가 되도록 조절하는 과정을 거쳤다.</p><figure class="block-color-red callout" style="white-space:pre-wrap;display:flex" id="9c838dbb-664a-4246-8c2e-f31cd3e2e176"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">How?
+<strong>Bounding box의 너비와 높이</strong> : 전체 이미지 크기를 통해 normalize
+<strong>object의 center 좌표</strong> :  특정 그리드의 offset이 되도록 조절을 통해 normalize</div></figure><p id="0b643449-6630-4912-94f4-4bfb276d260d" class="">
+</p><h3 id="27e8598a-0661-46e1-a325-1020b0fee3bb" class="">Activation function</h3><p id="01ce6d85-9495-4eef-afa8-35c2b3f3dba7" class="">최종 Fully connected layer만 linear activation function을 사용했고 나머지 layer는 전부 leakt ReLU를 사용했다.</p><figure id="98c728d6-449c-427c-927b-0e4424e508b9" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\phi(x)=\left\{\begin{array}{ll}x, & \text { if } x>0 \\0.1 x, & \text { otherwise }\end{array}\right.$$</div></figure><p id="8c6fc060-ac33-416c-a8ab-b372ef60ac1e" class="">
+</p><h3 id="a23f3a59-a599-424c-8196-705e9dd87d8c" class="">Loss function</h3><p id="3af3658a-d28f-41de-8d8e-3d5b027b7fa4" class="">최적화하기 가장 용이한 SSE (sum-squared error)를 사용했다.</p><p id="2322754d-f78a-47ab-a3dc-004de8bcb0c4" class="">하지만!!</p><p id="d069c103-cfe3-44ea-9b9f-e77cd11c650d" class="">SSE에는 몇 가지 문제가 있었기에 저자들은 몇 가지 수정을 거쳤다.</p><p id="32f2358e-3c68-48d0-aa3b-4435ac154150" class="">
+</p><p id="d1cc4584-5c88-4f92-ab36-6aa8904f715b" class=""><strong>localization error vs classification error</strong></p><p id="053e3dab-9646-445e-a4f9-a5788a1c5861" class="">모델의 아웃풋에 localization과 classification 값에 대한 예측이 모두 있기 때문에 단순 SSE는 이것들의 가중치를 같게 두는 것으로 볼 수 있다.</p><figure class="block-color-red callout" style="white-space:pre-wrap;display:flex" id="6dfcd6a3-2eeb-4cdd-bd17-33e678138bef"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">예를 들어 그리드에서 배경의 경우 object가 있을 확률의 ground truth는 0이다. back propagation을 진행할 경우 이 부분에서 loss가 클 가능성이 매우 높고 이것을 학습하기 위해 오히려 중요한 object가 있는 그리드의 학습을 못하게 될 가능성이 크다.</div></figure><p id="e55def32-0c4b-40e8-9e81-beaf2f7a581d" class="">→ bounding box 좌표와 관련된 loss는 증가시키고 배경에서 confidence 예측에 대한 loss는 감소시키는 것으로 해결했다.</p><p id="98777a95-5804-46b3-9074-e5365d669b7d" class="">
+</p><p id="d7932f50-454a-4f4a-b5ef-9d0a6d4aea07" class=""><strong>Large box vs Small box</strong></p><p id="db7bb013-7579-4800-bc3a-a25bb6c8776c" class="">box의 크기에 따라서 오차가 차지하는 비중의 차이는 다르다.</p><p id="a79ac625-a17b-470a-bb85-0a9c11893137" class="">기본적인 SSE는 이 점을 고려할 수 없기 때문에 모델의 높이와 너비 예측을 단순히 높이와 너비 자체를 구하는 것이 아닌 루트를 취한 높이와 너비 값을 예측하는 문제로 변환해 해결했다. </p><p id="5fb90d26-5a4d-4ac5-8ae2-e84bc97c0354" class="">
+</p><p id="cd9bdbc9-98e1-4736-8d9a-8cad6a155c3c" class=""><strong>multiple bounding box</strong></p><p id="944706d7-4eaf-4f54-839f-17c13f600bbe" class="">이부분에 해당하는 논문 내용인데 한글로 해석하자니 상당히 모호해지는 거 같다. 더 정확한 이해를 위해서는 원문을 보자.</p><figure class="block-color-red callout" style="white-space:pre-wrap;display:flex" id="dc6b0807-d800-4613-ac23-7587f4760d8a"><div style="font-size:1.5em"><span class="icon">👉</span></div><div style="width:100%">YOLO predicts multiple bounding boxes per grid cell. At training time we only want one bounding box predictor to be responsible for each object. We assign one predictor to be “responsible” for predicting an object based on which prediction has the highest current IOU with the ground truth. This leads to specialization between the bounding box predictors. Each predictor gets better at predicting certain sizes, aspect ratios, or classes of object, improving overall recall.</div></figure><p id="358d10d1-b115-4137-b815-054099300c34" class="">
+</p><p id="8ee0c420-5c20-4c94-bf40-b62ca3f5b9f2" class="">간략한 요약은 YOLO는 multiple bounding box를 예측하는 모델이라서 단순히 전체 예측을 하는 predictor하나를 학습하기는 매우 어려울 것이다.</p><p id="86d11e95-5593-4e65-bf4e-19cf14b32d72" class="">따라서 논문의 저자들은 bounding box 수에 맞춰 다수의  predictor들을 생성하고 각 클래스를 예측하는 것에 서로 다른 특성을 갖게 하기를 원하는 것 같다. </p><p id="1fa8cdcf-4637-41f5-a86b-baf2902100fa" class="">
+</p><p id="6cb5e109-8f47-46da-9e30-bd063f507ae5" class="">
+</p><p id="89401ece-9063-4b3f-9f4e-08c8b2915059" class=""><strong>최종적인 Loss function은 다음과 같다.</strong></p><figure id="61948209-36c7-447a-b6c7-164be5e98621" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\begin{aligned}{\lambda_{\text {coord }} \sum_{i=0}^{S^{2}} \sum_{j=0}^{B} {1}_{i j}^{\text {obj }}\left[\left(x_{i}-\hat{x}_{i}\right)^{2}+\left(y_{i}-\hat{y}_{i}\right)^{2}\right]}{ } \\+\lambda_{\text {coord }} \sum_{i=0}^{S^{2}} \sum_{j=0}^{B} 1_{i j}^{\text {obj }}\left[(\sqrt{w_{i}}-\sqrt{\hat{w}_{i}})^{2}+(\sqrt{h_{i}}-\sqrt{\hat{h}_{i}})^{2}\right] \\+\sum_{i=0}^{S^{2}} \sum_{j=0}^{B} 1_{i j}^{\text {doj }}\left(C_{i}-\hat{C}_{i}\right)^{2} \\+\lambda_{\text {noobj }} \sum_{i=0}^{S^{2}} \sum_{j=0}^{B} 1_{t j}^{\text {noobj }}\left(C_{i}-C_{i}\right)^{2} & \\+\sum_{i=0}^{S^{2}} 1_{i}^{\text {obj }} \sum_{c \in \text { classs }}\left(p_{i}(c)-\hat{p}_{i}(c)\right)^{2}\end{aligned}$$</div></figure><p id="448be349-43f2-4029-8f75-03bcba579805" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mn mathvariant="double-struck">1</mn><mi>i</mi><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">b</mi><mi mathvariant="normal">j</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">\mathbb{1}_{i}^{\mathrm{obj}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2438799999999999em;vertical-align:-0.276864em;"></span><span class="mord"><span class="mord"><span class="mord">1</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9670159999999999em;"><span style="top:-2.4231360000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span style="top:-3.1809080000000005em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">o</span><span class="mord mathrm mtight">b</span><span class="mord mathrm mtight">j</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.276864em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> : if object appears in cell i</p><p id="60c624c2-5150-4703-8ac7-6e2d225edef2" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mn mathvariant="double-struck">1</mn><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">b</mi><mi mathvariant="normal">j</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">\mathbb{1}_{i j}^{\mathrm{obj}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.379988em;vertical-align:-0.412972em;"></span><span class="mord"><span class="mord"><span class="mord">1</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9670159999999999em;"><span style="top:-2.4231360000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span style="top:-3.1809080000000005em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">o</span><span class="mord mathrm mtight">b</span><span class="mord mathrm mtight">j</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.412972em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> : the jth bounding box predictor in cell i is “responsible” for that prediction.</p><p id="cc8a62ec-9e62-4831-851f-c452f3424851" class="">(위의 내용들을 보고 loss function을 보니 이해가 된다!)</p><p id="be59174e-d678-426a-8792-15526db03361" class="">
+</p><h2 id="cde60393-a912-4a6b-9caa-b24ee3fa028e" class="">Inference</h2><p id="963a001b-bcb0-4854-b8e9-79388e3652b5" class="">항상 말했듯 다른 모델에 비해 YOLO는 정말 빠르다는 점을 강조한다.</p><p id="5e9297c6-0c1b-47f4-b450-a2f936b9c038" class="">object가 한 그리드 안에 쏙 들어갈 경우 bounding box는 하나로 매우 정확히 예측이 가능하다. </p><p id="ebbae19c-3e60-42e2-9590-feb16194202d" class="">하지만 object가 너무 크거나 object가 다수의 그리드의 가장 자리에 위치할 때 너무 많은 bounding box가 생성될 수 있다.</p><p id="6c49328f-dead-41f3-9fd9-0510801ba7f0" class="">이것을 해결할 방법은 Non-maximal supression이다.</p><h3 id="32966b72-73e1-49e3-8c5c-d937855d1c37" class="">Non-maximal supression [1]</h3><p id="150d9364-fa2d-4e81-ad88-de8c2298ff67" class="">Non-maximal supression은 다음과 같은 순서로 진행된다.</p><ol id="16b13971-3d4f-43b8-840d-a2f2bdd2dda4" class="numbered-list" start="1"><li><strong>동일한 클래스에 대해 confidence를 정렬한다.</strong></li></ol><ol id="c30c511a-06d5-4286-907d-f1e2c75701f7" class="numbered-list" start="2"><li><strong>가장 confidence가 높은 bounding box를 기준으로 IoU가 threshhold를 넘는 bounding box를 제거한다.</strong></li></ol><ol id="0ab570e3-b6f7-46d4-ba4d-e32dbf249037" class="numbered-list" start="3"><li><strong>제거되지 않은 box들 중에서 2번 과정에서 선정된 box를 제외한 이후 1~2 과정을 반복한다.  (더 이상 후보 box가 남지 않으면 알고리즘을 종료한다.)</strong></li></ol><p id="31a5af7f-3031-4411-a7d6-4bc09de0c28c" class="">
+</p><p id="35330441-347a-4321-90ee-d74e200b434c" class="">위의 과정을 진행할 경우 중복된 box들은 전부 제거되고 거리가 떨어져 있는 유의미한 box들만 살아남을 것이다.</p><p id="33fe8063-c206-479d-b9cc-f2c5c59adef9" class="">
+</p><h2 id="508b014c-6f53-4701-94f3-0d643376e6b2" class="">Limitations of YOLO</h2><ol id="2998dde8-cee2-4d0d-b828-99dda96f7a83" class="numbered-list" start="1"><li><strong>YOLO imposes strong spatial constraints on bounding box predictions
+</strong>이미지를 그리드로 나누는 작업은 어떻게 보면 매우 큰 제약일 수 있다. 이런 그리드는 object 사이의 간격에 매우 큰 제약을 줄 것이다.
+YOLO는 새 떼와 같이 작은 물체들을 도저히 구분할 수 없을 것이다.<p id="5c6fe9be-441b-4f39-ad54-5b9f8b839b25" class="">
+</p></li></ol><ol id="9ef5d709-92bb-4189-9816-1f9cb7a4c9c0" class="numbered-list" start="2"><li><strong>it struggles to generalize to objects in new or unusual aspect ratios or configurations.
+</strong>이건 YOLO만의 문제가 아닌 것 같다. data driven model의 피할 수 없는 숙명이 아닐까 싶다.<p id="533388e2-0e0a-4a11-aaba-6511e692df1c" class="">
+</p></li></ol><ol id="435d69a8-1762-4516-a7d6-00b987e14961" class="numbered-list" start="3"><li><strong>Our model also uses relatively coarse features for predicting bounding boxes
+</strong>down sampling 같은 기법으로 인해 그렇다고 하는데 이 부분도 다른 모델들과 크게 차이가 없지 않을까 싶다.
+</li></ol><ol id="160f6509-3c84-433e-8fed-ea35c9feae83" class="numbered-list" start="4"><li><strong>our loss function treats errors the same in small bounding boxes versus large bounding boxes.
+</strong>loss function에서 알 수 있듯이 prediction에서 Large box와 Small box의 크기 차이에서 오는 오차를 고려해 높이와 너비를 다르게 계산하긴 했다. 
+
+<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mtext>coord </mtext></msub><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><msup><mi>S</mi><mn>2</mn></msup></msubsup><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mi>B</mi></msubsup><msubsup><mn>1</mn><mrow><mi>i</mi><mi>j</mi></mrow><mtext>obj </mtext></msubsup><mrow><mo fence="true">[</mo><mo stretchy="false">(</mo><msqrt><msub><mi>w</mi><mi>i</mi></msub></msqrt><mo>−</mo><msqrt><msub><mover accent="true"><mi>w</mi><mo>^</mo></mover><mi>i</mi></msub></msqrt><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><msqrt><msub><mi>h</mi><mi>i</mi></msub></msqrt><mo>−</mo><msqrt><msub><mover accent="true"><mi>h</mi><mo>^</mo></mover><mi>i</mi></msub></msqrt><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_{\text {coord }} \sum_{i=0}^{S^{2}} \sum_{j=0}^{B} 1_{i j}^{\text {obj }}\left[(\sqrt{w_{i}}-\sqrt{\hat{w}_{i}})^{2}+(\sqrt{h_{i}}-\sqrt{\hat{h}_{i}})^{2}\right] </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.80002em;vertical-align:-0.65002em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">coord </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.12682em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913142857142857em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981231em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.43581800000000004em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9670159999999999em;"><span style="top:-2.4231360000000004em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span style="top:-3.1809080000000005em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">obj </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.412972em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">[</span></span><span class="mopen">(</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.72528em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.68528em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.31472em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.85722em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.16666em;"><span class="mord">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.81722em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.18278000000000005em;"><span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.85722em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.81722em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.18278000000000005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.08894em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9578799999999998em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">h</span></span></span><span style="top:-3.26344em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.04894em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15106000000000008em;"><span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">]</span></span></span></span></span></span></span><span>﻿</span></span>
+
+하지만 confidence계산에 이용되는 IOU 계산 등 크기 차이에서 발생하는 모든 오차의 scale 차이를 고려하지는 못했다.</li></ol><p id="bce4df8d-f5ec-4c1d-ba6f-4d4d624e81ab" class="">
+</p><h1 id="7e2ff1d1-b7dc-48b1-a789-7a8ffb16b011" class="">3. Comparison to Other Detection Systems</h1><p id="dd606964-ca9b-4a1b-8c9d-86ad115c1f92" class="">비교 모델들의 특성은 정말 간략하게만 알아보면 좋을 거 같다.</p><p id="90483ccc-abdf-4777-9e11-3736a93c80cc" class="">
+</p><h2 id="5ea1e662-698a-4a06-9c12-c0d0f57157ce" class="">DPM</h2><p id="8c73268c-8c9b-481d-9135-4964111d6d82" class="">sliding window approach를 사용하며 static features 추출, region 분류, bounding box 예측의 전 과정이 분리되어 있다.</p><p id="cd14f92a-6edc-4875-9285-2c43d76e91c2" class="">→ YOLO는 위의 일련의 과정을 하나의 네트워크로 통합했고 더 빠르고 성능도 좋다.</p><p id="63c74d0e-a216-4afd-b597-6470be49beed" class="">
+</p><h2 id="63a4b082-de86-4e86-bad2-9e41ce804ad4" class="">R-CNN</h2><p id="c12995c7-326d-4d7c-aadc-e137746552bd" class="">Selective Search를 통해 potential bounding box를 생성한 후 Convolution network, SVM, linear model을 순차적으로 적용해 object detection을 진행한다.</p><p id="cf9ac9a5-8486-4fbf-8712-24364dc655e1" class="">각각의 모델들을 개별적으로 학습 시켜야 하기 때문에 최적화가 어렵고 속도가 매우 느리다.</p><p id="f093b12e-5607-4ca4-9500-a0d9d6b8d171" class="">→ potential bounding box를 제안하는 것과 Convolution을 이용해 feature를 추출하는 것에는 공통점이 있으나 그리드를 이용해 훨씬 적은 bounding box를 제안한다.</p><p id="2a606ed7-20db-4bf1-8eb1-bc5ff6522578" class="">
+</p><h2 id="64a9e5c5-851d-4b09-897b-d5ff4efd69f7" class="">Fast &amp; Faster R-CNN</h2><p id="e68ec28d-70ce-4308-b8e3-b5f575da79e6" class="">R-CNN의 속도를 개선하고 성능 향상을 위해 제안된 모델들이다. 하지만 여전히 real-time object detection에 사용하기에는 부족하다.</p><p id="76a3064a-cbfa-466d-9d2a-4acd69832bbc" class="">
+</p><h2 id="8f00e21e-00c0-4825-8238-b8605243ea1d" class="">Deep MultiBox</h2><p id="aa4a213b-e2c2-44d6-9861-697d86208526" class="">R-CNN의 Selective Search를 대신해 CNN을 이용해 RoI(regions of interest)를 구한다. MultiBox는 single object detection 밖에 할 수없으며 Multi object detection을 위해서는 multi object detection을 위한 complex pipeline의 일부분에 사용되는 방법밖에 없다.</p><p id="c902b8d4-4c72-4c9e-bf5a-f7b5b21c677b" class="">
+</p><h2 id="7573cfc3-5ae3-43b4-9bb2-8c1487cda772" class="">OverFeat</h2><p id="f2edd8b9-abff-425c-82ca-8bbacd1aebb0" class="">CNN을 이용해 localization과 detection을 진행한다. OverFeat은 sliding window 방식을 매우 효율적으로 실행시키는 것은 맞지만 DPM과 같이 개별적인 모델을 이용한 방식이기에 한계가 명확하다.</p><p id="1280f5dd-d705-40c5-a8be-3341f63cba51" class="">또한, sliding window 방식은 image의 전체를 보는 방식이 아니기에 global context를 고려할 수 없다.</p><p id="8f3a01a4-29e8-4826-89b3-d2c24195d8cf" class="">
+</p><h2 id="42ca2f26-af50-415a-802b-2c1a689b6b92" class="">MultiGrasp</h2><p id="e0140cfa-ef35-4844-874e-63a5360aea5c" class="">YOLO의 그리드 접근의 뿌리가 되는 기법이다. 하지만 MultiGrasp는 너무나 단순한 모델이다.</p><p id="c0bd7351-6a3a-4625-bf8b-569437ad0fb5" class="">MultiGrasp는 단일 graspable region을 예측하며 single object를 위한 모델이다. </p><p id="dc30178c-936e-47e8-9c1f-47f2fd92adc9" class=""> </p><h1 id="5830fc3d-968a-4b5a-a99f-aa175be185f8" class="">4. Experiments</h1><h2 id="afe13c9f-4e1c-4823-a7d9-4f4eb8bc4723" class="">Comparison to Other Real-Time Systems</h2><p id="50dede61-e64c-4e14-929e-b857cc06ee71" class="">다음 한 장의 그림으로 요약 가능하다.</p><figure id="4c06ccf8-9d30-45ca-a30c-2cfc434e1aa8" class="image"><a href="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%202.png"><img style="width:471px" src="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%202.png"/></a></figure><p id="a01de46e-4f3f-47dd-bef0-745288cc84b6" class="">
+</p><h2 id="a2c69eb2-9906-4b69-ab48-bf1d15bac2cc" class="">VOC 2007 Error Analysis</h2><p id="0c04dd89-5c5a-4258-8b29-60039ae01f1a" class="">
+</p><figure id="0c3733f4-45fc-4892-affb-e4ba4efe3ef7" class="image"><a href="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%203.png"><img style="width:474px" src="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%203.png"/></a></figure><p id="28e76a58-ed40-45db-88e1-883e837baab3" class="">각 범주의 기준은 다음과 같다.</p><ul id="c77c71bf-3f36-4bd1-b0c7-77ff2e60079d" class="bulleted-list"><li>Correct: correct class and IOU &gt; .5</li></ul><ul id="ffc0b6ec-ea20-42f0-926d-2192c042f360" class="bulleted-list"><li>Localization: correct class, .1 &lt; IOU &lt; .5</li></ul><ul id="255137a8-344e-4915-a7eb-0128257db894" class="bulleted-list"><li>Similar: class is similar, IOU &gt; .1</li></ul><ul id="ae8922d7-8145-4d4e-8e2a-3bfa79223105" class="bulleted-list"><li>Other: class is wrong, IOU &gt; .1</li></ul><ul id="4a6fb56f-f60f-486f-aeba-e989e423749c" class="bulleted-list"><li>Background: IOU &lt; .1 for any object</li></ul><p id="2b48033e-212e-45dc-91e9-1ee7809f4ba1" class="">YOLO는 Localization 비율이 상대적으로 높고 Background의 비율이 매우 낮다.</p><p id="8101ad70-3710-4908-85be-3c7ea5eac6f6" class="">
+</p><h2 id="314e7606-a506-4685-ac09-44544096cfd0" class="">Combining Fast R-CNN and YOLO</h2><p id="daf1f391-e290-4c5c-868f-a00b06663c5e" class="">YOLO의 background를 적게 잡는다는 점을 이용해서 Fast R-CNN과 결합한 구조의 성능을 검증했다.</p><figure id="1b84324c-d3fa-49d3-b06b-16510fb4a0e6" class="image"><a href="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%204.png"><img style="width:460px" src="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%204.png"/></a></figure><p id="81650b8a-09e5-499a-b4df-5020de275e51" class="">Fast R-CNN에 YOLO를 결합했을 때 Gain이 3.2로 가장 높았다.</p><p id="dbf3651d-f539-4216-9d22-2fab79a9f956" class="">
+</p><h2 id="0b82c04f-26d1-4c6b-bb6d-43e23a99ea0f" class="">VOC 2012 Results</h2><p id="13604c42-461a-4e5b-95b9-6086ea0eed1e" class="">
+</p><figure id="5fc5d226-02ea-403c-bcb8-716be1aaf7fd" class="image"><a href="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%205.png"><img style="width:1483px" src="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%205.png"/></a></figure><p id="d993f0ba-ab32-47be-92ce-d9a23db53326" class="">
+</p><h2 id="3cd642fb-e5d4-4dc6-94ad-d485878bf374" class="">Generalizability: Persion Detection in Artwork</h2><p id="7b17f66e-afe1-4179-a375-a2d1b49ecded" class="">
+</p><figure id="d5a50378-0181-4966-b89e-4119c7a5db0e" class="image"><a href="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%206.png"><img style="width:968px" src="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%206.png"/></a></figure><p id="83a6c93f-562d-413b-9a45-df0fe623fb4b" class="">
+</p><figure id="4a73a32c-b191-48d3-89a4-14d808d491f1" class="image"><a href="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%207.png"><img style="width:965px" src="../assets/img/You%20Only%20Look%20Once%20Unified,%20Real-Time%20Object%20Detec%2052929ec37296433f80c497159eaf7a1b/Untitled%207.png"/></a></figure><p id="17dead57-efd9-4571-9c98-18f2296a6c43" class="">
+</p><p id="a614b3ba-1300-43fe-99c9-7649d46d479b" class="">
+</p><h1 id="9990c9b1-7350-48d3-af00-ee6f35cca43c" class="">Reference</h1><p id="0d7aad4c-d33f-44aa-8986-583cd5aeea0c" class="">
+</p><p id="271ab7f0-646b-406a-994f-bd053479875e" class="">[1] <a href="https://dyndy.tistory.com/275">https://dyndy.tistory.com/275</a></p></div>
