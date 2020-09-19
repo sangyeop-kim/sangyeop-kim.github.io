@@ -1,0 +1,624 @@
+---
+layout: post
+title: "Ensemble (Bagging vs Boosting)"
+date:   2020-5-19
+excerpt: ""
+blog: true
+tags: 
+feature: ../assets/img/Ensemble%20(Bagging%20vs%20Boosting)%20f0246893eea64315b16e3c28690470ed/1.png 
+comments: true
+---
+
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><p id="c56b77eb-d8a0-43ed-b05f-249605d5c7b8" class="">
+</p><h1 id="d69a4147-0be5-4db5-851e-5537640ec275" class="">Ensemble</h1><p id="48446bb5-eb32-4513-b49d-44ae0b342258" class="">Ensemble method는 예측 성능의 향상을 위해 사용된다..</p><p id="20bfa69e-c137-40bf-a8b4-2d0b49149f02" class="">Ensemble의 기본적인 원칙은 기본 모델(some model)을 설정하고 그것의 linear combination을 하는 것이다.</p><p id="c084f581-7689-4b36-9300-9dea89135f0f" class="">
+</p><p id="5ea960f2-ba01-4949-983d-ae805154e3f0" class="">d차원 input을 이용해 실수값을 예측하는 문제를 가정하자.</p><figure id="5ac9267d-9ce1-4cce-b0ae-220e9d2a39b2" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$g: \mathbb{R}^{d} \rightarrow \mathbb{R}$$</div></figure><hr id="ddbfdd0b-c124-4207-8af3-df81eef630b2"/><figure id="a40a3cb5-5064-4c32-984e-f98596aca6c1" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\hat{g}_{1}(\cdot), \hat{g}_{2}(\cdot), \hat{g}_{3}(\cdot), \ldots$$</div></figure><p id="081f7e37-5201-4ae2-861e-c06c173f585a" class="">위와 같이 M 개의 모델들을 형성한 이후</p><figure id="694323f5-dfe4-48ca-9d8f-0988d7d40e3d" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\hat{g}_{e n s}(\cdot)=\sum_{k=1}^{M} c_{k} \hat{g}_{k}(\cdot)\ \$$</div></figure><p id="b564927a-2ae0-4df1-bce1-a4f2b71acbf7" class="">개별 모델의 weighted sum 형태로 Ensemble 예측 모델을 만든다.</p><figure id="f0246893-eea6-4315-b16e-3c28690470ed" class="image"><a href="../assets/img/Ensemble%20(Bagging%20vs%20Boosting)%20f0246893eea64315b16e3c28690470ed/Untitled.png"><img style="width:528px" src="../assets/img/Ensemble%20(Bagging%20vs%20Boosting)%20f0246893eea64315b16e3c28690470ed/Untitled.png"/></a><figcaption>계수를 정하는 방식에 따른 bagging과 boosting</figcaption></figure><p id="bd08c866-1d71-488a-9874-0fcbe0ac04b6" class="">
+</p><p id="3f37b112-1cdd-4b20-862b-90b38e47b4f2" class="">bagging과 boosting은 모델의 성능을 향상시키는 방법 중 하나라는 점에서는 공통점이 있지만 근본적으로는 매우 큰 차이를 갖고 있다.</p><ul id="fbd4c383-4434-4cea-96d3-eec2ebfb707f" class="bulleted-list"><li>bagging : variance를 감소시키는 역할</li></ul><ul id="23c73c5e-d4b7-42ca-bee8-6da7dc434963" class="bulleted-list"><li>boosting : bias를 감소시키는 역할</li></ul><p id="e4aa5961-794b-40a9-80c1-91e29f692a19" class="">
+</p><figure id="be905605-0a51-4560-8d20-bac1d5314380" class="image"><a href="../assets/img/Ensemble%20(Bagging%20vs%20Boosting)%20f0246893eea64315b16e3c28690470ed/Untitled%201.png"><img style="width:336px" src="../assets/img/Ensemble%20(Bagging%20vs%20Boosting)%20f0246893eea64315b16e3c28690470ed/Untitled%201.png"/></a><figcaption>variance &amp; bias</figcaption></figure><p id="fafc0765-8d89-42a0-a1db-7e383e64ea15" class="">
+</p><h1 id="148d6e5f-ea32-442f-819e-65ef82e18d8a" class="">Bagging (<strong>b</strong>ootstrap aggregating)</h1><ol id="c3620ebe-ebea-47d0-b256-1a7d6f2c9fff" class="numbered-list" start="1"><li>데이터로부터 복원추출을 통해 n개의 bootstrap sample 생성.</li></ol><ol id="b6fa82a4-f144-4418-80ea-6a64380eb9d9" class="numbered-list" start="2"><li>해당 sample에 대해서 모델 학습.</li></ol><ol id="12cd503a-222a-424b-a6f1-ba06788399cd" class="numbered-list" start="3"><li>1, 2 과정을 M번 반복한 후 최종 Bagging 모델을 다음과 같이 정의</li></ol><figure id="e253145e-fa28-43fb-ba60-8ddedd686a4b" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\hat{g}_{B a g}(\cdot)=M^{-1} \sum_{k=1}^{M} \hat{g}^{* k}(\cdot)$$</div></figure><p id="51921926-8b50-49cb-820f-61e635a363c7" class="">
+</p><p id="0543c1bc-f078-40dd-9a13-53c683dc03d7" class="">Bagging 자체는 적용이 매우 쉬운 방법이라 어느 기본 모델에도 적용이 가능하다.</p><p id="eda622cb-1fda-42d1-bf4f-c173c5dc0bd6" class="">따라서, 가장 많이 쓰이는 Random Forest에 대해서만 다뤄도 좋을 거 같다!</p><h2 id="5455672c-b272-470b-bc04-f10607757f44" class="">- Random Forest</h2><figure id="0e28ade0-1782-4ebe-9200-8131b2fb2251" class="link-to-page"><a href="https://www.notion.so/Random-Forest-0e28ade017824ebe92008131b2fb2251"><span class="icon">🌲</span>Random Forest</a></figure><p id="c5434b47-e510-4da1-9dab-e089a9ed8a1c" class="">
+</p><hr id="902b9618-1445-46fb-bf56-dc3544757ad6"/><h1 id="75291a72-34cb-4838-bf88-5c16e8612101" class="">Boosting</h1><ol id="9df8e635-89b0-4018-ab09-046f0720f4a5" class="numbered-list" start="1"><li>weak learner를 생성한 후 Error를 계산.</li></ol><ol id="30e02012-87f7-4164-821b-46c0597c9a13" class="numbered-list" start="2"><li>Error에 기여한 Sample마다 다른 가중치를 주고 해당 Error를 감소시키는 새로운 모델 학습.</li></ol><ol id="edbee615-3302-4eb4-81b0-3225ce02a3d1" class="numbered-list" start="3"><li>1. ~2. 과정을 M번 반복한 후 최종 Boosting model을 다음과 같이 정의.<figure id="938b4741-925d-4845-994b-96c90b9f4e8d" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\hat{g}_{boost}(\cdot)=\sum_{k=1}^{M} c_{k} \hat{g}_{k}(\cdot)\ \$$</div></figure></li></ol><p id="4a878e5c-bbdf-4018-8f32-375b9fb4494b" class="">
+</p><p id="19c3463f-5177-4dc5-9f85-5134c1b4573a" class="">Bagging과 같이 병렬적인 Ensemble 방법이 아니다.</p><p id="625f0720-25b2-45c3-8aa2-68cb50fb5bf7" class="">Boosting은 순차적인 Ensemble 기법으로  c_k가 Sample Weight과 이전에 학습된 모델인</p><figure id="d8d9279b-69da-4c9a-a8bf-df7d21dc60da" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$\hat{g}_{1}, \ldots, \hat{g}_{k-1}$$</div></figure><p id="142c0062-8d88-46eb-9b43-bd314087231f" class="">에 의해 조절되는 특성을 지닌다.</p><p id="8680324f-05e6-4d0a-8c99-469441f6feab" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="d6883bfa-749a-4bc1-ad36-356a745306ce"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Boosting 기법은 Sample이 error에 기여하는 정도, Sample Weight을 조절(계산)하는 방법에 따라 종류가 매우 다양하다.</div></figure><p id="930cc5c3-a93c-494a-b799-c498769a8ea1" class="">더욱 자세한 내용은 아래의 링크들을 보자!</p><h2 id="6bb38074-5a1a-4ecb-9d96-76b3f8b1dd9e" class="">- AdaBoost (Adaptive Boost)</h2><figure id="048fe7e7-81d5-4460-9930-8e5aa6456fe8" class="link-to-page"><a href="https://www.notion.so/AdaBoost-048fe7e781d5446099308e5aa6456fe8"><span class="icon">💥</span>AdaBoost </a></figure><h2 id="be7b7109-7a9e-4a1b-819c-298c9492c1e9" class="">- Gradient Boost</h2><figure id="1f99cb2d-94e6-4436-a773-1d34f3f3fd3d" class="link-to-page"><a href="https://www.notion.so/Gradient-Boost-1f99cb2d94e64436a7731d34f3f3fd3d"><span class="icon">🧨</span>Gradient Boost</a></figure><h2 id="9b60d11b-9804-4074-811f-951371372c30" class="">- XGBoost</h2><figure id="23795aa5-717a-4b85-83e0-ec329ab047eb" class="link-to-page"><a href="https://www.notion.so/XGBoost-23795aa5717a4b8583e0ec329ab047eb"><span class="icon">🔥</span>XGBoost</a></figure><h2 id="233b0a45-f5e9-4327-b9d1-88cf370c9ea4" class="">- light GBM</h2><figure id="9dcc3c88-ccc3-4529-92f4-641102c12f60" class="link-to-page"><a href="https://www.notion.so/LightGBM-A-Highly-Efficient-Gradient-Boosting-Decision-Tree-9dcc3c88ccc3452992f4641102c12f60"><span class="icon">🐣</span>LightGBM: A Highly Efficient Gradient Boosting Decision Tree</a></figure><h1 id="ef7c8bb1-e10c-4f51-917b-efb9cc8e8405" class="">Reference</h1><p id="89360453-d1fd-4879-a4b6-7c4876aa1248" class="">[1] Gentle, James E., Wolfgang Karl Härdle, and Yuichi Mori, eds. Handbook of computational statistics: concepts and methods. Springer Science &amp; Business Media, 2012.</p><p id="55a815c5-7783-49ef-9b79-ed7ff2570325" class="">[2] <a href="https://quantdare.com/what-is-the-difference-between-bagging-and-boosting/">https://quantdare.com/what-is-the-difference-between-bagging-and-boosting/</a></p><p id="018e6cfb-5d9d-4a5a-9cc9-6919c32cd14e" class="">
+</p></div>

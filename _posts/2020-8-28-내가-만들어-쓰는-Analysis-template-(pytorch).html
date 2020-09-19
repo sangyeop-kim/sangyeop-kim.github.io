@@ -1,0 +1,723 @@
+---
+layout: post
+title: "내가 만들어 쓰는 Analysis-template (pytorch)"
+date:   2020-8-28
+excerpt: ""
+blog: true
+tags: 
+feature: ../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/torch_wallpaper.png 
+comments: true
+---
+
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><p id="0c032607-eb9b-4ce9-acd2-10dceef123eb" class="">2020.08.31</p><ul id="f41377d0-7354-405f-b436-be64bf44e5e6" class="bulleted-list"><li>AWS S3에서 데이터 불러오기 : 다른 블로그 글을 통해 설명할 예정</li></ul><ul id="4d4af49d-1dd6-4c95-8a94-e9308b1a6bcd" class="bulleted-list"><li>Pytorch template version 1 : model_fit, model_test, fit_cross_validation, test_cross_validation, early_stopping, save_ckpt_file, tensorboard, save_jupyter_ipynb_file, training_validation_log, hyperparameter_setting_list, data_loader, auto_learning_rate_finding, oversampling 추가</li></ul><p id="7d557886-b596-45bb-8307-27ed8f65ce9e" class="">
+</p><p id="1bbf3811-90fb-49e3-89d7-42124d846730" class="">추가 예정</p><ul id="5ecb7aaf-030c-4755-92f5-a5fea8fae605" class="bulleted-list"><li>sklearn template</li></ul><ul id="6ae3b127-0f49-4c4d-8df8-2044df02b262" class="bulleted-list"><li>data EDA tool</li></ul><ul id="4a502382-6b93-46ca-bd2c-1829311b5bc2" class="bulleted-list"><li>hyperparameter optimization</li></ul><ul id="c043510a-5e4c-4bb3-ba2b-bd5e2b190668" class="bulleted-list"><li>AWS db load</li></ul><p id="0b86c397-0df8-426e-a164-2fcb5499ff45" class="">
+</p><p id="92bf114d-3390-4e20-9b1b-e19b981be897" class="">
+</p><p id="3825c53a-e63b-4b20-aa5d-55c306f76b81" class="">아래 깃허브에서 Analysis template을 다운받을 경우 사용 가능!!</p><figure id="3c247f54-a695-4cad-be3e-6c67aa3da71a"><a href="https://github.com/sangyeop-kim/Analysis-template.git" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">sangyeop-kim/Analysis-template</div><div class="bookmark-description">Contribute to sangyeop-kim/Analysis-template development by creating an account on GitHub.</div></div><div class="bookmark-href"><img src="https://github.com/favicon.ico" class="icon bookmark-icon"/>https://github.com/sangyeop-kim/Analysis-template.git</div></div><img src="https://avatars2.githubusercontent.com/u/69177956?s=400&amp;v=4" class="bookmark-image"/></a></figure><p id="b27295de-7d5c-4975-87f5-634ad6265dfb" class="">깃헙에서 학습내용이 좀 깨져서 나오긴 하는데 실제로는 더 이쁘게 나온다.....</p><p id="1a8dc696-7bde-4bca-8fb1-7cda42538c10" class="">
+</p><nav id="7d0ca265-d2c6-4cd7-9183-615029cfd2f0" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#62fcb9bf-9e14-40aa-b45a-d84f2b3291d3">Sample code</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#582ef4d8-4196-477c-9a8e-4f69dc1be6bd">Requirements</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#0191ff9f-78d6-4ba3-9756-c8d02a5b0eac">import package</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#311c18cd-d6eb-4ef1-a6c0-4460efd991fc">data preprocessing (sample)</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#4b88ecb6-179c-4a29-95b5-e37f96e10643">model define (sample)</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#4966e0c8-a18f-47e6-b340-87e92b52dad8">hyperparameters (sample)</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#f8c98605-665d-4aa1-8431-fc051696b842">model training &amp; test</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#8b067bc2-e310-4712-8c71-9d477a861f45">model load</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#0dc0155f-5e0e-4e20-8dca-2cf8b3131c94">cross_validation train &amp; test</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#1aad9794-458d-41cf-94a0-d1f1a946af13">saved file list</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#f626d9b1-454f-4ddd-a99a-92fbf6d75775">ckpt</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#01a447f8-50e2-4d22-afc7-67445bbf5478">hparams.yaml</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#db3c96e8-5363-4833-8e75-199905d8ce4f">saved_ipynb_file.html </a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#42685240-48c8-4383-8f75-8ce88cc3de05">tensorboard</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#a26e4af7-c300-4460-8fc5-933efdb7de00">cross_validation</a></div></nav><p id="901387e9-94cb-4103-b2b9-682bea564e00" class="">
+</p><h1 id="62fcb9bf-9e14-40aa-b45a-d84f2b3291d3" class="">Sample code</h1><p id="6223c1d9-c119-4262-8c87-3427189f579e" class="">(sample)이 적힌 부분만 수정해서 사용하면 됨.</p><p id="e4729fe7-0d29-48cd-9e1b-0e0a6a029e77" class="">
+</p><h3 id="582ef4d8-4196-477c-9a8e-4f69dc1be6bd" class="">Requirements</h3><p id="528cf8cb-6b54-401c-ba09-8b2f2e819b55" class="">boto3==1.14.51
+easydict==1.9
+numpy==1.19.1
+pandas==0.25.3
+pytorch-lightning==0.9.0
+scikit-learn==0.23.1
+torch==1.6.0
+torchvision==0.7.0</p><p id="9b5ced66-0b32-4cfa-a100-0f51e150714e" class="">
+</p><h3 id="0191ff9f-78d6-4ba3-9756-c8d02a5b0eac" class="">import package</h3><pre id="14e39247-7746-4cc8-882e-00958b866b33" class="code"><code># 필수
+import os
+from glob import glob
+from easydict import EasyDict
+from Analysis_template import AWS_s3
+from Analysis_template import Model_template
+
+import torch
+from torch import nn, optim
+import pytorch_lightning as pl
+from torch.nn import functional as F
+from torch.optim.lr_scheduler import StepLR
+from torch.utils.data import Dataset, DataLoader
+
+# 선택, 전처리에 맞춰서 추가하기
+from torchvision import datasets
+import torchvision.transforms as transforms</code></pre><p id="781fe1c5-a3d0-4e65-8dcf-d36b0e4144f8" class="">
+</p><h3 id="311c18cd-d6eb-4ef1-a6c0-4460efd991fc" class="">data preprocessing (sample)</h3><pre id="e1171f6a-27f4-4a97-aa99-c5d68111c8ca" class="code"><code>transform = transforms.Compose([transforms.ToTensor(),
+                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+train_data = datasets.CIFAR10(&#x27;./data&#x27;, train = True, download=True, transform = transform)
+test_data = datasets.CIFAR10(&#x27;./data&#x27;, train = False, download=True, transform = transform)</code></pre><p id="d58fa066-f04c-4224-a00f-80c99a8dd442" class="">
+</p><h3 id="4b88ecb6-179c-4a29-95b5-e37f96e10643" class="">model define (sample)</h3><pre id="fbb79e16-af64-4219-9609-ca0b2dce5fa6" class="code"><code>class Model(Model_template) :
+    def __init__(self, hyperperameters) :
+        super().__init__(hyperparameters)
+        
+        self.loss = nn.CrossEntropyLoss()
+
+        self.conv1 = nn.Conv2d(3, 32, 3)
+        self.max_pool = nn.MaxPool2d(2)
+        self.conv2 = nn.Conv2d(32, 16, 3)
+        self.linear = nn.Linear(16 * 6 * 6, 10)
+    
+    def forward(self, x) :
+        x = self.conv1(x)
+        x = F.relu(self.max_pool(x))
+        x = self.conv2(x)
+        x = F.relu(self.max_pool(x))
+        x = F.relu(self.linear(x.view(x.size(0), -1)))       
+        
+        return x
+    
+    def configure_optimizers(self):
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.hparams.lr)
+        scheduler = StepLR(optimizer, step_size=self.hparams.step_size, 
+                           gamma=self.hparams.gamma)
+        
+        return [optimizer], [scheduler]</code></pre><p id="e45293a0-6926-4f40-915f-ec4e5ecb4ac4" class="">
+</p><h3 id="4966e0c8-a18f-47e6-b340-87e92b52dad8" class="">hyperparameters (sample)</h3><pre id="0dfc2e9c-6e15-48ed-83e1-7c8a1309d75d" class="code"><code>hyperparameters = EasyDict({&#x27;lr&#x27; : 0.007,
+                            &#x27;max_epochs&#x27; :1,
+                            &#x27;step_size&#x27; : 3, # scheduler
+                            &#x27;gamma&#x27; : 0.9, # schduler
+                            &#x27;batch_size&#x27; : 256, # train_batch_size
+                            &#x27;test_batch_size&#x27; : -1, # test_batch_size
+                            &#x27;gpus&#x27; : [0],
+                            &#x27;num_workers&#x27; : 16,
+                            &#x27;auto_lr_find&#x27; : False,
+                            &#x27;save_top_k&#x27; : 3,
+                            &#x27;folder&#x27; : &#x27;best_model&#x27;,
+                             &#x27;early_stopping&#x27; : True,
+                             &#x27;patience&#x27; : 5
+                            })
+
+
+if not os.path.isdir(hyperparameters[&#x27;folder&#x27;]) :
+    os.mkdir(hyperparameters[&#x27;folder&#x27;])</code></pre><p id="de1a972f-15e8-4f02-bf49-f80135255280" class="">
+</p><h3 id="f8c98605-665d-4aa1-8431-fc051696b842" class="">model training &amp; test</h3><pre id="fb489016-e82e-431c-a497-925139e91423" class="code"><code>model = Model(hyperparameters)
+model.fit(train_data, test_data)
+
+# 새로 정의한 loss or accuracy 사용 가능
+def accuracy (y_hat, y) : # manual metric example
+    return torch.sum(torch.max(y_hat, axis = 1)[1] == y).item()/len(y_hat)
+
+model.test(test_data, &#x27;accuracy&#x27;, accuracy)
+
+# 원래 loss 사용
+model.test(test_data, &#x27;loss&#x27;)</code></pre><p id="31986aa5-8693-467f-a600-7ec7e1bc9cff" class="">
+</p><h3 id="8b067bc2-e310-4712-8c71-9d477a861f45" class="">model load</h3><pre id="71276384-7cf2-4c78-a660-02467ee944e4" class="code"><code>saved_folder_name = glob(&#x27;./best_model/*&#x27;)[0].split(&#x27;/&#x27;)[-1] # 원하는 파일명으로 변경
+
+model = model.load_model(saved_folder_name)
+model.test(test_data, &#x27;accuracy&#x27;, accuracy)
+model.test(test_data, &#x27;loss&#x27;)</code></pre><p id="39e38752-d13b-4039-a365-74f3cc553154" class="">
+</p><h3 id="0dc0155f-5e0e-4e20-8dca-2cf8b3131c94" class="">cross_validation train &amp; test</h3><pre id="f2272b73-9bca-4f21-b71b-a5bdc449e092" class="code"><code>model.fit_cross_validation(train_data, 5, 0) # 5fold, random_state = 0
+
+saved_folder_name = glob(&#x27;./best_model/*&#x27;)[0].split(&#x27;/&#x27;)[-1] # 원하는 파일명으로 변경
+
+model.test_cross_validation(train_data, &#x27;loss&#x27;, saved_folder_name)</code></pre><p id="79c5d64f-992c-46ed-ae13-ba61703c3cfc" class="">
+</p><p id="673d4bb0-d62e-4227-939d-f512a6a970be" class="">
+</p><h1 id="1aad9794-458d-41cf-94a0-d1f1a946af13" class="">saved file list</h1><p id="cbf2ae05-19aa-4b34-a3b1-c5ec46ea597b" class="">코드가 실행된 시간으로 폴더명이 생성</p><h3 id="f626d9b1-454f-4ddd-a99a-92fbf6d75775" class="">ckpt</h3><p id="69033b46-c017-49de-b3e8-66ba8c375e97" class="">save_top_k개의 높은 성능을 가진 ckpt 파일만 저장</p><p id="98721a13-83d1-4a8e-888a-9419a4347219" class="">ex) epoch=n_val_loss=x.xxxx.ckpt</p><p id="d544a77c-5903-4055-9958-c1a1dc31e828" class="">
+</p><h3 id="01a447f8-50e2-4d22-afc7-67445bbf5478" class="">hparams.yaml</h3><p id="1d534aaf-1421-4bd3-b941-278affe2d734" class="">실행 시 설정한 hyperparameters 값과 training, validation log 저장</p><p id="dc60f576-e56a-498c-9976-c87dee9485d8" class="">
+</p><figure id="666b821e-31f3-49fd-b5be-876c8e0ec07b" class="image"><a href="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled.png"><img style="width:336px" src="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled.png"/></a></figure><p id="f095e3e4-0f81-44dd-8f89-a085302b75f3" class="">
+</p><h3 id="db3c96e8-5363-4833-8e75-199905d8ce4f" class="">saved_ipynb_file.html </h3><p id="33ebcdb5-e4be-438a-8b0f-b229cf8c0067" class="">모델 학습 당시 ipynb 파일 형태를 저장</p><figure id="de812746-7516-4fc6-a10f-253021240f75" class="image"><a href="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled%201.png"><img style="width:896px" src="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled%201.png"/></a></figure><p id="ef0e99c4-1731-46b5-b99b-b2e90b4b8b18" class="">
+</p><p id="a1213a87-997b-4aa9-b0c9-b91eb38cd55a" class="">
+</p><h1 id="42685240-48c8-4383-8f75-8ce88cc3de05" class="">tensorboard</h1><p id="6f136dbb-0126-4a40-a7b8-1e227be251a0" class="">train은 모두 측정</p><p id="2ce9810e-d00a-49a8-882f-de2040429c74" class="">validation은 epoch 단위로 측정.</p><p id="020a842b-bf2e-430e-aea9-d175d8cb6843" class="">
+</p><figure id="ec0833d4-9598-4722-856f-0057ffea074b" class="image"><a href="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled%202.png"><img style="width:356px" src="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled%202.png"/></a></figure><h3 id="a26e4af7-c300-4460-8fc5-933efdb7de00" class="">cross_validation</h3><p id="7debf0e3-5694-4e87-8a1d-acf700f23e64" class="">n_fold 형태로 저장</p><p id="d94259c6-7c87-43d9-a5a6-824493f9eb6f" class="">
+</p><figure id="9889b42b-b3ab-416f-b204-a3e0f1f812b3" class="image"><a href="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled%203.png"><img style="width:208px" src="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled%203.png"/></a></figure><p id="920f447f-c114-4cc9-837b-68d313822e9d" class="">한 번에 볼 수도 있음</p><figure id="eb08f597-6c9e-4f44-aa9f-16cf8fe0eb96" class="image"><a href="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled%204.png"><img style="width:349px" src="../assets/img/%E1%84%82%E1%85%A2%E1%84%80%E1%85%A1%20%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%A5%20%E1%84%8A%E1%85%B3%E1%84%82%E1%85%B3%E1%86%AB%20Analysis-template%20(pytorch)%20666b821e31f349fdb5be876c8e0ec07b/Untitled%204.png"/></a></figure></div>

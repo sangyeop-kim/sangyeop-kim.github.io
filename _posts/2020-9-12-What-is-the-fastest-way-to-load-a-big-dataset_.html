@@ -1,0 +1,664 @@
+---
+layout: post
+title: "What is the fastest way to load a big dataset?"
+date:   2020-9-12
+excerpt: ""
+blog: true
+tags: 
+feature: ../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/the_fastest.jpg 
+comments: true
+---
+
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><p id="a54a1af7-b4a4-4c53-872a-3c30c40748ee" class="">
+</p><p id="3bfd8d0e-9e9f-4efd-9ce1-d3b1d6701137" class="">데이터 분석을 시작할 때 가장 흔히 사용하는 데이터의 형태는 xlsx, csv일 것이다.</p><p id="39ca6201-e520-4abe-9f74-3de7ba3a3e5e" class="">파이썬 새내기 시절 xlsx 파일을 csv 파일로 바꾸는 것만으로도 엄청난 파일 로드 시간 혁신을 이룰 수 있었다.</p><p id="d4c5ae03-056e-434e-a5cc-9621b59f56d5" class="">하지만 분석의 경험이 쌓이고 데이터셋의 크기도 점점 커지다 보니 csv 데이터셋을 불러오는 것 역시 만족스럽지 않았고 더 좋은 파일 format에 대해서 찾아보게 되었다.</p><p id="112aa85a-7240-45b0-8cfa-c029507d379b" class="">
+</p><h3 id="c5d13662-7989-446e-ac4a-5c3fb0d1a40f" class="">Stack overflow</h3><p id="53b3375b-15e8-4589-9eba-96063d032b93" class=""><strong>What is the fastest way to upload a big csv file in notebook to work with python pandas?</strong></p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="fe626b03-46af-4eaf-aeb1-fd0dc0353a84"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><a href="https://stackoverflow.com/questions/37010212/what-is-the-fastest-way-to-upload-a-big-csv-file-in-notebook-to-work-with-python">https://stackoverflow.com/questions/37010212/what-is-the-fastest-way-to-upload-a-big-csv-file-in-notebook-to-work-with-python</a></div></figure><p id="93e99cd0-8105-4bc0-9111-7912192aed38" class=""> </p><p id="d938c315-4a57-415a-a045-50de102dd0a2" class="">세상의 모든 코딩 지식은 stack overflow에 있는 거 같다. 위의 답변을 보고 hdf란 확장자를 처음 알게 되었고 hdf를 통해 xlsx → csv 때 보다 훨씬 더 큰 효과를 볼 수 있었다.</p><p id="47d6a110-6d3a-49ed-8bd4-22c8ab76a662" class="">
+</p><p id="4dcee091-935d-49e1-8d56-8a1c61cbcd35" class="">하지만, 인간의 욕심은 끝이 없는지라 더 많은 format이 궁금해지기도 하고 상황에 따라 가장 효율적인 format을 직접 실험해 보고자 하는 욕구가 강력히 생겨났다.</p><p id="a5d5f0fc-b16d-442e-a0b9-32d72a98c3c4" class="">
+</p><p id="dc053814-e1be-42cb-96e3-d26cd46ee70b" class="">
+</p><h1 id="695158e0-4926-4c2d-bb59-0aba33443851" class="">pandas data format list</h1><p id="08d0a561-d6d0-4736-9a64-e71dc959d14a" class="">우선 pandas에 존재하는 모든 format에 대해서 실험을 진행했다.</p><pre id="3345a626-ee4d-4dfd-b031-1ac2f26e7c5c" class="code"><code>&#x27;&#x27;&#x27;
+pd.to_csv, compression : {&#x27;infer&#x27;, &#x27;gzip&#x27;, &#x27;bz2&#x27;, &#x27;zip&#x27;, &#x27;xz&#x27;, None}, default &#x27;infer&#x27;
+pd.to_json, orient : {&#x27;split&#x27;, &#x27;records&#x27;, &#x27;index&#x27;, &#x27;columns&#x27;, &#x27;values&#x27;, &#x27;table&#x27;}, 
+                    default &#x27;columns&#x27; 
+            compression{&#x27;infer&#x27;, &#x27;gzip&#x27;, &#x27;bz2&#x27;, &#x27;zip&#x27;, &#x27;xz&#x27;, None}, default &#x27;infer&#x27;
+pd.to_excel, None 
+pd.to_hdf, complib : {&#x27;zlib&#x27;, &#x27;lzo&#x27;, &#x27;bzip2&#x27;, &#x27;blosc&#x27;}, default &#x27;zlib&#x27;, 
+                format : {&#x27;fixed&#x27;, &#x27;table&#x27;, None}, default &#x27;fixed&#x27;,
+pd.to_feather, None
+pd.to_parquet, compression{&#x27;snappy&#x27;, &#x27;gzip&#x27;, &#x27;brotli&#x27;, None}, default &#x27;snappy&#x27;
+pd.to_stata, None
+pd.to_pickle, compression{&#x27;infer&#x27;, &#x27;gzip&#x27;, &#x27;bz2&#x27;, &#x27;zip&#x27;, &#x27;xz&#x27;, None}, default &#x27;infer&#x27;
+&#x27;&#x27;&#x27;</code></pre><p id="4233b848-4e9f-43a1-a221-0f73358b23f5" class="">
+</p><p id="808feab6-8101-4a9f-9a69-b01a2fe8577b" class="">phm_data_challenge_2018 데이터셋에서 train/02_M01_DC_train.csv 파일을 이용했다.</p><p id="580a96de-15d1-46ee-b7c0-d29f6468cf0f" class="">파일 크기 : 1065 Mb</p><p id="4aa5d5d5-2537-4453-ad7e-3bf64c3a365c" class="">
+</p><p id="6417ce21-3bfb-4f90-995e-e22c479bc219" class="">순위는 매우 주관적이지만 객관적이려 노력했으며 다음과 같은 사항을 중점적으로 고려했다.</p><ol id="820ee010-4dc5-4c9e-b448-1f2ab696d767" class="numbered-list" start="1"><li>Write에 비해 Read가 훨씬 더 자주 일어나기 때문에 Read time이 훨씬 더 중요하다.</li></ol><ol id="70f7e64b-96e3-42f9-bc96-845f60ee6f8b" class="numbered-list" start="2"><li>size는 작을수록 좋다.</li></ol><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="5999cb36-1171-4121-86f5-98929f23689e"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">바로 결론을 보고 싶다면 <a href="https://www.notion.so/What-is-the-fastest-way-to-upload-a-big-csv-file-in-notebook-to-work-with-python-pandas-0fdb87d66e4849318fe7d46e64a0c955#b7a9d6ec9f26494a8edf5d4316ae8f4d"><strong>click !</strong></a></div></figure><p id="0c5a5ce5-e398-4aa7-a178-431680f490fa" class="">
+</p><h2 id="1b9c179e-05a7-4f56-8ac9-ee1868d523e2" class="">CSV </h2><p id="0e2f1ec0-4b20-4dc5-9fb0-275d1e6c8ce9" class="">test_{compression}.csv</p><p id="348ca840-1058-43ea-a55b-ca81b613dfc4" class="">
+</p><ul id="d836b12b-9655-4c35-bc54-2c089942256a" class="toggle"><li><details open=""><summary>실험 결과를 알고 싶다면 click !!</summary><p id="1a3d1d93-3045-4af4-8c7f-43e1e2422942" class="">
+</p><h3 id="72f03e64-e5bb-44a4-b3e9-f8cb8781faf1" class=""><strong>Write time (sec)</strong></h3><figure id="d9e9b032-2cd8-4b9c-b571-8a401aa44c71" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled.png"><img style="width:624px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled.png"/></a></figure><p id="e495d99b-ac8a-402a-8c46-bea230a81812" class="">
+</p><h3 id="86ee3eac-fb9d-461a-9382-8c9e1d9beb4a" class="">D<strong>ata size (Mb)</strong></h3><figure id="c567ef1b-e11c-4e05-9f13-2fc6423a5393" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%201.png"><img style="width:624px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%201.png"/></a></figure><p id="7da6bf97-0b63-4f46-ba37-607ba56411d3" class="">
+</p><h3 id="8e585679-4522-46a8-ae97-8a2ebaa42f61" class=""><strong>Read time (sec)</strong></h3><figure id="939032a0-f7e4-44e8-a316-349a8b0379bc" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%202.png"><img style="width:624px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%202.png"/></a></figure></details></li></ul><p id="b85be927-9da8-4c44-90ee-3b7bfce7f5b9" class=""><div class="indented"><h3 id="6abccfcb-612d-4c7a-b9d4-4c879f0fea0e" class=""><strong>Best</strong></h3><ul id="cdbceab0-452a-464c-9357-0b9745b37188" class="bulleted-list"><li>test_zip.csv</li></ul><ul id="9748c9ab-42be-438a-b010-7fcea5d262dc" class="bulleted-list"><li>test_gzip.csv</li></ul></div></p><hr id="35f9738a-e88f-43da-b814-23d9c6b4e98e"/><h2 id="11b2e38f-fa1c-4c1c-bbca-8819caf40a87" class="">HDF</h2><ul id="4ac9dae2-75ea-466b-b0b6-c0d360990f7f" class="bulleted-list"><li>test_{format}_{complib}.h5</li></ul><ul id="acf59e3a-90bd-4690-b5d0-73bcf12078b9" class="bulleted-list"><li>test_{complib}.h5 (format : None)</li></ul><p id="9ea1fdb5-0b56-45f6-af78-0764b2f76d8d" class="">
+</p><ul id="9a3b5b09-7964-463a-9cfb-9a112d808c02" class="toggle"><li><details open=""><summary>실험 결과를 알고 싶다면 click !!</summary><p id="6a991b4f-ac12-4ae8-93a9-e50651aa257f" class="">
+</p><h3 id="0ab2517e-a6ed-4ece-a6f5-7e4e29b3a620" class=""><strong>Write time (sec)</strong></h3><figure id="34abbb92-253c-493a-a017-596fbc2f52c2" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%203.png"><img style="width:672px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%203.png"/></a></figure><p id="65405792-01c7-486f-8fc2-8aa47c57c3e2" class="">
+</p><h3 id="35e37f2f-e4c5-4b14-89a3-979c674fbf97" class="">D<strong>ata size (Mb)</strong></h3><figure id="a448c689-613d-44c4-9cda-45c7f1913579" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%204.png"><img style="width:672px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%204.png"/></a></figure><p id="a48258ac-4e89-463a-a6fd-d55ee7c4f6f3" class="">
+</p><h3 id="0bcd244b-380e-40db-8fc1-6883e23629c1" class="">Read<strong> time (sec)</strong></h3><figure id="cf5686ec-8909-43c6-b56d-8062eab2464d" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%205.png"><img style="width:672px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%205.png"/></a></figure></details></li></ul><p id="0e298b88-b700-4720-b81e-5f472075531e" class=""><div class="indented"><h3 id="3a961ed3-e82d-41dc-aa01-955585bf0600" class="">Best</h3><ul id="f04a90fd-0052-40c0-85b6-4e2c0b1f828a" class="bulleted-list"><li>test_zlib.h5</li></ul><ul id="1dc6e515-7128-47c3-8d50-efb544326a7a" class="bulleted-list"><li>test_lzo.h5</li></ul><ul id="bdae9b7e-dc8b-4140-b59d-2a7d495ced27" class="bulleted-list"><li>test_bzip2.h5</li></ul><ul id="f71072c1-6f5a-479b-9305-bbcc88c882d1" class="bulleted-list"><li>test_blosc.h5</li></ul></div></p><hr id="55d81b84-0681-4a8c-bcbc-22f5c393b19a"/><h2 id="9102f02e-1aaa-43ab-82a9-db5d0335bdef" class=""><strong>JSON</strong></h2><ul id="b25d87f0-3b18-4c5a-9521-a99284f190e6" class="bulleted-list"><li>test_{orient}_{compression}.json</li></ul><ul id="d3af5a60-c263-4a6c-b543-c878a6be6365" class="bulleted-list"><li>test_{orient}.json (compression : None)</li></ul><p id="650e83e5-fa90-44f5-b88d-9d32b19c14e4" class="">
+</p><ul id="bfb205f0-f802-497c-95fe-d19ac8406434" class="toggle"><li><details open=""><summary>실험 결과를 알고 싶다면 click !!</summary><p id="dd5fe775-fed3-4b48-bf9b-7f18698cf85d" class="">
+</p><h3 id="9bca7bae-ca12-422c-9385-5433bc6a8ddd" class=""><strong>Write time (sec)</strong></h3><figure id="d2168f53-5d32-4220-a98d-aa90d4bba79c" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%206.png"><img style="width:967px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%206.png"/></a></figure><p id="0ac7d100-8a41-456b-93a0-c37f95314d7b" class="">
+</p><h3 id="764b760e-8a23-43ec-ae9e-e2b980b755aa" class="">D<strong>ata size (Mb)</strong></h3><figure id="77ae096a-92d1-445d-8a81-8df564c54c57" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%207.png"><img style="width:720px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%207.png"/></a></figure><p id="87831c6f-51fa-4ee4-ac0a-8b6ad35d6d2d" class="">
+</p><h3 id="b1a10801-b5aa-4bcc-85dd-9139df5a8f44" class="">Read<strong> time (sec)</strong></h3><figure id="a4b479d8-940a-47d4-b55a-1e9a6ab2b0d7" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%208.png"><img style="width:716px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%208.png"/></a></figure></details></li></ul><p id="8626ab5a-bbf1-4d5a-92a7-656c97b4d524" class=""><div class="indented"><h3 id="9efb3d51-43c4-4d3f-9e5b-a02a50aeaa17" class="">Best</h3><ul id="261e96b9-ef81-4db1-93f8-e71667b8660e" class="bulleted-list"><li>test_values_zip.json</li></ul><ul id="b22cb935-4eb7-4599-a272-f11cb21c4db8" class="bulleted-list"><li>test_values_gzip.json</li></ul></div></p><hr id="2af1ffd2-66f7-4ed3-8aca-f07f43f12f39"/><h2 id="494d7214-e998-462b-94a5-c0e7108294be" class="">Pickle</h2><p id="8798726e-bdab-4061-a51c-5b9dbaf6f556" class="">test_{compression}.pkl</p><p id="4a3ae032-bbf2-4f43-9ecc-7a9f7384fbf0" class="">
+</p><ul id="baf4174a-befe-4ff8-8738-44b7061d248e" class="toggle"><li><details open=""><summary>실험 결과를 알고 싶다면 click !!</summary><p id="96fc6084-7cb2-4a35-8894-5ffe48e09530" class="">
+</p><h3 id="31eb1542-0e19-49ed-8a8b-72bfd29ec001" class=""><strong>Write time (sec)</strong></h3><figure id="ded76db1-49d7-4771-bc14-04518051865c" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%209.png"><img style="width:768px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%209.png"/></a></figure><p id="771208bb-624f-41e7-af40-5e78fede4bdf" class="">
+</p><h3 id="cce0db72-e452-4af0-87ff-4c59a3d478f5" class="">D<strong>ata size (Mb)</strong></h3><figure id="06ace321-a246-4ee3-bd2a-44cfa84b3256" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2010.png"><img style="width:720px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2010.png"/></a></figure><p id="45b46c45-76ed-4aed-8b40-1d90b8cd4f5a" class="">
+</p><h3 id="3a5eb33d-564d-42a5-a3a5-718939a18848" class="">Read<strong> time (sec)</strong></h3><figure id="b508ebea-df26-4b61-b30f-0499a684a0ea" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2011.png"><img style="width:720px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2011.png"/></a></figure></details></li></ul><p id="8ec8d162-4c32-4a1f-902f-584263ea61a7" class=""><div class="indented"><h3 id="7fae993e-8332-4a6a-b693-12cab623ba3d" class="">Best</h3><ul id="d7772a8e-2764-4310-be7b-12d8c8122f74" class="bulleted-list"><li>test_gzip.pkl</li></ul><ul id="4212e754-7a57-4fbb-b5ba-23e301b5d46a" class="bulleted-list"><li>test_zip.pkl</li></ul><ul id="cb8b8a4d-cf96-44c5-8976-9f807c56c78c" class="bulleted-list"><li>test_xz.pkl</li></ul></div></p><hr id="6d5e78f5-3bb3-40be-909a-6032c3e669f7"/><h2 id="27c7bf39-bd2b-46ef-8818-16b7610eb731" class="">Others</h2><p id="a56e79aa-6775-4790-8661-d9df0324e406" class="">test.ftr</p><p id="2ef7a02c-c8a3-4e9d-a003-6756830fac05" class="">test.dta</p><p id="c6b18171-6eb5-41c6-9179-5174941289b7" class="">test_{compression}.parquet</p><p id="3e0813c4-bd68-433a-8cea-e09f06c3f55e" class="">
+</p><ul id="7b1110bd-bb1d-4e28-9664-7b228050e654" class="toggle"><li><details open=""><summary>실험 결과를 알고 싶다면 click !!</summary><p id="f0f8a68c-4d88-4b4e-ad24-79f4263a023c" class="">
+</p><h3 id="da4db8fe-75c1-4d3b-854f-b10dce4e2976" class=""><strong>Write time (sec)</strong></h3><figure id="d562378e-2eab-4d92-baab-50b13cc61281" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2012.png"><img style="width:720px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2012.png"/></a></figure><p id="a26168fe-5bf1-4f64-9985-92b4805512ce" class="">
+</p><h3 id="f2624262-dc7a-4169-ab56-95145d4ca1e2" class="">D<strong>ata size (Mb)</strong></h3><figure id="e45954a9-2fad-43b2-a60e-b8045c453a31" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2013.png"><img style="width:720px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2013.png"/></a></figure><p id="70a2d3f5-9996-4e47-95b6-6dd93761144b" class="">
+</p><h3 id="bebe32a8-c2b8-460b-990b-a126e099dd89" class="">Read<strong> time (sec)</strong></h3><figure id="4234aa6e-c30d-4680-9808-d4ef6e3ab88c" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2014.png"><img style="width:720px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2014.png"/></a></figure></details></li></ul><p id="53f196c9-9ff0-4841-b250-2b3f6b8036b0" class=""><div class="indented"><h3 id="b3a42eb4-37eb-4c7f-86e2-e2ff1e6d6c5b" class="">Best</h3></div></p><ul id="a1893db3-c057-487b-bd1e-8006f408e7e6" class="bulleted-list"><li>test_brotli.parquet</li></ul><ul id="80cf3025-0920-4306-ae96-73e19dcca40d" class="bulleted-list"><li>test_snappy.parquet</li></ul><ul id="e2f69000-f306-4572-af8a-69e54427069b" class="bulleted-list"><li>test.parquet</li></ul><ul id="e9cf74cc-8c41-444b-b542-d144265286c5" class="bulleted-list"><li>test_gzip.parquet</li></ul><ul id="9b8f5f28-4432-4aa4-882d-15736c9caaa5" class="bulleted-list"><li>test.ftr</li></ul><hr id="19f48dd5-dcb0-4be9-8d17-dcbd8622fbdd"/><p id="b7a9d6ec-9f26-494a-8edf-5d4316ae8f4d" class="">
+</p><h1 id="e8040043-65e2-4b87-9e74-0a7a65f4f25b" class="">Best of the best format</h1><p id="7fcc8876-6982-4fae-be6c-6ef1b2a6b275" class="">json, csv, pkl format의 경우 read/write  시간에서 다른 format에 비해 경쟁력이 없다.</p><p id="ac6d14d7-b075-49d9-a853-559329190323" class="">h5의 경우 data size에서 다른 format에 비해 경쟁력이 없다.</p><p id="80ecb28b-ae10-40ec-8603-45e4bbafd719" class="">
+</p><ul id="0f803af9-a843-46f8-a2c9-a43b5e615a3b" class="bulleted-list"><li>test_brotli.parquet</li></ul><ul id="e362d057-b6dc-4499-a1f4-0439421d2342" class="bulleted-list"><li>test_snappy.parquet</li></ul><ul id="ff431196-21ae-4125-aec0-a762cfdaee90" class="bulleted-list"><li>test.parquet</li></ul><ul id="227efb64-7a2f-40e2-a7fe-ed6457c3978b" class="bulleted-list"><li>test_gzip.parquet</li></ul><ul id="c82131d5-fc9a-44e9-974c-f02a9f77ca93" class="bulleted-list"><li>test.ftr</li></ul><p id="7f62ff68-d4fe-4704-814f-ce5974a3d19c" class="">에 대해서 파일을 50번 load한 시간의 합과 데이터 크기를 그래프로 나타냈다.</p><p id="88608016-03af-47d7-9d7a-9b4df493cfd9" class="">
+</p><figure id="6dec7429-1c6e-4ca5-9afb-82e55d5ba5c8" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2015.png"><img style="width:672px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2015.png"/></a></figure><p id="4cabd4a0-0fc6-475a-9b3c-ae990923f6e2" class="">data size와  read time에는 분명한 trade-off  관계가 있음을 볼 수 있다.</p><p id="4fed2685-a1c0-4a97-a1fb-ab6e1f381a14" class="">
+</p><p id="e14e976a-f330-46d0-9dfb-8bc19ee90be8" class="">로컬에서 사용할 경우</p><ul id="e15beb5f-a4ae-4177-bd15-9bad3edb79e0" class="bulleted-list"><li><strong>난 속도가 제일 중요하다. → ftr</strong></li></ul><ul id="7564482b-0c05-45bc-b367-d2313b83aecf" class="bulleted-list"><li><strong>난 용량이 제일 중요하다. → {brotli}.parquet</strong></li></ul><ul id="05d827d4-a109-4acc-a35c-cdcf6f95ba81" class="bulleted-list"><li><strong>난 둘 다 중요해서 밸런스가 중요하다. → {snappy}.parquet</strong></li></ul><p id="c8f4b55a-2f87-447b-95a7-a7a5e7350f3b" class="">
+</p><p id="efbf003a-a956-4733-9882-771a461acf34" class="">
+</p><h1 id="45114b77-48d2-47e4-a731-327bfeb6377f" class="">Load speed in AWS_s3</h1><p id="4d7f5f34-30fa-48f3-a00c-bf6bef0a2074" class="">개인적으로 모든 데이터 파일을 AWS S3에 저장하고 있기 때문에 </p><p id="da00bc7d-d356-4f65-96e0-ff2101bdd4f5" class="">서버에서 파일을 불러오는 시간 + 데이터를 Dataframe (or array)로 바꾸는 시간의 합이 가장 작은 format으로 데이터를 관리하려고 한다.</p><p id="4b7ed6bf-480c-44fa-a78e-8bf74d6edd49" class="">
+</p><p id="9b46456b-2147-40da-8652-43fd0cd7e24c" class="">(S3에 접속해 데이터를 불러오는 코드를 이미 짰는데 추후에 사용 방법을 블로그에 올릴 예정이다.)</p><p id="f71ce5bf-77ee-4841-9612-ceade8386d3f" class="">
+</p><h3 id="84d6fd57-6b69-4eb5-83bf-6215cf91a3c3" class="">S3 load + dataframe 생성까지 평균 시간</h3><figure id="996d4936-ff44-4de0-9a5e-dc8cc4898f00" class="image"><a href="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2016.png"><img style="width:624px" src="../assets/img/What%20is%20the%20fastest%20way%20to%20load%20a%20big%20dataset%20d9e9b0322cd84b9cb5718a401aa44c71/Untitled%2016.png"/></a><figcaption>(단위 : sec)</figcaption></figure><p id="07350d9a-4785-4941-a2be-f9506d26007e" class="">
+</p><p id="8f0b0815-b87d-4c0b-83a4-0fcbd2a34bf4" class="">20번씩 테스트를 하였고 평균 시간을 나타냈다.</p><p id="a39089e8-f614-438c-9505-58293706fb32" class="">지금까지 gzip으로 압축한 csv 파일로 파일을 저장하고 있었는데 지금 당장 brotli parquet으로 바꿔야 겠다.</p><p id="fde0464a-ecf2-40ca-a93e-fd9e07000a85" class="">
+</p><p id="7b69bce0-2fad-4b79-860e-3a1485f15ea1" class="">실험 코드에 대한 내용은 아래 깃허브에서 확인할 수 있습니다!!</p><figure id="5cfdd61e-3c67-41e0-b892-d426664d147f"><a href="https://github.com/sangyeop-kim/best-file-format" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">sangyeop-kim/best-file-format</div><div class="bookmark-description">Contribute to sangyeop-kim/best-file-format development by creating an account on GitHub.</div></div><div class="bookmark-href"><img src="https://github.com/favicon.ico" class="icon bookmark-icon"/>https://github.com/sangyeop-kim/best-file-format</div></div><img src="https://avatars2.githubusercontent.com/u/69177956?s=400&amp;v=4" class="bookmark-image"/></a></figure></div>
