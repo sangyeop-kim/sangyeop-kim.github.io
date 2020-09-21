@@ -1,0 +1,645 @@
+---
+layout: post
+title: "Notion으로 Github 블로그 쓰기!! "
+date:   2020-9-21
+excerpt: ""
+blog: true
+tags: 
+feature: ../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/notion.png 
+comments: true
+---
+
+
+    
+<style>
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 5.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top:4rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 3.5rem;
+    }
+    .source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<div class="page-body"><h3 id="47edcffc-523c-49db-b74f-900ab679bbff" class="">블로거가 되자!</h3><p id="54c5bef8-9def-48a7-81a5-dbfeee951d2e" class="">회사에서 일을 하며 같이 일할 팀원을 찾기 위해 인터뷰를 볼 일이 많았다. </p><p id="c8a69859-f7ff-43ba-8090-c21932a9cb35" class="">처음보는 지원자들에 대해 빠르게 이해하기 위해서 resume를 정말 열심히 봤지만 블로그, 깃허브를 참고하는 것만큼 지원자들을 이해하기 편한 방법은 없었다.</p><p id="d02fa362-7ac3-4b65-83a3-e4ad4f898ae6" class="">인터뷰를 보며 느낀 것이 하나 있다면 짧은 인터뷰 시간 동안 자신의 역량을 말로 설명하는 것보다 한 줄의 코드, 하나의 프로젝트가 더 효율적이라는 것이다.</p><p id="2eadecb8-f47d-46df-a010-e1a2da8bed9c" class="">자기 PR의 방법은 여러 가지가 있겠지만 적어도 내가 느끼기에 현재 이 분야에서 가장 효율적인 것은 기술 블로그라고 결론을 내렸다.</p><p id="3fade026-9fc8-49f2-8249-c1e6f3be7605" class="">
+</p><p id="3113e35b-478e-4bcd-bc91-3c82061c1f8e" class="">
+</p><h3 id="eb52865a-81f1-449c-ad27-8bc3b2de7363" class="">생산성은 Notion!!</h3><p id="c7c2a706-da3d-4f3e-af08-d9bcfcaa8778" class="">글을 쓰는 것을 싫어하는 공돌이라 어떻게 하면 편하게 블로그를 쓸 수 있을지 정말 많이 찾아봤고 깃허브,  노션, Velog, 티스토리를 엄청나게 이리저리 철새처럼 돌아다녔다.</p><p id="e1511b0b-8128-490a-9dcd-6423cd983317" class="">철새 생활 동안 얻은 교훈은 생산성의 최고봉은 노션이라는 것이다. 노션에서 글을 작성하는 속도는 그 어떤 블로그와도 비교가 되지 않게 빨랐다.</p><p id="34e2590b-d064-40da-a678-543d48dcdd55" class="">
+</p><h3 id="c2ad121d-e65f-43a6-9643-34e32e9914e9" class="">블로그 배포</h3><p id="0dfa14ef-f82a-447b-ace5-d7eac98db20b" class="">노션을 나의 블로그로 정하고 글을 작성하던 중 딱 하나가 마음에 들지 않았다. </p><p id="bfe12bd7-74c5-45c3-9ef1-da91acb65f51" class="">노션은 검색엔진에서 노출이 잘되지 않는다. </p><p id="13ad341c-76ba-4cfa-98ef-4c951703ad83" class="">기술 블로그를 자기만족을 위해서 작성하기도 하지만 다른 사람들에게 보여주고 조금은 더 책임감을 가지며 글을 작성할 수 있기를 기대했다.</p><p id="15e84857-de88-4d08-9cf7-645aaf324066" class="">아무리 서치 엔진 최적화를 해도 올린지 10분 지난 velog 블로그가 더 빨리 검색에 노출되는 걸 보며 노션의 배포에 분명한 한계를 느꼈고 어떻게 하면 효율적으로 블로그를 쓰며 공유까지 할 수 있을지 많은 고민을 했다.</p><p id="035faada-f531-43a6-9794-3b3de0fc386d" class="">
+</p><h3 id="ce0a0395-4cc6-48f7-8104-d95ad056dc17" class="">배포의 왕 Velog</h3><p id="d526bc74-7f20-411e-a268-7e92f50a9141" class="">정말 빠르다!! 올리면 10분 안에 구글에서 볼 수가 있다. 배포만을 목적으로 한다면 정말로 최고의 효율을 자랑한다고 거의 확신한다. 하지만 Velog는 너무 정형화되어 있기 때문에 커스터마이징을 할 수가 없었다.</p><p id="8dc17a71-fd6a-4c52-bec2-c999da551965" class="">
+</p><h3 id="9e58e480-152c-46e3-af7f-f1825446eed9" class="">결론은 Github &amp; Notion</h3><p id="76cb82c3-6549-4c9b-a1f4-25d5b4633778" class="">커스터마이징과 온라인 배포 모두를 잡을 수 있는 것은 역시 Github였다. 하지만 markdown으로 작성하는 블로그 작성 방법(html도 가능하긴 하지만.....)의 태생적 한계 때문에 <mark class="highlight-pink_background"><strong>Notion</strong></mark>의 생산성을 이길 수는 없었다.</p><p id="81033cb4-7368-43fa-9042-caf0a4627535" class="">
+</p><p id="18972698-e2f6-40c9-8155-7dcffe81e969" class=""><em><strong>그렇기에 </strong></em></p><p id="9f00447d-13dc-4bef-bf1e-5d16527eca60" class=""><em><strong>내가 내린 결론은 글로 Notion으로 작성하고 내용을 Github로 옮기는 코드를 이용하자는 것이다!!</strong></em></p><p id="2b54fd82-f8c2-4766-9344-5f446a66e7f6" class="">
+</p><p id="5db7380d-3a42-4cbb-ad78-0fe526bf679b" class="">
+</p><p id="32e7cdaa-ae2e-4907-a218-1c9ca86599e5" class="">디자인에 대해선 문외한이기 때문에 주변 사람들의 추천을 받아 테마를 고르고 커스터마이징을 시작했다.</p><p id="8e32d01e-e53c-4d4d-a4bb-012b2aeb6f1a" class="">사용한 테마는 Moon Jekyll Theme이다.</p><p id="0953070a-a0d9-4462-81e7-41f783470dea" class=""><a href="https://github.com/TaylanTatli/Moon">https://github.com/TaylanTatli/Moon</a> </p><p id="b49e8806-f07d-4b5c-bef0-3df3f464ed34" class="">
+</p><figure id="53831fe0-629e-4d1c-8587-29e874092e5b" class="image"><a href="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled.png"><img style="width:432px" src="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled.png"/></a></figure><p id="2095464c-5c55-4322-bef8-73fd4a611bb9" class="">
+</p><p id="42ef9fd2-6190-41ab-9b37-f5037e06535c" class="">
+</p><h3 id="e979487e-fe8f-4204-b80f-26ac85871b08" class="">Notion → Github 변환하기</h3><p id="89f69216-01da-413c-b86e-0d3494ade354" class=""> </p><figure id="f3752f57-d49a-4c24-9283-28a4cf8718cf"><a href="https://github.com/sangyeop-kim/Notion-to-Blog" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">sangyeop-kim/Notion-to-Blog</div><div class="bookmark-description">Contribute to sangyeop-kim/Notion-to-Blog development by creating an account on GitHub.</div></div><div class="bookmark-href"><img src="https://github.com/favicon.ico" class="icon bookmark-icon"/>https://github.com/sangyeop-kim/Notion-to-Blog</div></div><img src="https://avatars2.githubusercontent.com/u/69177956?s=400&amp;v=4" class="bookmark-image"/></a></figure><p id="d9055d1e-2fd3-49b1-9573-271fda150f04" class="">(사실 나의 게으름 때문에 완전한 자동화를 이루지는 못했다.)</p><p id="5895c482-5be5-4f14-ae64-8bcda82588cf" class="">
+</p><p id="18d29c55-5345-4484-ba63-625dce086cc5" class="">절차는 아래와 같다.</p><p id="5da6b59b-38e1-42c3-b9a8-7e4cb36b444c" class="">
+</p><ol id="0dd81c61-6e60-4ea3-b7b4-5f82211f3596" class="numbered-list" start="1"><li><strong>Notion export 하기</strong><figure id="f0b70dd3-c3bd-4556-9439-7949e4f49c23" class="image"><a href="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled%201.png"><img style="width:144px" src="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled%201.png"/></a></figure><p id="99f7a7d6-a138-48b9-9d84-dc2e92257155" class="">HTML로 Export 한 후에 압축을 풀어준다.</p><p id="54527e69-33ed-419c-8dae-eab94296bb43" class="">
+</p><p id="746df88a-0339-41b9-9ff8-918d90244734" class="">
+</p></li></ol><ol id="cc2491b2-d4ee-4597-842b-ca3a8c579a66" class="numbered-list" start="2"><li><strong>경로 지정하기</strong><ul id="13b765a8-41f7-4bea-b7d7-c97a66ec5013" class="bulleted-list"><li>압축을 푼 파일 경로를 file_path로 지정하기</li></ul><ul id="e623b464-68d9-4db1-90da-3901f386c1de" class="bulleted-list"><li><a href="http://github.io">github.io</a> 경로를 blog_path로 지정하기</li></ul><figure id="c9d3c876-1947-4363-b33d-076469bf4c45" class="image"><a href="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled%202.png"><img style="width:364px" src="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled%202.png"/></a><figcaption>경로 예시</figcaption></figure></li></ol><p id="6088c180-37e5-41fd-a0d5-9da50ea5b898" class="">
+</p><p id="c1de17d4-1300-433c-8006-cc1f3dbaeab7" class="">
+</p><p id="a397dc56-1cbc-471b-a25f-829f2b587723" class=""><strong>3. url.xlsx에 압축을 푼 파일의 제목과 Notion URL을 입력하기</strong></p><figure id="b726c0d2-bdd4-4f45-bae3-992ccbe5f073" class="image"><a href="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled%203.png"><img style="width:336px" src="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled%203.png"/></a><figcaption>Copy link를 눌러 복사!!</figcaption></figure><p id="4279c8de-ec85-4a69-a24b-74239e755da4" class="">url.xlsx 입력은 다음과 같이 한다.</p><figure id="c1477bf0-87e3-4534-a341-bce4eac79aac" class="image"><a href="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled%204.png"><img style="width:864px" src="../assets/img/Notion%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9%20Github%20%E1%84%87%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%20%E1%84%8A%E1%85%B3%E1%84%80%E1%85%B5!!%2053831fe0629e4d1c858729e874092e5b/Untitled%204.png"/></a></figure><p id="3bf87107-c096-4aa0-ba24-66adc6997ea0" class="">
+</p><p id="a79d58d1-d0f0-49ca-8b87-68f84421c3c7" class="">이렇게 번거로운 작업을 추가한 이유는 Notion을 HTML로 export할 때 가운데 정렬된 수식(Block equation)이 모두 깨지기 때문이다. </p><p id="f1cb2021-92f8-4c04-8a25-f57f6872b005" class="">인코딩도 바꿔보고 Markdown에서 Katex를 받아오는 방법 등 많은 방법을 시도해봤지만 가장 효율적인 방법이 위와 같은 방법이었다.</p><figure id="28e1cb33-2e3c-431c-85bc-ebf7d65a1cae" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div>$$block-equation-test$$</div></figure><p id="2acdc7a8-956c-465d-a104-d5ad9d2890ac" class="">
+</p><p id="c7254f7d-0652-4424-8543-d74912262d36" class="">
+</p><p id="2509ab42-6652-4998-b1d0-7f159445d416" class=""><strong>4. blog, excerpt 입력하기 (optional)</strong><div class="indented"><p id="54a0a48e-58ff-4e58-8077-f66a3adaf07c" class="">제목 아래 설명을 작성하고 싶다면 excerpt에 넣어주자.</p><p id="e69562df-95cc-47fb-9d97-f7b8b6817c0a" class="">blog를 True로 하면 Blog에 False로 하면 Paper-review에 글이 올라간다.</p><p id="915aa20f-3aba-48e1-96ad-ac1973c39714" class="">이건 개인 블로그의 구성에 따라서 바꿔줘야할 부분이다.</p><p id="fb999f4b-5234-4a34-8648-18a463d3e0dc" class="">
+</p><p id="9f35b359-c6dd-4c72-b84c-ec9060e33341" class="">
+</p></div></p><p id="9bdc365f-22f5-455b-b3ac-e4adcd90f839" class=""><strong>5. Notion → Github용 html로 변환하기</strong><div class="indented"><pre id="c2564ff0-9975-486d-a646-415430052f34" class="code"><code>file = glob(file_path + &#x27;*.html&#x27;)
+df = pd.read_excel(file_path + &#x27;url.xlsx&#x27;)
+
+for f in file:
+    make_github_blog(df, f, blog_path, file_path, blog, excerpt)</code></pre><p id="79a588ea-5899-45b1-bd70-4d0d7d9211af" class="">make_github_blog를 실행하면 Notion 글리 github.io로 이동한다! 👏👏👏👏 </p><p id="5ada072b-9b4d-4d4a-9be6-5344927721cf" class="">
+</p></div></p><p id="63071880-2f88-498a-8e0a-c602bd0d2397" class="">
+</p><p id="7ada5421-6da3-4031-b17d-854e48041a71" class=""><strong>6. git push</strong><div class="indented"><p id="48734da4-c8df-46ad-87e4-9fd4336ff2d8" class="">자세한 설명은 생략합니다.</p><p id="2592ff5b-2a55-4308-815c-ba63eda3bc74" class="">
+</p><p id="467dde25-5ac2-4cd5-bb1d-017bd7baba73" class="">
+</p></div></p><p id="c56ec412-524f-49ff-987f-c34814605c10" class=""><strong>해당 내용의 결과물을 여러분은 보고 계십니다! 짝짝짝!!!!! </strong>👏👏👏👏👏👏👏 </p><p id="07002ba0-223f-44ca-aeb0-62514ba11fc4" class="">
+</p></div>
